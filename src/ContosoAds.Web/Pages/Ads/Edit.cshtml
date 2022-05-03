@@ -1,0 +1,90 @@
+@page "{id:int}"
+@using ContosoAds.Web.Model
+@model ContosoAds.Web.Pages.Ads.EditModel
+
+@{
+    ViewData["Title"] = "Edit Ad";
+    ViewData["Categories"] = Html.GetEnumSelectList<Category>();
+}
+
+<h1>Edit Your Ad</h1>
+
+<div class="row">
+    <div class="col-8">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+             <input type="hidden" asp-for="Ad.Id" />
+            <div class="row mb-3">
+                <label asp-for="Ad.Title" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <input asp-for="Ad.Title" class="form-control"/>
+                    <span asp-validation-for="Ad.Title" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="Ad.Price" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input asp-for="Ad.Price" class="form-control"/>
+                        <span asp-validation-for="Ad.Price" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="Ad.Description" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <textarea asp-for="Ad.Description" class="form-control"></textarea>
+                    <span asp-validation-for="Ad.Description" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Image</label>
+                <div class="col-sm-10">
+                    <img src="@Html.Raw(Model.Ad.ThumbnailUri)" alt="@Model.Ad.Title"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="ImageFile" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <input asp-for="ImageFile" type="file" accept="image/*" class="form-control"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="Ad.PostedDate" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <input asp-for="Ad.PostedDate" class="form-control" readonly/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="Ad.Category" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <select asp-for="Ad.Category" asp-items="ViewBag.Categories" class="form-control">
+                        <option disabled selected value="">Please select a category</option>
+                    </select>
+                    <span asp-validation-for="Ad.Category" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="Ad.Phone" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <input asp-for="Ad.Phone" class="form-control"/>
+                    <span asp-validation-for="Ad.Phone" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <input type="submit" value="Save" class="btn btn-primary btn-sm"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

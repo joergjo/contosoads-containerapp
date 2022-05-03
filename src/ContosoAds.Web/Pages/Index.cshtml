@@ -1,0 +1,35 @@
+﻿@page
+@using ContosoAds.Web.Model
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="row">
+
+    <div class="jumbotron">
+        <h2 class="display-4">Contoso Ads</h2>
+        <p class="lead">Where Your Stuff Gets Sold</p>
+        <hr class="my-4">
+        <h4>Look up ads</h4>
+        <ul>
+            <li>
+                <a asp-page="/Ads/Index" asp-route-category="@Category.Cars">Cars</a>
+            </li>
+            <li>
+                <a asp-page="/Ads/Index" asp-route-category="@Category.RealEstate">Real estate</a>
+            </li>
+            <li>
+                <a asp-page="/Ads/Index" asp-route-category="@Category.FreeStuff">Free Stuff</a>
+            </li>
+            <li>
+                <a asp-page="/Ads/Index">All</a>
+            </li>
+        </ul>
+        <hr class="my-4">
+        <h4>Create a new ad</h4>
+        <p>
+            <a asp-page="/Ads/Create" class="btn btn-primary btn-sm" role="button">Create an Ad</a>
+        </p>
+    </div>
+</div>

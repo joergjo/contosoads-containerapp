@@ -1,0 +1,18 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: thumbnail-result
+spec:
+  type: bindings.azure.storagequeues
+  version: v1
+  metadata:
+    - name: storageAccount
+      secretKeyRef:
+        name: storageAccount
+    - name: storageAccessKey
+      secretKeyRef:
+        name: storageAccountKey
+    - name: queue
+      value: "thumbnail-result"
+auth:
+  secretStore: dev-secrets

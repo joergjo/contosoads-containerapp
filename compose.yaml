@@ -1,0 +1,92 @@
+version: "3.9"
+
+volumes:
+  contosoads_data:
+
+networks:
+  contosoads_network:
+
+services:
+  imageprocessor:
+    image: contosoads-imageprocessor:${IMAGE_PROCESSOR_TAG:-latest}
+    build:
+      context: ./src/ContosoAds.ImageProcessor
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Logging__Console__FormatterName=Simple
+      - DAPR_HTTP_PORT=50001
+      - DAPR_GRPC_PORT=50002
+    networks:
+      - contosoads_network
+  imageprocessor_dapr:
+    image: "daprio/daprd:edge"
+    command: [
+      "./daprd",
+      "-app-id", "contosoads-imageprocessor",
+      "-app-port", "8081",
+      "-placement-host-address", "placement:50006",
+      "-dapr-http-port", "50001",
+      "-dapr-grpc-port", "50002",
+      "-components-path", "/components" ]
+    volumes:
+      - "./components/:/components"
+      - "./src/ContosoAds.ImageProcessor/secrets.json:/secrets.json"
+    network_mode: "service:imageprocessor"
+    depends_on:
+      - imageprocessor
+  
+  webapp:
+    image: contosoads-web:${WEB_TAG:-latest}
+    build:
+      context: ./src/ContosoAds.Web
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=db;Database=contosoads;Username=postgres;Password=pass@word1
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Logging__Console__FormatterName=Simple
+      - DAPR_HTTP_PORT=50001
+      - DAPR_GRPC_PORT=50002
+    networks:
+      - contosoads_network
+    depends_on:
+      - db
+  webapp_dapr:
+    image: "daprio/daprd:edge"
+    command: [
+      "./daprd",
+      "-app-id", "contosoads-web",
+      "-app-port", "8080",
+      "-placement-host-address", "placement:50006",
+      "-dapr-http-port", "50001",
+      "-dapr-grpc-port", "50002",
+      "-components-path", "/components"]
+    volumes:
+      - "./components/:/components"
+      - "./src/ContosoAds.Web/secrets.json:/secrets.json"
+    network_mode: "service:webapp"
+    depends_on:
+      - webapp
+      
+  db:
+    image: postgres:${POSTGRES_TAG:-13-alpine}
+    volumes:
+      - contosoads_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=pass@word1
+      - POSTGRES_DB=contosoads
+    networks:
+      - contosoads_network
+  
+  placement:
+    image: "daprio/dapr"
+    command: ["./placement", "-port", "50006"]
+    networks:
+      - contosoads_network
+  
+  redis:
+    image: "redis:alpine"
+    networks:
+      - contosoads_network

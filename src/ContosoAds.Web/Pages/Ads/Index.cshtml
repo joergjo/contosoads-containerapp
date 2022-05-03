@@ -1,0 +1,73 @@
+@page "{category?}"
+@model ContosoAds.Web.Pages.Ads.IndexModel
+
+@{
+    ViewData["Title"] = "Ad Listing";
+}
+
+<h1>Stuff to be sold</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Ads[0].Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ads[0].Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ads[0].Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ads[0].ThumbnailUri)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ads[0].PostedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ads[0].Category)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ads[0].Phone)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Ads)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                <img alt="@item.Title" src="@Html.Raw(item.ThumbnailUri)" />
+            </td>
+            <td>
+                 @Html.DisplayFor(modelItem => item.PostedDate)
+             </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -1,0 +1,20 @@
+version: "3.9"
+
+volumes:
+  contosoads_db:
+
+networks:
+  contosoads_network:
+
+services:
+  db:
+    image: postgres:${POSTGRES_TAG:-13-alpine}
+    ports:
+      - "5432:5432"
+    volumes:
+      - contosoads_db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=pass@word1
+      - POSTGRES_DB=contosoads
+    networks:
+      - contosoads_network

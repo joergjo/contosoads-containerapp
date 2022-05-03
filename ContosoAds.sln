@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoAds.Web", "src\ContosoAds.Web\ContosoAds.Web.csproj", "{575FF36D-5AD8-43A7-BC98-5C26E1EFA3C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoAds.ImageProcessor", "src\ContosoAds.ImageProcessor\ContosoAds.ImageProcessor.csproj", "{9F2C42F7-CEA9-4FD6-A27F-E0ACB28541AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoAds.Web.UnitTests", "test\ContosoAds.Web.UnitTests\ContosoAds.Web.UnitTests.csproj", "{61A01D5C-C4D2-4626-8205-EB453BE5CE78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoAds.Web.IntegrationTests", "test\ContosoAds.Web.IntegrationTests\ContosoAds.Web.IntegrationTests.csproj", "{324E1018-F844-42B4-B0CC-61A0F291C716}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoAds.ImageProcessor.IntegrationTests", "test\ContosoAds.ImageProcessor.IntegrationTests\ContosoAds.ImageProcessor.IntegrationTests.csproj", "{EB05B89F-D1BA-4AAD-AE09-AE698A71B914}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoAds.ImageProcessor.UnitTests", "test\ContosoAds.ImageProcessor.UnitTests\ContosoAds.ImageProcessor.UnitTests.csproj", "{A7DD392D-8906-492D-A891-661477D6ABD0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{575FF36D-5AD8-43A7-BC98-5C26E1EFA3C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{575FF36D-5AD8-43A7-BC98-5C26E1EFA3C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{575FF36D-5AD8-43A7-BC98-5C26E1EFA3C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{575FF36D-5AD8-43A7-BC98-5C26E1EFA3C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F2C42F7-CEA9-4FD6-A27F-E0ACB28541AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F2C42F7-CEA9-4FD6-A27F-E0ACB28541AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F2C42F7-CEA9-4FD6-A27F-E0ACB28541AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F2C42F7-CEA9-4FD6-A27F-E0ACB28541AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61A01D5C-C4D2-4626-8205-EB453BE5CE78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61A01D5C-C4D2-4626-8205-EB453BE5CE78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61A01D5C-C4D2-4626-8205-EB453BE5CE78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61A01D5C-C4D2-4626-8205-EB453BE5CE78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{324E1018-F844-42B4-B0CC-61A0F291C716}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{324E1018-F844-42B4-B0CC-61A0F291C716}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{324E1018-F844-42B4-B0CC-61A0F291C716}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{324E1018-F844-42B4-B0CC-61A0F291C716}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB05B89F-D1BA-4AAD-AE09-AE698A71B914}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB05B89F-D1BA-4AAD-AE09-AE698A71B914}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB05B89F-D1BA-4AAD-AE09-AE698A71B914}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB05B89F-D1BA-4AAD-AE09-AE698A71B914}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7DD392D-8906-492D-A891-661477D6ABD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7DD392D-8906-492D-A891-661477D6ABD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7DD392D-8906-492D-A891-661477D6ABD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7DD392D-8906-492D-A891-661477D6ABD0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
