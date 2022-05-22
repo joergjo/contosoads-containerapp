@@ -122,7 +122,7 @@ resource migration 'Microsoft.ContainerInstance/containerGroups@2021-10-01' = {
       {
         name: 'github'
         gitRepo: {
-          repository: 'https://github.com/joergjo/aci-db-migration.git'
+          repository: 'https://github.com/joergjo/contosoads-containerapp.git'
           directory: '.'
         }
       }

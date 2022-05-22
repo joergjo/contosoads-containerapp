@@ -74,6 +74,7 @@ services:
     image: postgres:${POSTGRES_TAG:-13-alpine}
     volumes:
       - contosoads_data:/var/lib/postgresql/data
+      - ./deploy/migrate.sql:/docker-entrypoint-initdb.d/1-migrate.sql
     environment:
       - POSTGRES_PASSWORD=pass@word1
       - POSTGRES_DB=contosoads

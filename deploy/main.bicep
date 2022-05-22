@@ -24,10 +24,10 @@ param postgresLogin string
 param postgresLoginPassword string
 
 @description('Specifies the tag for the contosoads-web image.')
-param webAppTag string = 'latest'
+param webAppTag string = 'stable'
 
 @description('Specifies the tag for the contosoads-imageprocessor image.')
-param imageProcessorTag string = 'latest'
+param imageProcessorTag string = 'stable'
 
 var vnetName = '${baseName}-vnet'
 var storageAccountName = '${baseName}${uniqueString(resourceGroup().id)}'
