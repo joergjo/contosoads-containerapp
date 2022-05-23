@@ -21,7 +21,6 @@ public class ApiTest : IClassFixture<TestWebApplicationFactory>
     public ApiTest(TestWebApplicationFactory factory)
     {
         _factory = factory;
-        _factory.ClientOptions.BaseAddress = new Uri("/thumbnail-request");
     }
 
     [Fact]
@@ -45,7 +44,7 @@ public class ApiTest : IClassFixture<TestWebApplicationFactory>
 
         // Assert
         using var response = await client.SendAsync(
-            new HttpRequestMessage(HttpMethod.Options, string.Empty));
+            new HttpRequestMessage(HttpMethod.Options, "/thumbnail-request"));
 
         // Act
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -74,7 +73,7 @@ public class ApiTest : IClassFixture<TestWebApplicationFactory>
 
         // Act
         using var response = await client.PostAsJsonAsync(
-            string.Empty,
+            "/thumbnail-request",
             new ImageBlob(new Uri("https://example.com/foo.jpg"), 1));
 
         // Assert
@@ -91,7 +90,7 @@ public class ApiTest : IClassFixture<TestWebApplicationFactory>
 
         // Act
         using var response = await client.PostAsJsonAsync(
-            string.Empty,
+            "/thumbnail-request",
             new ImageBlob(new Uri("https://example.com/foo.jpg"), 1));
 
         // Assert
@@ -106,7 +105,7 @@ public class ApiTest : IClassFixture<TestWebApplicationFactory>
 
         // Act
         using var response = await client.PostAsJsonAsync(
-            string.Empty,
+            "/thumbnail-request",
             new {Uri = default(string), AdId = 0});
 
         // Assert

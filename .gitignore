@@ -10,3 +10,4 @@ riderModule.iml
 secrets.json
 .env
 .envrc
+.vs/

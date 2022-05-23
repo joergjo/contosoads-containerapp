@@ -15,7 +15,6 @@ public class ThumbnailControllerTest : IClassFixture<TestWebApplicationFactory>
     public ThumbnailControllerTest(TestWebApplicationFactory factory)
     {
         _factory = factory;
-        _factory.ClientOptions.BaseAddress = new Uri("/thumbnail-result");
     }
 
     [Fact]
@@ -26,7 +25,7 @@ public class ThumbnailControllerTest : IClassFixture<TestWebApplicationFactory>
         
         // Act
         using var response = await client.SendAsync(
-            new HttpRequestMessage(HttpMethod.Options, string.Empty));
+            new HttpRequestMessage(HttpMethod.Options, "/thumbnail-result"));
         
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -55,7 +54,7 @@ public class ThumbnailControllerTest : IClassFixture<TestWebApplicationFactory>
 
         // Act
         using var response = await client.PostAsJsonAsync(
-            string.Empty,
+            "/thumbnail-result",
             new ImageBlob(new Uri(thumbnailUri), adId));
 
         // Assert
@@ -71,7 +70,7 @@ public class ThumbnailControllerTest : IClassFixture<TestWebApplicationFactory>
 
         // Act
         using var response = await client.PostAsJsonAsync(
-            string.Empty,
+            "/thumbnail-result",
             new ImageBlob(new Uri("https://contosoads.blob.core.windows.net/images/thumbnail.jpg"), 1));
 
         // Assert
@@ -92,7 +91,7 @@ public class ThumbnailControllerTest : IClassFixture<TestWebApplicationFactory>
 
         // Act
         using var response = await client.PostAsJsonAsync(
-            string.Empty,
+            "/thumbnail-result",
             new {uri, adId});
 
         // Assert
