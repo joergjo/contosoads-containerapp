@@ -27,7 +27,7 @@ CREATE TABLE "DataProtectionKeys" (
 );
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20220317174057_Initial', '6.0.3');
+VALUES ('20220317174057_Initial', '6.0.5');
 
 COMMIT;
 

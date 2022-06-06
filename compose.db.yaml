@@ -13,6 +13,7 @@ services:
       - "5432:5432"
     volumes:
       - contosoads_db:/var/lib/postgresql/data
+      - ./deploy/migrate.sql:/docker-entrypoint-initdb.d/1-migrate.sql
     environment:
       - POSTGRES_PASSWORD=pass@word1
       - POSTGRES_DB=contosoads
