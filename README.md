@@ -1,5 +1,11 @@
 # Contoso Ads on Containers
 
+## Introduction
+This sample demonstrates how ASP.NET Core 6.0 is used to build a cloud-native application 
+that consists of a frontend web app and an API that communicate asynchronously via messaged 
+queues. The messaging is implemented using Dapr and both frontend and API are hosted in Azure Container Apps.
+
+## About
 Contoso Ads on Containers is a modernized version of the original Contoso Ads sample app for 
 [Azure Cloud Services](https://docs.microsoft.com/en-us/azure/cloud-services/cloud-services-dotnet-get-started) and 
 [Azure WebJobs](https://docs.microsoft.com/en-us/azure/app-service-web/websites-dotnet-webjobs-sdk-get-started) built
@@ -29,6 +35,7 @@ This sample app uses a variety of technologies:
 * [ASP.NET Core Razor Pages 6.0](https://docs.microsoft.com/en-us/aspnet/core/razor-pages/?view=aspnetcore-6.0&tabs=visual-studio-code)
 * [ASP.NET Core Minimal API](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-6.0)
 * [Entity Framework Core 6.0](https://docs.microsoft.com/en-us/ef/core/overview)
+* [Dapr](https://dapr.io)
 * [C# 10](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10) 
 
 
