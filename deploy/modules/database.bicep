@@ -5,14 +5,15 @@ param serverName string
 param databaseName string
 
 @description('Specifies the location to deploy to.')
-param location string 
+param location string
 
 @description('Specifies the PostgreSQL version.')
 @allowed([
   '12'
   '13'
+  '14'
 ])
-param version string = '13'
+param version string
 
 @description('Specifies the PostgreSQL administrator login name.')
 @secure()
@@ -115,7 +116,7 @@ resource migration 'Microsoft.ContainerInstance/containerGroups@2021-10-01' = {
             }
           }
         }
-      }  
+      }
     ]
     osType: 'Linux'
     volumes: [

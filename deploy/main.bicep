@@ -23,6 +23,9 @@ param postgresLogin string
 @secure()
 param postgresLoginPassword string
 
+@description('Specifies the PostgreSQL version.')
+param postgresVersion string = '13'
+
 @description('Specifies the tag for the contosoads-web image.')
 param webAppTag string = 'stable'
 
@@ -69,6 +72,7 @@ module postgres 'modules/database.bicep' = {
     privateDnsZoneId: network.outputs.privateDnsZoneId
     administratorLogin: postgresLogin
     administratorLoginPassword: postgresLoginPassword
+    version: postgresVersion
   }
 }
 

@@ -79,12 +79,13 @@ export CONTOSOADS_DB_PWD=$(uuidgen)
 All resources are created in the same region. You can override the default settings
 of the deployment script by exporting the following environment variables:
 
-| Environment variable            | Purpose                                | Default value |
-|---------------------------------|----------------------------------------|---------------|
-| `CONTOSOADS_LOCATION`           | Azure region to deploy to              | `westeurope`  |
-| `CONTOSOADS_BASE_NAME`          | Common name prefix for Azure resources | `contosoads`  |
-| `CONTOSOADS_WEBAPP_TAG`         | Web app container image tag            | `stable`      |
-| `CONTOSOADS_IMAGEPROCESSOR_TAG` | Image processor container image tag    | `stable`      |
+| Environment variable            | Purpose                                    | Default value |
+|---------------------------------|--------------------------------------------|---------------|
+| `CONTOSOADS_LOCATION`           | Azure region to deploy to                  | `westeurope`  |
+| `CONTOSOADS_BASE_NAME`          | Common name prefix for Azure resources     | `contosoads`  |
+| `CONTOSOADS_WEBAPP_TAG`         | Web app container image tag                | `stable`      |
+| `CONTOSOADS_IMAGEPROCESSOR_TAG` | Image processor container image tag        | `stable`      |
+| `CONTOSOADS_POSTGRES_VERSION`   | PostgreSQL version to use (12, 13, or 14)  | `13`          |
 
 The deployment script will create the following resources:
 

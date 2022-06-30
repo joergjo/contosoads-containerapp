@@ -17,6 +17,7 @@ webapp_tag=${CONTOSOADS_WEBAPP_TAG:-stable}
 imageprocessor_tag=${CONTOSOADS_IMAGEPROCESSOR_TAG:-stable}
 deployment_name="$base_name-$(date +%s)"
 postgres_login=$base_name
+postgres_version=${CONTOSOADS_POSTGRES_VERSION:-13}
 
 az group create \
   --resource-group "$resource_group_name" \
