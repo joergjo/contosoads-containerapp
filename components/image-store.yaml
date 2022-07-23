@@ -16,5 +16,9 @@ spec:
       value: images
     - name: decodeBase64
       value: true
+#   When using Azurite, uncomment the next two lines to point Dapr to its Azure Blob Storage endpoint.
+#    - name: endpoint
+#      value: http://localhost:10000
+
 auth:
   secretStore: dev-secrets

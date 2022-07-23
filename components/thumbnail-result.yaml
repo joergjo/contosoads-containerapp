@@ -14,5 +14,9 @@ spec:
         name: storageAccountKey
     - name: queue
       value: "thumbnail-result"
+#   When using Azurite, uncomment the next two lines to point Dapr to its Azure Queue Storage endpoint.
+#    - name: queueEndpointUrl
+#      value: "http://localhost:10001/devstoreaccount1/thumbnail-request"
+
 auth:
   secretStore: dev-secrets
