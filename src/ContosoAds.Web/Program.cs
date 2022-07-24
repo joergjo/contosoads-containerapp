@@ -1,5 +1,7 @@
+using ContosoAds.Web;
 using ContosoAds.Web.Commands;
 using ContosoAds.Web.DataAccess;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddApplicationInsightsTelemetry();
+builder.Services.AddSingleton<ITelemetryInitializer, TelemetryInitializer>();
 builder.Services.AddHealthChecks().AddDbContextCheck<AdsContext>("AdsContext", tags: new[] {"db_ready"});
 builder.Services.AddRazorPages().AddDapr();
 builder.Services.AddControllers().AddDapr();

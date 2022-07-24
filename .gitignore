@@ -12,3 +12,4 @@ secrets*.json
 .envrc
 .vs/
 azurite/
+components-local/
