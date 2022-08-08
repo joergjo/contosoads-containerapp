@@ -4,11 +4,10 @@
 
 * [Docker Desktop](https://docs.docker.com/docker-desktop/install/)
 * macOS, Linux, or Windows 10/11 with the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) set up
-* An Azure storage account
+* An Azure storage account or [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&tabs=visual-studio)
 
-> Note that [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&tabs=visual-studio)
-> is currently _not_ supported by Dapr until [this PR](https://github.com/dapr/components-contrib/pull/1692) is merged into a Dapr release.
-> Hence you need a real storage account.
+> If you want to use Azurite, you should add it as service to the included
+> Docker Compose file. 
 
 ### Create a new Azure storage account
 Run the following script to create a new Azure storage account and a secrets file for Dapr.
@@ -44,8 +43,8 @@ account_key=$(az storage account keys list \
 # This file is already included in .gitignore
 cat << EOF > secrets.json
 {
-  "storageAccountName": "$name",
-  "storageAccountKey": "$account_key"
+  "storageAccountName": "${name}",
+  "storageAccountKey": "${account_key}"
 }
 EOF
 
