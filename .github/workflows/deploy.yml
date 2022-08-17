@@ -1,0 +1,51 @@
+name: Deploy ContosoAds to Azure Container Apps
+concurrency: contoso-ads
+
+on: [workflow_dispatch] 
+    
+#  push:
+#    branches:
+#      - deploy
+#    paths:
+#      - 'components/**'
+#      - 'deploy/**'
+#      - 'src/**'
+
+env:
+    # Specify your resource group's name
+    RESOURCE_GROUP_NAME: contosoads
+
+    # Specify your preferred region
+    LOCATION: westeurope
+  
+    # Specify login credentials for PostgreSQL
+    DB_LOGIN: contosoads
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch 
+      - uses: actions/checkout@v2
+        
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_SPN }}
+
+      - name: Create resource group
+        uses: azure/CLI@v1
+        with:
+          inlineScript: >
+            echo "Creating resource group in Azure"
+            echo "Executing 'az group create -l ${{ env.LOCATION }} -n ${{ env.RESOURCE_GROUP_NAME }}'"
+            
+            az group create -l ${{ env.LOCATION }} -n ${{ env.RESOURCE_GROUP_NAME }}
+
+      - name: Deploy Bicep template  
+        uses: azure/arm-deploy@v1
+        with:
+          deploymentName: ${{ github.run_number }}
+          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+          template: ./deploy/main.bicep
+          parameters: postgresLogin=${{ env.DB_LOGIN }} postgresLoginPassword=${{ secrets.DB_PWD }}

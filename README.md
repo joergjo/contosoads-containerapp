@@ -66,35 +66,80 @@ since the images must be accessible by a browser.
 
 ## Setup
 
-By the end of this section you'll have Contoso Ads running in Azure. This setup process requires you to run a 
-single deployment script, and should take you around 5-10 minutes.
+1. Use the Azure CLI to create an Azure Service Principal, then store that principal's JSON output to a GitHub secret so the GitHub Actions CI/CD process can log into your Azure subscription and deploy the code.
+2. Edit the `deploy.yml` workflow file and push the changes into a new `deploy` branch, triggering GitHub Actions to build the .NET projects into containers and push those containers into a new Azure Container Apps Environment.
 
-Before executing the deployment script, you have to export two environment variables: 
-* `CONTOSOADS_RESOURCE_GROUP_NAME` must be set to the name of the resource group that hosts all resources for the sample app. 
-The script will also create the resource group itself.
-* `CONTOSOADS_DB_PWD` must be set to the password for the database user used by the application to access PostgreSQL. 
+## Authenticate to Azure and configure the repository with a secret
 
-Then, navigate tp the `deploy` directory and run `deplpy.sh`:
+1. Fork this repository to your own GitHub organization.
+2. Create an Azure Service Principal using the Azure CLI.
 
-```bash
-cd contosoads-containerapp/deploy
-export CONTOSOADS_RESOURCE_GROUP_NAME=<your-resource-group-name>
-export CONTOSOADS_DB_PWD=$(uuidgen)
-./deploy.sh
-```
+   ```bash
+   subscription_id=$(az account show --query id --output tsv)
+   az ad sp create-for-rbac --sdk-auth --name ContosoAds-CICD --role contributor --scopes "/subscriptions/$subscription_id"
+   ```
 
-All resources are created in the same region. You can override the default settings
-of the deployment script by exporting the following environment variables:
+3. Copy the JSON written to the screen to your clipboard.
 
-| Environment variable            | Purpose                                    | Default value |
-|---------------------------------|--------------------------------------------|---------------|
-| `CONTOSOADS_LOCATION`           | Azure region to deploy to                  | `westeurope`  |
-| `CONTOSOADS_BASE_NAME`          | Common name prefix for Azure resources     | `contosoads`  |
-| `CONTOSOADS_WEBAPP_TAG`         | Web app container image tag                | `stable`      |
-| `CONTOSOADS_IMAGEPROCESSOR_TAG` | Image processor container image tag        | `stable`      |
-| `CONTOSOADS_POSTGRES_VERSION`   | PostgreSQL version to use (12, 13, or 14)  | `13`          |
+   ```json
+   {
+     "clientId": "&hellip;",
+     "clientSecret": "&hellip;",
+     "subscriptionId": "&hellip;",
+     "tenantId": "&hellip;",
+     "activeDirectoryEndpointUrl": "https://login.microsoftonline.com/",
+     "resourceManagerEndpointUrl": "https://brazilus.management.azure.com",
+     "activeDirectoryGraphResourceId": "https://graph.windows.net/",
+     "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+     "galleryEndpointUrl": "https://gallery.azure.com",
+     "managementEndpointUrl": "https://management.core.windows.net"
+   }
+   ```
 
-The deployment script will create the following resources:
+4. Create a new GitHub secret in your fork of this repository named `AZURE_SPN`. Paste the JSON returned from the Azure CLI into this new secret. Once you've done this you'll see the secret in your fork of the repository.
+   > Note: Never save the JSON to disk, for it will enable anyone who obtains this JSON code to create or edit resources in your Azure subscription.
+
+5. Create a new GitHub secret in your fork of this repository named `DB_PWD` and set it to a secure password to be used for PostgreSQL.
+
+   ![Secrets in GitHub](docs/media/secrets.png)
+
+## Deploy the code using GitHub Actions
+
+The easiest way to deploy the code is to make a commit directly to the `deploy` branch. Do this by navigating to the `deploy.yml` file in your browser and 
+clicking the `Edit` button.
+
+![Edit the deployment workflow file.](docs/media/edit-the-deploy-file.png)
+
+Provide a custom resource group name for the app, and then commit the change to a new branch named `deploy`.
+
+![Create the deploy branch.](docs/media/deploy.png)
+
+Once you click the `Propose changes` button, you'll be in "create a pull request" mode. Don't worry about creating the pull request yet, just click on the `Actions` tab, and you'll see that the deployment CI/CD process has already started.
+
+![Build started.](docs/media/deploy-started.png)
+
+When you click into the workflow, you'll see that there are 3 phases the CI/CD will run through:
+
+*To Do*
+
+![Deployment phases.](docs/media/cicd-phases.png)
+
+After a few minutes, the workflow will be completed and the workflow diagram will reflect success. If anything fails, you can click into the 
+individual process step to see the detailed log output.
+
+> Note: if you do see any failures or issues, please submit an Issue so we can update the sample. Likewise, if you have ideas that could make 
+> it better, feel free to submit a pull request.
+
+![Deployment success.](docs/media/success.png)
+
+With the projects deployed to Azure, you can now test the app to make sure it works.
+
+
+## Try the app in Azure
+
+The `deploy` CI/CD process creates a series of resources in your Azure subscription. These are used primarily for
+hosting the project code, but there are also additional resources that aid with monitoring and observing how the
+app is running in the cloud environment.
 
 | Resource                               | Resource Type                                      | Purpose                                                                                                                                          |
 |----------------------------------------|----------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -109,24 +154,13 @@ The deployment script will create the following resources:
 | server<random_string>                  | Azure Database for PostgreSQL Flexible Server      | Hosts the application's database and ASP.NET Core data protection keys.                                                                          |                                                                    |
 | dbmigration                            | Azure Container Instance                           | This runs the database migration script to prepare the database during deployment.                                                               |                                                                    |
 
-> All names starting with `contosoads` depend on how `CONTOSOADS_BASE_NAME` is set.
-
 The resources are shown here in the Azure portal:
 
 ![Resources in the portal](docs/media/azure-portal.png)
 
-With the projects deployed to Azure, you can now test the app to make sure it works.
-
-## Try the app in Azure
-
 Click on the `contosoads-web` container app to open it up in the Azure portal. In the `Overview` tab you'll see a URL.
 
 ![View the Contoso Ad's public URL.](docs/media/get-public-url.png)
-
-The deployment script also displays the URL as its final output:
-
-![Deployment script output.](docs/media/script-output.png)
-
 
 Clicking that URL will open the app's frontend up in the browser.
 
@@ -148,14 +182,18 @@ the thumbnail and it is displayed.
 
 ## Additional options
 
-These steps are optional and not required to deploy the application to Azure,
-but recommended for learning how to build and run the application before deploying it to Azure.
+These steps are optional and not required to deploy the application to Azure. Use them to learn 
+about building and running the application on your local machine and alternate deployment techniques.
 
-### Building and running the sample app on your PC or Mac with your IDE or the .NET SDK
+### Building and running the sample app on your PC or Mac with your favorite IDE or just the .NET SDK
 
 See [this document](docs/build-and-run.md) for instructions on how to build and run the sample app on your PC or Mac. 
 
-### Running the sample app on your PC or Mac using Docker
+### Running the sample app on your PC or Mac using Docker Desktop
 
 See [this document](docs/docker.md) for instructions on how to run the sample app on your PC or Mac using Docker.
 
+### Deploying the sample app from the command line
+
+See [this document](docs/deploy-with-cli.md) for instructions on how to deploy the sample app from the command line
+instead of using GitHub Actions.
