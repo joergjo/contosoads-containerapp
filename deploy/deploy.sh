@@ -12,7 +12,7 @@ fi
 resource_group_name=$CONTOSOADS_RESOURCE_GROUP_NAME
 postgres_login_password=$CONTOSOADS_DB_PWD
 base_name=${CONTOSOADS_BASE_NAME:-contosoads}
-location=${CONTOSOADS_LOCATION:-westeurope}
+location=${CONTOSOADS_LOCATION:-northeurope}
 webapp_tag=${CONTOSOADS_WEBAPP_TAG:-stable}
 imageprocessor_tag=${CONTOSOADS_IMAGEPROCESSOR_TAG:-stable}
 deployment_name="$base_name-$(date +%s)"

@@ -1,22 +1,21 @@
 name: Deploy ContosoAds to Azure Container Apps
 concurrency: contoso-ads
 
-on: [workflow_dispatch] 
-    
-#  push:
-#    branches:
-#      - deploy
-#    paths:
-#      - 'components/**'
-#      - 'deploy/**'
-#      - 'src/**'
+on:    
+  push:
+    branches:
+      - deploy
+    paths:
+      - 'components/**'
+      - 'deploy/**'
+      - 'src/**'
 
 env:
     # Specify your resource group's name
     RESOURCE_GROUP_NAME: contosoads
 
     # Specify your preferred region
-    LOCATION: westeurope
+    LOCATION: northeurope
   
     # Specify login credentials for PostgreSQL
     DB_LOGIN: contosoads
