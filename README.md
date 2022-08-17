@@ -122,7 +122,7 @@ When you click into the workflow, you'll see that there are 3 phases the CI/CD w
 
 *To Do*
 
-![Deployment phases.](docs/media/cicd-phases.png)
+![Deployment details.](docs/media/deploy-details.png)
 
 After a few minutes, the workflow will be completed and the workflow diagram will reflect success. If anything fails, you can click into the 
 individual process step to see the detailed log output.
