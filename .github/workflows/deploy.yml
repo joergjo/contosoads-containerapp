@@ -9,6 +9,7 @@ on:
       - 'components/**'
       - 'deploy/**'
       - 'src/**'
+      - '.github/workflows/**'
 
 env:
     # Specify your resource group's name
