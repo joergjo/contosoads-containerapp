@@ -20,6 +20,9 @@ env:
   
     # Specify login credentials for PostgreSQL
     DB_LOGIN: contosoads
+    
+    # Specify your GitHub repo to source the DB migration script from (must be public)
+    REPOSITORY: 'https://github.com/joergjo/contosoads-containerapp.git'
 
 jobs:
   deploy:
@@ -48,4 +51,4 @@ jobs:
           deploymentName: ${{ github.run_number }}
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
           template: ./deploy/main.bicep
-          parameters: postgresLogin=${{ env.DB_LOGIN }} postgresLoginPassword=${{ secrets.DB_PWD }}
+          parameters: postgresLogin=${{ env.DB_LOGIN }} postgresLoginPassword=${{ secrets.DB_PWD }} repository=${{ env.REPOSITORY }}

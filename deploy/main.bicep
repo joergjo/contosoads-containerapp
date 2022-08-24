@@ -32,6 +32,9 @@ param webAppTag string = 'stable'
 @description('Specifies the tag for the contosoads-imageprocessor image.')
 param imageProcessorTag string = 'stable'
 
+@description('Specifies the public Git repo that hosts the database migration script.')
+param repository string
+
 var vnetName = '${baseName}-vnet'
 var storageAccountName = '${baseName}${uniqueString(resourceGroup().id)}'
 var privateDnsZoneName = '${baseName}.postgres.database.azure.com'
@@ -73,6 +76,7 @@ module postgres 'modules/database.bicep' = {
     administratorLogin: postgresLogin
     administratorLoginPassword: postgresLoginPassword
     version: postgresVersion
+    repository: repository
   }
 }
 
@@ -87,6 +91,7 @@ module webapp 'modules/webapp.bicep' = {
     dbConnectionString: dbConnectionString
     aiConnectionString: environment.outputs.aiConnectionString
   }
+  dependsOn: [ postgres ]
 }
 
 module imageprocessor 'modules/imageprocessor.bicep' = {
@@ -97,6 +102,7 @@ module imageprocessor 'modules/imageprocessor.bicep' = {
     environmentId: environment.outputs.environmentId
     aiConnectionString: environment.outputs.aiConnectionString
   }
+  dependsOn: [ postgres ]
 }
 
 output fqdn string = webapp.outputs.fqdn

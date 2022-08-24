@@ -24,13 +24,14 @@ Before executing the deployment script, you have to export two environment varia
 * `CONTOSOADS_RESOURCE_GROUP_NAME` must be set to the name of the resource group that hosts all resources for the sample app.
   The script will also create the resource group itself.
 * `CONTOSOADS_DB_PWD` must be set to the password for the database user used by the application to access PostgreSQL.
-
+* `CONTOSOADS_REPO` must be set to your GitHub repo's URL (i.e., the URL of your clone of this repo).
 Then, navigate tp the `deploy` directory and run `deploy.sh`:
 
 ```bash
 cd contosoads-containerapp/deploy
 export CONTOSOADS_RESOURCE_GROUP_NAME=<your-resource-group-name>
 export CONTOSOADS_DB_PWD=$(uuidgen)
+export CONTOSOADS_REPO=<your-github-repo-url>
 ./deploy.sh
 ```
 

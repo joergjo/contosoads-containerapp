@@ -110,7 +110,7 @@ clicking the `Edit` button.
 
 ![Edit the deployment workflow file.](docs/media/edit-the-deploy-file.png)
 
-Provide a custom resource group name for the app, and then commit the change to a new branch named `deploy`.
+Provide a custom resource group name for the app, set the name of your GitHub repository and then commit the change to a new branch named `deploy`.
 
 ![Create the deploy branch.](docs/media/deploy.png)
 
@@ -118,9 +118,7 @@ Once you click the `Propose changes` button, you'll be in "create a pull request
 
 ![Build started.](docs/media/deploy-started.png)
 
-When you click into the workflow, you'll see that there are 3 phases the CI/CD will run through:
-
-*To Do*
+When you click into the workflow, you'll see the `deploy` job the CI/CD will run through:
 
 ![Deployment details.](docs/media/deploy-details.png)
 
@@ -178,7 +176,6 @@ After a few seconds, refresh the page in the web browser. The image processor ha
 the thumbnail and it is displayed.
 
 ![Creating a new ad.](docs/media/image-processed.png)
-
 
 ## Additional options
 

@@ -18,6 +18,7 @@ imageprocessor_tag=${CONTOSOADS_IMAGEPROCESSOR_TAG:-stable}
 deployment_name="$base_name-$(date +%s)"
 postgres_login=$base_name
 postgres_version=${CONTOSOADS_POSTGRES_VERSION:-13}
+repository=${CONTOSOADS_REPO:-'https://github.com/joergjo/contosoads-containerapp.git'}
 
 az group create \
   --resource-group "$resource_group_name" \
@@ -28,7 +29,7 @@ fqdn=$(az deployment group create \
   --name "$deployment_name" \
   --template-file main.bicep \
   --parameters postgresLogin="$postgres_login" postgresLoginPassword="$postgres_login_password" \
-    webAppTag="$webapp_tag" imageProcessorTag="$imageprocessor_tag" \
+    webAppTag="$webapp_tag" imageProcessorTag="$imageprocessor_tag" repository="$repository" \
   --query properties.outputs.fqdn.value \
   --output tsv)
 

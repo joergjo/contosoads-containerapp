@@ -32,6 +32,9 @@ param aciSubnetId string
 @description('Specifies the resource ID of the private DNS zone name.')
 param privateDnsZoneId string
 
+@description('Specifies the public Git repo that hosts the database migration script.')
+param repository string
+
 resource postgres 'Microsoft.DBforPostgreSQL/flexibleServers@2021-06-01' = {
   name: serverName
   location: location
@@ -123,7 +126,7 @@ resource migration 'Microsoft.ContainerInstance/containerGroups@2021-10-01' = {
       {
         name: 'github'
         gitRepo: {
-          repository: 'https://github.com/joergjo/contosoads-containerapp.git'
+          repository: repository
           directory: '.'
         }
       }
