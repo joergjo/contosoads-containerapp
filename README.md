@@ -45,7 +45,7 @@ You'll need an Azure subscription and a very small set of tools and skills to ge
 1. An Azure subscription. Sign up [for free](https://azure.microsoft.com/free/).
 2. Either the [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli) installed locally, or the [Azure Cloud Shell](https://shell.azure.com) available online.
 3. If you are using a local installation of the Azure CLI: 
-   1. You need a bash shell to execute the included deployment script - on Windows 10/11 use the [Window Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install).
+   1. You need a bash shell to execute the included deployment script - on Windows 10/11 use the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install).
    2. Make sure to have Bicep CLI installed by running `az bicep install`
 
 ## Topology diagram
@@ -83,10 +83,10 @@ since the images must be accessible by a browser.
 
    ```json
    {
-     "clientId": "&hellip;",
-     "clientSecret": "&hellip;",
-     "subscriptionId": "&hellip;",
-     "tenantId": "&hellip;",
+     "clientId": "...",
+     "clientSecret": "...",
+     "subscriptionId": "...",
+     "tenantId": "...",
      "activeDirectoryEndpointUrl": "https://login.microsoftonline.com/",
      "resourceManagerEndpointUrl": "https://brazilus.management.azure.com",
      "activeDirectoryGraphResourceId": "https://graph.windows.net/",
