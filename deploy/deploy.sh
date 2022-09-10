@@ -34,7 +34,7 @@ fqdn=$(az deployment group create \
   --output tsv)
 
 if [ -z "$fqdn" ]; then
-    echo "Deployment error. Please check the deployment logs."
+    echo "Deployment error. Please check the deployment logs in thr Azure portal."
     exit 1
 fi
 
