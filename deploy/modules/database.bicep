@@ -85,7 +85,7 @@ resource migration 'Microsoft.ContainerInstance/containerGroups@2021-10-01' = {
   name: 'dbmigration'
   location: location
   dependsOn: [
-    postgres
+    database
   ]
   properties: {
     containers: [
