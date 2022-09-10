@@ -69,15 +69,19 @@ since the images must be accessible by a browser.
 1. Use the Azure CLI to create an Azure Service Principal, then store that principal's JSON output to a GitHub secret so the GitHub Actions CI/CD process can log into your Azure subscription and deploy the code.
 2. Edit the `deploy.yml` workflow file and push the changes into a new `deploy` branch, triggering GitHub Actions to build the .NET projects into containers and push those containers into a new Azure Container Apps Environment.
 
-## Authenticate to Azure and configure the repository with a secret
+### Authenticate to Azure and configure the repository with a secret
 
 1. Fork this repository to your own GitHub organization.
-2. Create an Azure Service Principal using the Azure CLI.
+2. Create an Azure Service Principal [using the Azure CLI](https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-portal%2Clinux#use-the-azure-login-action-with-a-service-principal-secret).
 
    ```bash
+   az login
    subscription_id=$(az account show --query id --output tsv)
    az ad sp create-for-rbac --sdk-auth --name ContosoAds-CICD --role contributor --scopes "/subscriptions/$subscription_id"
    ```
+
+   > The output of that last command will include a deprecation warning for the `-sdk-auth`
+   > flag. This is expected at the time of writing using Azure CLI 2.40. 
 
 3. Copy the JSON written to the screen to your clipboard.
 
@@ -103,7 +107,7 @@ since the images must be accessible by a browser.
 
    ![Secrets in GitHub](docs/media/secrets.png)
 
-## Deploy the code using GitHub Actions
+### Deploy the code using GitHub Actions
 
 The easiest way to deploy the code is to make a commit directly to the `deploy` branch. Do this by navigating to the `deploy.yml` file in your browser and 
 clicking the `Edit` button.

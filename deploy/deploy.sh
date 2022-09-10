@@ -33,4 +33,9 @@ fqdn=$(az deployment group create \
   --query properties.outputs.fqdn.value \
   --output tsv)
 
+if [ -z "$fqdn" ]; then
+    echo "Deployment error. Please check the deployment logs."
+    exit 1
+fi
+
 echo "Application has been deployed successfully. You can access it at https://$fqdn"
