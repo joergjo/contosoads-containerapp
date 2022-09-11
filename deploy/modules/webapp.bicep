@@ -26,7 +26,7 @@ var secrets = [
 
 var containerPort = 8080
 
-resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
+resource containerApp 'Microsoft.App/containerApps@2022-03-01' = {
   name: 'contosoads-web'
   location: location
   properties: {

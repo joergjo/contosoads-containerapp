@@ -74,7 +74,7 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   }
 }
 
-resource environment 'Microsoft.App/managedEnvironments@2022-01-01-preview' = {
+resource environment 'Microsoft.App/managedEnvironments@2022-03-01' = {
   name: environmentName
   location: location
   properties: {
@@ -92,7 +92,7 @@ resource environment 'Microsoft.App/managedEnvironments@2022-01-01-preview' = {
   }
 }
 
-resource imageStoreComponent 'Microsoft.App/managedEnvironments/daprComponents@2022-01-01-preview' = {
+resource imageStoreComponent 'Microsoft.App/managedEnvironments/daprComponents@2022-03-01' = {
   name: 'image-store'
   parent: environment
   properties: {
@@ -125,7 +125,7 @@ resource imageStoreComponent 'Microsoft.App/managedEnvironments/daprComponents@2
   }
 }
 
-resource requestQueueComponent 'Microsoft.App/managedEnvironments/daprComponents@2022-01-01-preview' = {
+resource requestQueueComponent 'Microsoft.App/managedEnvironments/daprComponents@2022-03-01' = {
   name: 'thumbnail-request'
   parent: environment
   properties: {
@@ -154,7 +154,7 @@ resource requestQueueComponent 'Microsoft.App/managedEnvironments/daprComponents
   }
 }
 
-resource resultQueueComponent 'Microsoft.App/managedEnvironments/daprComponents@2022-01-01-preview' = {
+resource resultQueueComponent 'Microsoft.App/managedEnvironments/daprComponents@2022-03-01' = {
   name: 'thumbnail-result'
   parent: environment
   properties: {

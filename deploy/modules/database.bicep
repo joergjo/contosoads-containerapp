@@ -35,7 +35,7 @@ param privateDnsZoneId string
 @description('Specifies the public Git repo that hosts the database migration script.')
 param repository string
 
-resource postgres 'Microsoft.DBforPostgreSQL/flexibleServers@2021-06-01' = {
+resource postgres 'Microsoft.DBforPostgreSQL/flexibleServers@2022-01-20-preview' = {
   name: serverName
   location: location
   sku: {
@@ -64,9 +64,13 @@ resource postgres 'Microsoft.DBforPostgreSQL/flexibleServers@2021-06-01' = {
   }
 }
 
-resource database 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2021-06-01' = {
+resource database 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2022-01-20-preview' = {
   name: databaseName
   parent: postgres
+  properties: {
+    charset: 'utf8'
+    collation: 'en_US.utf8'
+  }
 }
 
 var command = [

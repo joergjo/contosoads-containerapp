@@ -19,7 +19,7 @@ var secrets = [
 
 var containerPort = 8081
 
-resource imageProcessor 'Microsoft.App/containerApps@2022-01-01-preview' = {
+resource imageProcessor 'Microsoft.App/containerApps@2022-03-01' = {
   name: 'contosoads-imageprocessor'
   location: location
   properties: {
