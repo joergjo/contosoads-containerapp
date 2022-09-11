@@ -29,7 +29,8 @@ fqdn=$(az deployment group create \
   --name "$deployment_name" \
   --template-file main.bicep \
   --parameters postgresLogin="$postgres_login" postgresLoginPassword="$postgres_login_password" \
-    webAppTag="$webapp_tag" imageProcessorTag="$imageprocessor_tag" repository="$repository" \
+    webAppTag="$webapp_tag" imageProcessorTag="$imageprocessor_tag" \
+    repository="$repository" postgresVersion="$postgres_version" \
   --query properties.outputs.fqdn.value \
   --output tsv)
 
