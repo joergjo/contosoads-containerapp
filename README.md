@@ -115,6 +115,8 @@ clicking the `Edit` button.
 ![Edit the deployment workflow file.](docs/media/edit-the-deploy-file.png)
 
 Provide a custom resource group name for the app, set the name of your GitHub repository and then commit the change to a new branch named `deploy`.
+If you want to deploy to a different region, make sure to pick one that [offers Azure Container Apps, Azure Database for PostgreSQL Flexible Server 
+and Application Insights](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=monitor,postgresql,container-apps).
 
 ![Create the deploy branch.](docs/media/deploy.png)
 
