@@ -30,7 +30,7 @@ Then, navigate tp the `deploy` directory and run `deploy.sh`:
 ```bash
 cd contosoads-containerapp/deploy
 export CONTOSOADS_RESOURCE_GROUP_NAME=<your-resource-group-name>
-export CONTOSOADS_DB_PWD=$(uuidgen)
+export CONTOSOADS_DB_PWD=$(openssl rand -hex 20)
 export CONTOSOADS_REPO=<your-github-repo-url>
 ./deploy.sh
 ```
