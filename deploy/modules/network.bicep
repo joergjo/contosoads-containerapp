@@ -24,15 +24,9 @@ resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
         }
       }
       {
-        name: 'runtime'
-        properties: {
-          addressPrefix: '10.150.8.0/21'
-        }
-      }
-      {
         name: 'postgres-delegated'
         properties: {
-          addressPrefix: '10.150.16.0/24'
+          addressPrefix: '10.150.8.0/24'
           delegations: [
             {
               name: 'Microsoft.DBforPostgreSQL/flexibleServers'
@@ -46,7 +40,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
       {
         name: 'aci-delegated'
         properties: {
-          addressPrefix: '10.150.17.0/24'
+          addressPrefix: '10.150.9.0/24'
           delegations: [
             {
               name: 'Microsoft.ContainerInstance/containerGroups'
@@ -80,7 +74,6 @@ resource privateDnsZoneLink 'Microsoft.Network/privateDnsZones/virtualNetworkLin
 
 output vnetId string = vnet.id
 output infraSubnetId string = vnet.properties.subnets[0].id
-output runtimeSubnetId string = vnet.properties.subnets[1].id
-output pgSubnetId string = vnet.properties.subnets[2].id
-output aciSubnetId string = vnet.properties.subnets[3].id
+output pgSubnetId string = vnet.properties.subnets[1].id
+output aciSubnetId string = vnet.properties.subnets[2].id
 output privateDnsZoneId string = privateDnsZone.id

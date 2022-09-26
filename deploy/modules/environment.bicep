@@ -7,9 +7,6 @@ param location string
 @description('Specifies the subnet resource ID for the Container App environment.')
 param infrastructureSubnetId string
 
-@description('Specifies the subnet resource ID for the Container App pods.')
-param runtimeSubnetId string
-
 @description('Specifies the name of the Azure Storage account.')
 param storageAccountName string
 
@@ -87,7 +84,6 @@ resource environment 'Microsoft.App/managedEnvironments@2022-03-01' = {
     }
     vnetConfiguration: {
       infrastructureSubnetId: infrastructureSubnetId
-      runtimeSubnetId: runtimeSubnetId
     }
   }
 }
