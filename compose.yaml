@@ -1,10 +1,10 @@
 version: "3.9"
 
 volumes:
-  contosoads_data:
+  contosoads-data:
 
 networks:
-  contosoads_network:
+  contosoads-network:
 
 services:
   imageprocessor:
@@ -18,8 +18,8 @@ services:
       - DAPR_HTTP_PORT=50001
       - DAPR_GRPC_PORT=50002
     networks:
-      - contosoads_network
-  imageprocessor_dapr:
+      - contosoads-network
+  imageprocessor-dapr:
     image: "daprio/daprd:edge"
     command: [
       "./daprd",
@@ -50,10 +50,10 @@ services:
       - DAPR_HTTP_PORT=50001
       - DAPR_GRPC_PORT=50002
     networks:
-      - contosoads_network
+      - contosoads-network
     depends_on:
       - db
-  webapp_dapr:
+  webapp-dapr:
     image: "daprio/daprd:edge"
     command: [
       "./daprd",
@@ -71,23 +71,23 @@ services:
       - webapp
       
   db:
-    image: postgres:${POSTGRES_TAG:-13-alpine}
+    image: postgres:${POSTGRES_TAG:-14-alpine}
     volumes:
-      - contosoads_data:/var/lib/postgresql/data
+      - contosoads-data:/var/lib/postgresql/data
       - ./deploy/migrate.sql:/docker-entrypoint-initdb.d/1-migrate.sql
     environment:
       - POSTGRES_PASSWORD=pass@word1
       - POSTGRES_DB=contosoads
     networks:
-      - contosoads_network
+      - contosoads-network
   
   placement:
     image: "daprio/dapr"
     command: ["./placement", "-port", "50006"]
     networks:
-      - contosoads_network
+      - contosoads-network
   
   redis:
     image: "redis:alpine"
     networks:
-      - contosoads_network
+      - contosoads-network

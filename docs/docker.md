@@ -43,7 +43,7 @@ account_key=$(az storage account keys list \
 # This file is already included in .gitignore
 cat << EOF > secrets.json
 {
-  "storageAccountName": "${name}",
+  "storageAccount": "${name}",
   "storageAccountKey": "${account_key}"
 }
 EOF
