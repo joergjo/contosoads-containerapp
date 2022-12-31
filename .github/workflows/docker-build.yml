@@ -24,7 +24,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./src/ContosoAds.Web
-          file: ./Dockerfile
           push: true
           tags: |
             ${{ secrets.DOCKER_HUB_USERNAME }}/contosoads-web:latest
@@ -34,7 +33,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./src/ContosoAds.ImageProcessor
-          file: ./Dockerfile
           push: true
           tags: |
             ${{ secrets.DOCKER_HUB_USERNAME }}/contosoads-imageprocessor:latest
