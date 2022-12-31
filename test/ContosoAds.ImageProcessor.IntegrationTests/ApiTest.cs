@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Dapr;
 using Dapr.Client;
 using FakeItEasy;
-using Xunit;
 using static ContosoAds.ImageProcessor.IntegrationTests.TestSupport;
 
 namespace ContosoAds.ImageProcessor.IntegrationTests;

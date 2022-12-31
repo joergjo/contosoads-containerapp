@@ -1,5 +1,5 @@
 name: Deploy ContosoAds to Azure Container Apps
-concurrency: contoso-ads
+concurrency: contosoads-${{ github.ref }}
 
 on:    
   push:
@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout branch 
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         
       - name: Login to Azure
         uses: azure/login@v1

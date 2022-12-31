@@ -4,7 +4,6 @@ using ContosoAds.Web.Commands;
 using ContosoAds.Web.Model;
 using FakeItEasy;
 using Microsoft.Extensions.Logging;
-using Xunit;
 using static ContosoAds.Web.UnitTests.TestSupport;
 
 namespace ContosoAds.Web.UnitTests;

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using FakeItEasy;
 using Microsoft.Extensions.Logging;
 using SixLabors.ImageSharp;
-using Xunit;
 
 namespace ContosoAds.ImageProcessor.UnitTests;
 
@@ -33,8 +32,8 @@ public class ImageProcessorTest
 
     public static IEnumerable<object[]> Images => new List<object[]>
     {
-        new object[] {TestImages._jpeg100By200, 40, 80},
-        new object[] {TestImages._jpeg200By100, 80, 40},
-        new object[] {TestImages._jpeg160By160, 80, 80}
+        new object[] {TestImages.Jpeg100By200, 40, 80},
+        new object[] {TestImages.Jpeg200By100, 80, 40},
+        new object[] {TestImages.Jpeg160By160, 80, 80}
     };
 }

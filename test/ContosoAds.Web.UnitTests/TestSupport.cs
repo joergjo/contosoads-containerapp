@@ -23,6 +23,7 @@ internal static class TestSupport
             await context.Database.EnsureCreatedAsync();
         }
 
+        // ReSharper disable once InvertIf
         if (ads is {Count: > 0})
         {
             await context.Ads.AddRangeAsync(ads);

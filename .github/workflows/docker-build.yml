@@ -1,0 +1,41 @@
+name: Build ContosoAds container images
+concurrency: contosoads-${{ github.ref }}
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        
+      - name: Build and push ContosoAds.Web
+        uses: docker/build-push-action@v3
+        with:
+          context: ./src/ContosoAds.Web
+          file: ./Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_HUB_USERNAME }}/contosoads-web:latest
+            ${{ secrets.DOCKER_HUB_USERNAME }}/contosoads-web:{{ github.run_number }}
+            
+      - name: Build and push ContosoAds.Imageprocessor
+        uses: docker/build-push-action@v3
+        with:
+          context: ./src/ContosoAds.ImageProcessor
+          file: ./Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_HUB_USERNAME }}/contosoads-imageprocessor:latest
+            ${{ secrets.DOCKER_HUB_USERNAME }}/contosoads-imageprocessor:{{ github.run_number }}
