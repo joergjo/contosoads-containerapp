@@ -1,5 +1,10 @@
 # Contoso Ads on Containers
 
+## Note
+You are looking at the .NET 6 branch of this sample. If you want to use the latest .NET
+version instead, please check out the [`main`](https://github.com/joergjo/contosoads-containerapp/tree/main)
+branch.
+
 ## Introduction
 This sample demonstrates how ASP.NET Core 6.0 is used to build a cloud-native application 
 that consists of a frontend web app and an API that communicate asynchronously via messaged 
