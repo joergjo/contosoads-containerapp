@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ContosoAds.Web.Commands;
-using ContosoAds.Web.DataAccess;
 using ContosoAds.Web.Model;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,12 +7,10 @@ namespace ContosoAds.Web.Pages.Ads;
 
 public class IndexModel : PageModel
 {
-    private readonly AdsContext _context;
     private readonly ILogger _logger;
 
-    public IndexModel(AdsContext context, ILogger<IndexModel> logger)
+    public IndexModel(ILogger<IndexModel> logger)
     {
-        _context = context;
         _logger = logger;
     }
 
