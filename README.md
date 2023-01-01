@@ -1,7 +1,7 @@
 # Contoso Ads on Containers
 
 ## Introduction
-This sample demonstrates how ASP.NET Core 6.0 is used to build a cloud-native application 
+This sample demonstrates how ASP.NET Core 7.0 is used to build a cloud-native application 
 that consists of a frontend web app and an API that communicate asynchronously via messaged 
 queues. The messaging is implemented using Dapr and both frontend and API are hosted in Azure Container Apps.
 
@@ -32,14 +32,14 @@ This sample app uses a variety of technologies:
 * [Azure Container Instances](https://docs.microsoft.com/en-us/azure/container-instances/) 
 * [Azure Application Insights](https://docs.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview)
 * [Azure Bicep](https://docs.microsoft.com/azure/azure-resource-manager/bicep/overview?tabs=**bicep**)
-* [ASP.NET Core Razor Pages 6.0](https://docs.microsoft.com/en-us/aspnet/core/razor-pages/?view=aspnetcore-6.0&tabs=visual-studio-code)
-* [ASP.NET Core Minimal API](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-6.0)
-* [Entity Framework Core 6.0](https://docs.microsoft.com/en-us/ef/core/overview)
+* [ASP.NET Core Razor Pages](https://docs.microsoft.com/en-us/aspnet/core/razor-pages/?view=aspnetcore-7.0&tabs=visual-studio-code)
+* [ASP.NET Core Minimal API](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-7.0)
+* [Entity Framework Core 7.0](https://docs.microsoft.com/en-us/ef/core/overview)
 * [Dapr](https://dapr.io)
-* [C# 10](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10) 
+* [C# 11](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10) 
 
 
-## Prequisites
+## Prerequisites
 You'll need an Azure subscription and a very small set of tools and skills to get started:
 
 1. An Azure subscription. Sign up [for free](https://azure.microsoft.com/free/).

@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-* [.NET 6.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) or an IDE such as Visual Studio, Visual Studio Code, or Rider
+* [.NET 7.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0) or an IDE such as Visual Studio, Visual Studio Code, or Rider
 * [Dapr](https://docs.dapr.io/getting-started/install-dapr-cli/)
 * [Docker Desktop](https://docs.docker.com/docker-desktop/install/) 
 * macOS, Linux, or Windows 10/11 with the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) set up

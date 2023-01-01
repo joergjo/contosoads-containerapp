@@ -24,7 +24,7 @@ param postgresLogin string
 param postgresLoginPassword string
 
 @description('Specifies the PostgreSQL version.')
-param postgresVersion string = '13'
+param postgresVersion string = '14'
 
 @description('Specifies the tag for the contosoads-web image.')
 param webAppTag string = 'stable'
