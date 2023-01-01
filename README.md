@@ -44,7 +44,7 @@ This sample app uses a variety of technologies:
 * [C# 10](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10) 
 
 
-## Prequisites
+## Prerequisites
 You'll need an Azure subscription and a very small set of tools and skills to get started:
 
 1. An Azure subscription. Sign up [for free](https://azure.microsoft.com/free/).
