@@ -26,8 +26,8 @@ jobs:
           context: ./src/ContosoAds.Web
           push: true
           tags: |
-            ${{ secrets.DOCKER_HUB_USERNAME }}/contosoads-web:latest
-            ${{ secrets.DOCKER_HUB_USERNAME }}/contosoads-web:${{ github.run_number }}
+            ${{ secrets.DOCKER_HUB_USERNAME }}/contosoads-web:dotnet6
+            ${{ secrets.DOCKER_HUB_USERNAME }}/contosoads-web:build-${{ github.run_number }}
             
       - name: Build and push ContosoAds.Imageprocessor
         uses: docker/build-push-action@v3
@@ -35,5 +35,5 @@ jobs:
           context: ./src/ContosoAds.ImageProcessor
           push: true
           tags: |
-            ${{ secrets.DOCKER_HUB_USERNAME }}/contosoads-imageprocessor:latest
-            ${{ secrets.DOCKER_HUB_USERNAME }}/contosoads-imageprocessor:${{ github.run_number }}
+            ${{ secrets.DOCKER_HUB_USERNAME }}/contosoads-imageprocessor:dotnet6
+            ${{ secrets.DOCKER_HUB_USERNAME }}/contosoads-imageprocessor:build-${{ github.run_number }}
