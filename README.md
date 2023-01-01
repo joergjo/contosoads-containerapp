@@ -37,7 +37,7 @@ This sample app uses a variety of technologies:
 * [Azure Container Instances](https://docs.microsoft.com/en-us/azure/container-instances/) 
 * [Azure Application Insights](https://docs.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview)
 * [Azure Bicep](https://docs.microsoft.com/azure/azure-resource-manager/bicep/overview?tabs=**bicep**)
-* [ASP.NET Core Razor Pages 6.0](https://docs.microsoft.com/en-us/aspnet/core/razor-pages/?view=aspnetcore-6.0&tabs=visual-studio-code)
+* [ASP.NET Core Razor Pages](https://docs.microsoft.com/en-us/aspnet/core/razor-pages/?view=aspnetcore-6.0&tabs=visual-studio-code)
 * [ASP.NET Core Minimal API](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-6.0)
 * [Entity Framework Core 6.0](https://docs.microsoft.com/en-us/ef/core/overview)
 * [Dapr](https://dapr.io)
