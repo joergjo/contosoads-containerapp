@@ -1,7 +1,7 @@
 version: "3.9"
 
 volumes:
-  contosoads-db:
+  contosoads-data:
 
 services:
   db:
@@ -9,7 +9,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - contosoads-db:/var/lib/postgresql/data
+      - contosoads-data:/var/lib/postgresql/data
       - ./deploy/migrate.sql:/docker-entrypoint-initdb.d/1-migrate.sql
     environment:
       - POSTGRES_PASSWORD=pass@word1
