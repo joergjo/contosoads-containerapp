@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   push:
     tags:
-      - 'release'
+      - 'stable'
 
 jobs:
   build:
