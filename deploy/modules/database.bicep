@@ -64,7 +64,7 @@ resource postgres 'Microsoft.DBforPostgreSQL/flexibleServers@2022-03-08-preview'
   }
 }
 
-resource database 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2022-01-20-preview' = {
+resource database 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2022-03-08-preview' = {
   name: databaseName
   parent: postgres
   properties: {
