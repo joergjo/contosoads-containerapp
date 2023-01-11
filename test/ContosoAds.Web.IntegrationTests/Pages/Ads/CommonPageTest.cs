@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using ContosoAds.Web.Model;
+using Xunit;
 
 namespace ContosoAds.Web.IntegrationTests.Pages.Ads;
 

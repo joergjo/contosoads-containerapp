@@ -1,3 +1,4 @@
+using Dapr;
 using Dapr.Client;
 using FakeItEasy;
 using Microsoft.AspNetCore.Hosting;
