@@ -34,8 +34,8 @@ fqdn=$(az deployment group create \
   --query properties.outputs.fqdn.value \
   --output tsv)
 
-if [ -z "$fqdn" ]; then
-    echo "Deployment error. Please check the deployment logs in thr Azure portal."
+if [ $? -ne 0 ]; then
+    echo "Deployment error. Please check the deployment logs in the Azure portal."
     exit 1
 fi
 
