@@ -50,7 +50,7 @@ public class ApiTest : IClassFixture<TestWebApplicationFactory>
     }
 
     [Fact]
-    public async Task Post_ReturnsOk()
+    public async Task Post_Returns_Ok()
     {
         // Arrange
         var bindingRequest = new BindingRequest("fake", "fake");
@@ -80,7 +80,7 @@ public class ApiTest : IClassFixture<TestWebApplicationFactory>
     }
 
     [Fact]
-    public async Task Post_WithMissingImage_ReturnsOk()
+    public async Task Post_WithMissingImage_Returns_Ok()
     {
         // Arrange
         A.CallTo(() => _factory.DaprClient.InvokeBindingAsync(A<BindingRequest>._, A<CancellationToken>._))

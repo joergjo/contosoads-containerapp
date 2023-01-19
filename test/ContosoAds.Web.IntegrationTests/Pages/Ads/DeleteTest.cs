@@ -18,7 +18,7 @@ public class DeleteTest : IClassFixture<TestWebApplicationFactory>
     }
 
     [Fact]
-    public async Task Post_Redirects_ToAds()
+    public async Task Post_RedirectsTo_Ads()
     {
         // Arrange
         await _factory.SeedDatabaseAsync(
@@ -55,7 +55,7 @@ public class DeleteTest : IClassFixture<TestWebApplicationFactory>
     }
 
     [Fact]
-    public async Task Post_ForInvalidId_ReturnsNotFound()
+    public async Task Post_ForInvalidId_Returns_NotFound()
     {
         // Arrange
         await _factory.SeedDatabaseAsync(

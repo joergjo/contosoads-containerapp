@@ -18,7 +18,7 @@ public class ThumbnailControllerTest : IClassFixture<TestWebApplicationFactory>
     }
 
     [Fact]
-    public async Task Options_ReturnsOk()
+    public async Task Options_Returns_Ok()
     {
         // Arrange
         using var client = _factory.CreateClient();
@@ -32,7 +32,7 @@ public class ThumbnailControllerTest : IClassFixture<TestWebApplicationFactory>
     }
 
     [Fact]
-    public async Task Post_WithExistingAd_ReturnsOk()
+    public async Task Post_WithExistingAd_Returns_Ok()
     {
         // Arrange
         const string thumbnailUri = "https://contosoads.blob.core.windows.net/images/thumbnail.jpg";
@@ -62,7 +62,7 @@ public class ThumbnailControllerTest : IClassFixture<TestWebApplicationFactory>
     }
 
     [Fact]
-    public async Task Post_WithMissingAd_ReturnsOk()
+    public async Task Post_WithMissingAd_Returns_Ok()
     {
         // Arrange
         await _factory.SeedDatabaseAsync();
@@ -83,7 +83,7 @@ public class ThumbnailControllerTest : IClassFixture<TestWebApplicationFactory>
     [InlineData("relative_uri", "1")]
     [InlineData("https://example.com/image.jpg", default)]
     [InlineData("relative_uri", "not_an_int")]
-    public async Task Post_WithInvalidContent_ReturnsBadRequest(string? uri, string? adId)
+    public async Task Post_WithInvalidContent_Returns_BadRequest(string? uri, string? adId)
     {
         // Arrange
         await _factory.SeedDatabaseAsync();

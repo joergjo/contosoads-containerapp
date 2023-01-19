@@ -39,7 +39,7 @@ public class CreateTest : IClassFixture<TestWebApplicationFactory>
     [InlineData("/ads/create/abc")]
     [InlineData("/ads/create/more/than/one/part")]
     [InlineData("/ads/create/ad/1")]
-    public async Task Get_WithAdditionalSegments_ReturnsNotFound(string uri)
+    public async Task Get_WithAdditionalSegments_Returns_NotFound(string uri)
     {
         // Arrange
         await _factory.SeedDatabaseAsync();
@@ -54,7 +54,7 @@ public class CreateTest : IClassFixture<TestWebApplicationFactory>
 
 
     [Fact]
-    public async Task Post_RedirectsToAds()
+    public async Task Post_RedirectsTo_Ads()
     {
         // Arrange
         const string uri = "/ads/create";
