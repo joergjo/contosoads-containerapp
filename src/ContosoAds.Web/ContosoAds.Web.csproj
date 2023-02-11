@@ -24,7 +24,7 @@
       <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="7.0.2" />
       <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.3" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.1" />
-      <PackageReference Include="Scrutor" Version="4.2.0" />
+      <PackageReference Include="Scrutor" Version="4.2.1" />
     </ItemGroup>
 
     <ItemGroup>
