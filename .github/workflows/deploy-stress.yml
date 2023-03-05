@@ -49,6 +49,6 @@ jobs:
         uses: azure/arm-deploy@v1
         with:
           deploymentName: ${{ github.run_number }}
-          resourceGroupName: ${{ matrix.location }}
+          resourceGroupName: contosoads-test-${{ matrix.code }}
           template: ./deploy/main.bicep
           parameters: baseName=contosoads${{ matrix.code }} postgresLogin=${{ env.DB_LOGIN }} postgresLoginPassword=${{ secrets.DB_PWD }} repository=${{ env.REPOSITORY }}
