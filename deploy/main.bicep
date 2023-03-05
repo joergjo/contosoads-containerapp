@@ -3,7 +3,7 @@ param location string = resourceGroup().location
 
 @description('Specifies the common name prefix for all resources.')
 @minLength(5)
-@maxLength(20)
+@maxLength(14)
 param baseName string = 'contosoads'
 
 @description('Specifies the name of the blob container.')
@@ -36,7 +36,7 @@ param imageProcessorTag string = 'stable'
 param repository string
 
 var vnetName = '${baseName}-vnet'
-var storageAccountName = '${baseName}${uniqueString(resourceGroup().id)}'
+var storageAccountName = 'data${uniqueString(resourceGroup().id)}'
 var privateDnsZoneName = '${baseName}.postgres.database.azure.com'
 var postgresHostName = 'server${uniqueString(resourceGroup().id)}'
 var databaseName = 'contosoads'
