@@ -1,0 +1,54 @@
+name: Deploy ContosoAds to Azure Container Apps
+concurrency: contosoads-deploy-${{ github.ref }}
+
+on:
+  workflow_dispatch:
+
+env: 
+    REPOSITORY: 'https://github.com/joergjo/contosoads-containerapp.git'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      max-parallel: 4
+      matrix:
+        include:
+          - location: westeurope
+            code: weu
+          - location: northeurope
+            code: neu
+          - location: eastus
+            code: eus
+          - location: centralus
+            code: cus
+          - location: eastasia
+            code: eaa
+          - location: australiaeast
+            code: aue
+    steps:
+      - name: Checkout branch 
+        uses: actions/checkout@v3
+        
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_SPN }}
+
+      - name: Create resource group
+        uses: azure/CLI@v1
+        with:
+          inlineScript: >
+            echo "Creating resource group in Azure"
+            echo "Executing 'az group create -l ${{ matrix.location }} -n contosoads-test-${{ matrix.code }}'"
+            
+            az group create -l ${{ matrix.location }} -n contosoads-test-${{ matrix.code }}
+
+      - name: Deploy Bicep template  
+        uses: azure/arm-deploy@v1
+        with:
+          deploymentName: ${{ github.run_number }}
+          resourceGroupName: ${{ matrix.location }}
+          template: ./deploy/main.bicep
+          parameters: baseName=contosoads${{ matrix.code }} postgresLogin=${{ env.DB_LOGIN }} postgresLoginPassword=${{ secrets.DB_PWD }} repository=${{ env.REPOSITORY }}
