@@ -1,5 +1,5 @@
 name: Build and push ContosoAds container images
-concurrency: contosoads-${{ github.ref }}
+concurrency: contosoads-build-${{ github.ref }}
 
 on:
   workflow_dispatch:
