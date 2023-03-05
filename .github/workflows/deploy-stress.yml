@@ -4,7 +4,8 @@ concurrency: contosoads-deploy-${{ github.ref }}
 on:
   workflow_dispatch:
 
-env: 
+env:
+    DB_LOGIN: contosoads
     REPOSITORY: 'https://github.com/joergjo/contosoads-containerapp.git'
 
 jobs:
