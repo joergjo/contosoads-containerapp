@@ -3,7 +3,7 @@ param location string = resourceGroup().location
 
 @description('Specifies the common name prefix for all resources.')
 @minLength(5)
-@maxLength(12)
+@maxLength(20)
 param baseName string = 'contosoads'
 
 @description('Specifies the name of the blob container.')
