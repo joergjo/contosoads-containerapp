@@ -20,14 +20,24 @@ jobs:
             code: weu
           - location: northeurope
             code: neu
+          - location: uksouth
+            code: uks
+          - location: francecentral
+            code: frc
+          - location: norwayeast
+            code: noe
           - location: eastus
             code: eus
           - location: centralus
             code: cus
+          - location: canadacentral
+            code: cac
           - location: eastasia
             code: eaa
           - location: australiaeast
             code: aue
+          - location: japaneast
+            code: jpe
     steps:
       - name: Checkout branch 
         uses: actions/checkout@v3
