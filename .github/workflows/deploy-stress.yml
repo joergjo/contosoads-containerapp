@@ -16,12 +16,12 @@ jobs:
       max-parallel: 4
       matrix:
         include:
-#          - location: westeurope
-#            code: weu
+          - location: westeurope
+            code: weu
 #          - location: northeurope
 #            code: neu
-#          - location: uksouth
-#            code: uks
+          - location: uksouth
+            code: uks
 #          - location: francecentral
 #            code: frc
 #          - location: germanywestcentral
@@ -34,24 +34,24 @@ jobs:
             code: eus2
 #          - location: centralus
 #            code: cus
-          - location: northcentralus
-            code: ncus
-          - location: southcentralus
-            code: scus
+#          - location: southcentralus
+#            code: scus
+#          - location: northcentralus
+#            code: ncus
           - location: westus
             code: wus
-          - location: westus3
-            code: wus3
+#          - location: westus3
+#            code: wus3
 #          - location: canadacentral
 #            code: cac
-#          - location: eastasia
-#            code: eaa
-#          - location: australiaeast
-#            code: aue
+          - location: eastasia
+            code: eaa
+          - location: australiaeast
+            code: aue
 #          - location: japaneast
 #            code: jpe
-          - location: koreacentral
-            code: koc
+#          - location: koreacentral
+#            code: koc
 #          - location: brazilsouth
 #            code: brs
     steps:
