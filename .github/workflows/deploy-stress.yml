@@ -18,8 +18,8 @@ jobs:
         include:
           - location: westeurope
             code: weu
-          - location: northeurope
-            code: neu
+#          - location: northeurope
+#            code: neu
 #          - location: uksouth
 #            code: uks
 #          - location: francecentral
@@ -30,8 +30,8 @@ jobs:
 #            code: eus
           - location: centralus
             code: cus
-          - location: canadacentral
-            code: cac
+#          - location: canadacentral
+#            code: cac
 #          - location: eastasia
 #            code: eaa
 #          - location: australiaeast
