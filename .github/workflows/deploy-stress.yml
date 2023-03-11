@@ -49,6 +49,7 @@ jobs:
 
       - name: Create resource groups
         uses: azure/CLI@v1
+        id: create-rg
         with:
           inlineScript: >
             echo "Creating resource group"
@@ -69,11 +70,11 @@ jobs:
       - name: Log success
         run: |
           echo '${{ matrix.location }}: :white_check_mark:' >> $GITHUB_STEP_SUMMARY
-        if: ${{ steps.id.outcome == 'success' }}
+        if: ${{ always() && steps.id.outcome == 'success' }}
       - name: Log failure
         run: |
           echo '${{ matrix.location }}: :x:' >> $GITHUB_STEP_SUMMARY
-        if: ${{ steps.id.outcome == 'failure' }}
+        if: ${{ always() && steps.id.outcome == 'failure' }}
 
       - name: Delete resource groups
         uses: azure/CLI@v1
@@ -84,3 +85,4 @@ jobs:
             echo "Executing 'az group delete -n contosoads-test-${{ matrix.code }} -y'" 
 
             az group delete -n contosoads-test-${{ matrix.code }} -y
+        if: ${{ always() && steps.create-rg.outcome == 'success' }}
