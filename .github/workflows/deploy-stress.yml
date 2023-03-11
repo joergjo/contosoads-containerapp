@@ -1,4 +1,4 @@
-name: Deploy ContosoAds to Azure Container Apps across multiple regions
+name: ContosoAds deployment stress test
 concurrency: contosoads-deploy-${{ github.ref }}
 
 on:
@@ -52,7 +52,9 @@ jobs:
         with:
           inlineScript: >
             echo "Creating resource group"
-            echo "Executing 'az group create -l ${{ matrix.location }} -n contosoads-test-${{ matrix.code }}'"            
+            
+            echo "Executing 'az group create -l ${{ matrix.location }} -n contosoads-test-${{ matrix.code }}'"    
+
             az group create -l ${{ matrix.location }} -n contosoads-test-${{ matrix.code }}
 
       - name: Deploy Bicep template  
@@ -78,5 +80,7 @@ jobs:
         with:
           inlineScript: >
             echo "Deleting resource group"
-            echo "Executing 'az group delete -n contosoads-test-${{ matrix.code }} -y'"            
+
+            echo "Executing 'az group delete -n contosoads-test-${{ matrix.code }} -y'" 
+
             az group delete -n contosoads-test-${{ matrix.code }} -y
