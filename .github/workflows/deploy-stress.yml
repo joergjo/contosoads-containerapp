@@ -18,14 +18,14 @@ jobs:
         include:
 #          - location: westeurope
 #            code: weu
-          - location: northeurope
-            code: neu
+#          - location: northeurope
+#            code: neu
 #          - location: uksouth
 #            code: uks
 #          - location: francecentral
 #            code: frc
-          - location: germanywestcentral
-            code: gew
+#          - location: germanywestcentral
+#            code: gew
 #          - location: norwayeast
 #            code: noe
 #          - location: eastus
@@ -34,14 +34,14 @@ jobs:
             code: eus2
 #          - location: centralus
 #            code: cus
-#          - location: northcentralus
-#            code: ncus
-#          - location: southcentralus
-#            code: scus
-#          - location: westus
-#            code: wus
-#          - location: westus3
-#            code: wus3
+          - location: northcentralus
+            code: ncus
+          - location: southcentralus
+            code: scus
+          - location: westus
+            code: wus
+          - location: westus3
+            code: wus3
 #          - location: canadacentral
 #            code: cac
 #          - location: eastasia
@@ -50,10 +50,10 @@ jobs:
 #            code: aue
 #          - location: japaneast
 #            code: jpe
-#          - location: koreacentral
-#            code: koc
-          - location: brazilsouth
-            code: brs
+          - location: koreacentral
+            code: koc
+#          - location: brazilsouth
+#            code: brs
     steps:
       - name: Checkout branch 
         uses: actions/checkout@v3
