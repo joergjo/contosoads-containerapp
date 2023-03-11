@@ -16,24 +16,24 @@ jobs:
       max-parallel: 4
       matrix:
         include:
-          - location: westeurope
-            code: weu
-#          - location: northeurope
-#            code: neu
+#          - location: westeurope
+#            code: weu
+          - location: northeurope
+            code: neu
 #          - location: uksouth
 #            code: uks
 #          - location: francecentral
 #            code: frc
-#          - location: germanywestcentral
-#            code: gew
+          - location: germanywestcentral
+            code: gew
 #          - location: norwayeast
 #            code: noe
 #          - location: eastus
 #            code: eus
-#          - location: eastus2
-#            code: eus2
-          - location: centralus
-            code: cus
+          - location: eastus2
+            code: eus2
+#          - location: centralus
+#            code: cus
 #          - location: northcentralus
 #            code: ncus
 #          - location: southcentralus
@@ -52,8 +52,8 @@ jobs:
 #            code: jpe
 #          - location: koreacentral
 #            code: koc
-#          - location: brazilsouth
-#            code: brs
+          - location: brazilsouth
+            code: brs
     steps:
       - name: Checkout branch 
         uses: actions/checkout@v3
