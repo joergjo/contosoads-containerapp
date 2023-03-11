@@ -65,12 +65,12 @@ jobs:
           parameters: baseName=contosoads${{ matrix.code }} postgresLogin=${{ env.DB_LOGIN }} postgresLoginPassword=${{ secrets.DB_PWD }} repository=${{ env.REPOSITORY }}
 
       - name: Log success
-        run: 
-          - echo '${{ matrix.location }}: 🟢' >> $GITHUB_STEP_SUMMARY
+        run: |
+          echo '${{ matrix.location }}: :white_check_mark:' >> $GITHUB_STEP_SUMMARY
         if: ${{ steps.id.outcome == 'success' }}
       - name: Log failure
-        run:
-          - echo '${{ matrix.location }}: 🔴' >> $GITHUB_STEP_SUMMARY
+        run: |
+          echo '${{ matrix.location }}: :x:' >> $GITHUB_STEP_SUMMARY
         if: ${{ steps.id.outcome == 'failure' }}
 
       - name: Delete resource groups
