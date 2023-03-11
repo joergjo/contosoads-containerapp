@@ -70,11 +70,11 @@ jobs:
       - name: Log success
         run: |
           echo '${{ matrix.location }}: :white_check_mark:' >> $GITHUB_STEP_SUMMARY
-        if: ${{ always() && steps.id.outcome == 'success' }}
+        if: ${{ always() && steps.deploy.outcome == 'success' }}
       - name: Log failure
         run: |
           echo '${{ matrix.location }}: :x:' >> $GITHUB_STEP_SUMMARY
-        if: ${{ always() && steps.id.outcome == 'failure' }}
+        if: ${{ always() && steps.deploy.outcome == 'failure' }}
 
       - name: Delete resource groups
         uses: azure/CLI@v1
