@@ -48,7 +48,7 @@ jobs:
       - name: Deploy Bicep template  
         uses: azure/arm-deploy@v1
         with:
-          deploymentName: ${{ github.run_number }}
+          deploymentName: contosoads-${{ github.run_number }}-${{ github.run_attempt }}
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-          template: ./deploy/main.bicep
+          template: deploy/main.bicep
           parameters: postgresLogin=${{ env.DB_LOGIN }} postgresLoginPassword=${{ secrets.DB_PWD }} repository=${{ env.REPOSITORY }}
