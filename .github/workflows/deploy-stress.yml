@@ -9,6 +9,14 @@ env:
     REPOSITORY: 'https://github.com/joergjo/contosoads-containerapp.git'
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
+      - name: Run Bicep linter
+        run: az bicep build --file deploy/main.bicep
+  
   deploy:
     runs-on: ubuntu-latest
     continue-on-error: true
@@ -74,13 +82,22 @@ jobs:
 
             az group create -l ${{ matrix.location }} -n contosoads-test-${{ matrix.code }}
 
+      - name: Run preflight validation
+        uses: azure/arm-deploy@v1
+        with:
+          deploymentName: contosoads-${{ github.run_number }}-${{ github.run_attempt }}
+          resourceGroupName: contosoads-test-${{ matrix.code }}
+          template: deploy/main.bicep
+          parameters: baseName=contosoads${{ matrix.code }} postgresLogin=${{ env.DB_LOGIN }} postgresLoginPassword=${{ secrets.DB_PWD }} repository=${{ env.REPOSITORY }}
+          deploymentMode: Validate
+
       - name: Deploy Bicep template  
         uses: azure/arm-deploy@v1
         id: deploy
         with:
           deploymentName: contosoads-${{ github.run_number }}-${{ github.run_attempt }}
           resourceGroupName: contosoads-test-${{ matrix.code }}
-          template: ./deploy/main.bicep
+          template: deploy/main.bicep
           parameters: baseName=contosoads${{ matrix.code }} postgresLogin=${{ env.DB_LOGIN }} postgresLoginPassword=${{ secrets.DB_PWD }} repository=${{ env.REPOSITORY }}
 
       - name: Log success
