@@ -9,7 +9,6 @@ using Dapr.Client;
 using FakeItEasy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Xunit;
 using static ContosoAds.Web.UnitTests.TestSupport;
 
 namespace ContosoAds.Web.UnitTests;
