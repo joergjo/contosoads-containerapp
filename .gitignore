@@ -13,3 +13,5 @@ secrets*.json
 .vs/
 azurite/
 components-local/
+**/.dapr/logs/
+dapr.yaml

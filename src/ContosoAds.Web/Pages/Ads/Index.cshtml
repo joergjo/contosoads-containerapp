@@ -51,7 +51,7 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                <img alt="@item.Title" src="@Html.Raw(item.ThumbnailUri)" />
+                 @await Html.PartialAsync("_Thumbnail", item)
             </td>
             <td>
                  @Html.DisplayFor(modelItem => item.PostedDate)

@@ -1,0 +1,18 @@
+@model ContosoAds.Web.Model.Ad?
+
+@if (Model is null)
+{
+    <div></div>
+}
+else if (Model.ThumbnailUri is not null)
+{
+    <img alt="@Model.Title" src="@Html.Raw(Model.ThumbnailUri)"/>
+}
+else
+{
+    <div
+         hx-get="@Url.Page("Index", "Image", new { id = Model.Id })"
+         hx-trigger="every 10s"
+         hx-swap="outerHTML">
+    </div>
+}

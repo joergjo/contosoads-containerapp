@@ -21,4 +21,11 @@ public class IndexModel : PageModel
         _logger.LogDebug("Ads will be displayed for category {Category}", category.HasValue ? category.ToString() : "All");
         Ads = await command.ExecuteAsync(category);
     }
+
+    public async Task<IActionResult> OnGetImageAsync(int id, [FromServices] ReadAd command)
+    {
+        _logger.LogDebug("Rendering thumbnail for Ad {AdId}", id);
+        var ad = await command.ExecuteAsync(id);
+        return Partial("_Thumbnail", ad);
+    }
 }
