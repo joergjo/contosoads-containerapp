@@ -115,7 +115,7 @@ dapr run --app-id web \
   --app-port 7125 \
   --app-ssl \
   --dapr-grpc-port 3501 \
-  --components-path ../../components/ \
+  --resources-path ../../components/ \
   -- dotnet run
 ```
 
@@ -131,7 +131,7 @@ dapr run --app-id imageprocessor \
   --app-port 7073 \
   --app-ssl \
   --dapr-grpc-port 63501 \
-  --components-path ../../components/ \
+  --resources-path ../../components/ \
   -- dotnet run
 ```
 
