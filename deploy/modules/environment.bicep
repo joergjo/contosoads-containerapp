@@ -8,7 +8,7 @@ param location string
 param infrastructureSubnetId string
 
 @description('Specifies the name of the Azure Storage account.')
-param storageAccountName string
+param storageAccountName string = '${length(baseName) <=11 ? baseName : substring(baseName, 0, 11)}${uniqueString(resourceGroup().id)}'
 
 @description('Specifies the name of the blob container for images and thumbnails.')
 param containerName string
@@ -23,7 +23,7 @@ var workspaceName = '${baseName}-logs'
 var appInsightsName = '${baseName}-insights'
 var environmentName = '${baseName}-env'
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: storageAccountName
   location: location
   sku: {
@@ -36,22 +36,35 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   }
 }
 
-resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-08-01' = {
-  name: '${storageAccount.name}/default/${containerName}'
+resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01' = {
+  name: 'default'
+  parent: storageAccount
+}
+
+resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2022-09-01' = {
+  name: containerName
+  parent: blobService
   properties: {
     publicAccess: 'Blob'
   }
 }
 
-resource requestQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@2021-08-01' = {
-  name: '${storageAccount.name}/default/${requestQueueName}'
+resource queueService 'Microsoft.Storage/storageAccounts/queueServices@2022-09-01' = {
+  name: 'default'
+  parent: storageAccount
 }
 
-resource resultQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@2021-08-01' = {
-  name: '${storageAccount.name}/default/${resultQueueName}'
+resource requestQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@2022-09-01' = {
+  name: requestQueueName
+  parent: queueService
 }
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' = {
+resource resultQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@2022-09-01' = {
+  name: resultQueueName
+  parent: queueService
+}
+
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
   name: workspaceName
   location: location
   properties: {
@@ -88,7 +101,7 @@ resource environment 'Microsoft.App/managedEnvironments@2022-03-01' = {
   }
 }
 
-resource imageStoreComponent 'Microsoft.App/managedEnvironments/daprComponents@2022-03-01' = {
+resource imageStoreComponent 'Microsoft.App/managedEnvironments/daprComponents@2022-10-01' = {
   name: 'image-store'
   parent: environment
   properties: {
@@ -121,7 +134,7 @@ resource imageStoreComponent 'Microsoft.App/managedEnvironments/daprComponents@2
   }
 }
 
-resource requestQueueComponent 'Microsoft.App/managedEnvironments/daprComponents@2022-03-01' = {
+resource requestQueueComponent 'Microsoft.App/managedEnvironments/daprComponents@2022-10-01' = {
   name: 'thumbnail-request'
   parent: environment
   properties: {
@@ -150,7 +163,7 @@ resource requestQueueComponent 'Microsoft.App/managedEnvironments/daprComponents
   }
 }
 
-resource resultQueueComponent 'Microsoft.App/managedEnvironments/daprComponents@2022-03-01' = {
+resource resultQueueComponent 'Microsoft.App/managedEnvironments/daprComponents@2022-10-01' = {
   name: 'thumbnail-result'
   parent: environment
   properties: {

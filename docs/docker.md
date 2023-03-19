@@ -11,30 +11,30 @@
 
 ### Create a new Azure storage account
 Run the following script to create a new Azure storage account and a secrets file for Dapr.
-Make sure to set `name`, `resource_group_name`, and `location` to the appropriate values.
+Make sure to set `name`, `resource_group`, and `location` to the appropriate values.
 
 ```bash
 name=<your-storage-account-name>
-resource_group_name=<your-resource-group-name>
+resource_group=<your-resource-group>
 location=<your-storage-account-location>
 
 # Run this from the root directory of the sample app
 cd contosoads-containerapp
 
 # Create a resource group
-az group create --name $resource_group_name \
+az group create --name $resource_group \
   --location $location
   
 # Create an Azure storage account
 az storage account create --name $name \
-  --resource-group $resource_group_name \
+  --resource-group $resource_group \
   --location $location \
   --sku Standard_LRS \
   --min-tls-version TLS1_2
 
 # Obtain the primary storage account key
 account_key=$(az storage account keys list \
-  --resource-group "$resource_group_name" \
+  --resource-group "$resource_group" \
   --account-name "$name" \
   --query "[0].value" \
   --out tsv)

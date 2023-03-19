@@ -77,11 +77,15 @@ since the images must be accessible by a browser.
    ```bash
    az login
    subscription_id=$(az account show --query id --output tsv)
-   az ad sp create-for-rbac --sdk-auth --name ContosoAds-CICD --role contributor --scopes "/subscriptions/$subscription_id"
+   az ad sp create-for-rbac \
+     --name ContosoAds-CICD \
+     --role contributor \
+     --sdk-auth \
+     --scopes "/subscriptions/$subscription_id"
    ```
 
    > The output of that last command will include a deprecation warning for the `-sdk-auth`
-   > flag. This is expected at the time of writing using Azure CLI 2.40. 
+   > flag. This is expected at the time of writing using Azure CLI 2.45. 
 
 3. Copy the JSON written to the screen to your clipboard.
 

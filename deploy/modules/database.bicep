@@ -1,5 +1,5 @@
 @description('Specifies the name of the Azure Database for PostgreSQL flexible server.')
-param serverName string
+param serverName string = 'server-${uniqueString(resourceGroup().id)}'
 
 @description('Specifies the name of PostgreSQL database used by the application.')
 param databaseName string
@@ -35,7 +35,7 @@ param privateDnsZoneId string
 @description('Specifies the public Git repo that hosts the database migration script.')
 param repository string
 
-resource postgres 'Microsoft.DBforPostgreSQL/flexibleServers@2022-03-08-preview' = {
+resource postgres 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' = {
   name: serverName
   location: location
   sku: {
@@ -64,7 +64,7 @@ resource postgres 'Microsoft.DBforPostgreSQL/flexibleServers@2022-03-08-preview'
   }
 }
 
-resource database 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2022-03-08-preview' = {
+resource database 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2022-12-01' = {
   name: databaseName
   parent: postgres
   properties: {
@@ -143,3 +143,5 @@ resource migration 'Microsoft.ContainerInstance/containerGroups@2021-10-01' = {
     restartPolicy: 'Never'
   }
 }
+
+output fqdn string = postgres.properties.fullyQualifiedDomainName

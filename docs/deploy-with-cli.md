@@ -5,7 +5,7 @@ deployment script to deploy the Contoso Ads sample app. This gives you
 a bit more flexibility for naming resources and selecting specific container
 images.
 
-## Prequisites
+## Prerequisites
 
 You'll need an Azure subscription and a very small set of tools and skills to get started:
 
@@ -21,7 +21,7 @@ By the end of this section you'll have Contoso Ads running in Azure. This setup 
 single deployment script, and should take you around 5-10 minutes.
 
 Before executing the deployment script, you have to export two environment variables:
-* `CONTOSOADS_RESOURCE_GROUP_NAME` must be set to the name of the resource group that hosts all resources for the sample app.
+* `CONTOSOADS_RESOURCE_GROUP` must be set to the name of the resource group that hosts all resources for the sample app.
   The script will also create the resource group itself.
 * `CONTOSOADS_DB_PWD` must be set to the password for the database user used by the application to access PostgreSQL.
 * `CONTOSOADS_REPO` must be set to your GitHub repo's URL (i.e., the URL of your clone of this repo).
@@ -29,7 +29,7 @@ Then, navigate tp the `deploy` directory and run `deploy.sh`:
 
 ```bash
 cd contosoads-containerapp/deploy
-export CONTOSOADS_RESOURCE_GROUP_NAME=<your-resource-group-name>
+export CONTOSOADS_RESOURCE_GROUP=<your-resource-group-name>
 export CONTOSOADS_DB_PWD=$(openssl rand -hex 20)
 export CONTOSOADS_REPO=<your-github-repo-url>
 ./deploy.sh
