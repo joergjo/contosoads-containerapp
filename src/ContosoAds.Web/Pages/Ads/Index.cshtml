@@ -5,7 +5,7 @@
     ViewData["Title"] = "Ad Listing";
 }
 
-<h1>Stuff to be sold</h1>
+<h1>Stuff for Sale</h1>
 
 <p>
     <a asp-page="Create">Create New</a>
@@ -51,7 +51,7 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                <img alt="@item.Title" src="@Html.Raw(item.ThumbnailUri)" />
+                 @await Html.PartialAsync("_Thumbnail", item)
             </td>
             <td>
                  @Html.DisplayFor(modelItem => item.PostedDate)

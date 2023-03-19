@@ -51,7 +51,7 @@ public class CreateOrEditAd
         var hasNewImage = false;
         if (file is not null)
         {
-            ad.ImageUri = await WriteImageBlob(file, default);
+            ad.ImageUri = await WriteImageBlob(file);
             hasNewImage = true;
             _logger.LogDebug("Created image blob with URI '{ImageUri}' for new ad", ad.ImageUri);
         }
@@ -75,7 +75,8 @@ public class CreateOrEditAd
         var hasNewImage = false;
         if (file is not null)
         {
-            ad.ImageUri = await WriteImageBlob(file, existingAd.ImageUri);
+            // Note that we opt to create a new blob here to avoid caching issues.
+            ad.ImageUri = await WriteImageBlob(file);
             hasNewImage = true;
             _logger.LogDebug("Created image blob with URI '{ImageUri}' for ad {AdId}", ad.ImageUri, ad.Id);
         }
@@ -85,13 +86,13 @@ public class CreateOrEditAd
             _logger.LogDebug("No image file provided for ad {AdId}", ad.Id);
         }
 
-        ad.ThumbnailUri = existingAd.ThumbnailUri;
+        ad.ThumbnailUri = null;
         ad.PostedDate = existingAd.PostedDate;
         _dbContext.Ads.Update(ad);
         return new CreateOrEditResult(true, hasNewImage);
     }
 
-    private async Task<string?> WriteImageBlob(IFormFile file, string? currentUri)
+    private async Task<string?> WriteImageBlob(IFormFile file, string? currentUri = default)
     {
         await using var buffer = new MemoryStream(0x10000);
         await file.CopyToAsync(buffer);
