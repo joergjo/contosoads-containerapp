@@ -1,0 +1,26 @@
+version: 1
+common:
+  resourcesPath: ./components
+apps:
+  - appID: contosoads-web
+    appDirPath: ./src/ContosoAds.Web
+    appProtocol: HTTP
+    appPort: 7125
+    appSSL: true
+    appHealthCheckPath: "/healthz/live"
+    enableAppHealthCheck: true
+    daprHTTPPort: 3500      # DAPR_HTTP_PORT is set in launchSettings.json
+    daprGRPCPort: 3501      # DAPR_GRPC_PORT is set in launchSettings.json
+    command: ["dotnet", "run"]
+    logLevel: debug
+  - appID: contosoads-imageprocessor 
+    appDirPath: ./src/ContosoAds.ImageProcessor
+    appProtocol: HTTP
+    appPort: 7073
+    appSSL: true
+    appHealthCheckPath: "/healthz/live"
+    enableAppHealthCheck: true
+    daprHTTPPort: 63500      # DAPR_HTTP_PORT is set in launchSettings.json
+    daprGRPCPort: 63501      # DAPR_GRPC_PORT is set in launchSettings.json
+    command: ["dotnet", "run"]
+    logLevel: debug
