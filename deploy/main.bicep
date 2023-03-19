@@ -3,7 +3,7 @@ param location string = resourceGroup().location
 
 @description('Specifies the common name prefix for all resources.')
 @minLength(5)
-@maxLength(12)
+@maxLength(14)
 param baseName string = 'contosoads'
 
 @description('Specifies the name of the blob container.')
@@ -35,18 +35,13 @@ param imageProcessorTag string = 'dotnet6'
 @description('Specifies the public Git repo that hosts the database migration script.')
 param repository string
 
-var vnetName = '${baseName}-vnet'
-var storageAccountName = '${baseName}${uniqueString(resourceGroup().id)}'
-var privateDnsZoneName = '${baseName}.postgres.database.azure.com'
-var postgresHostName = 'server${uniqueString(resourceGroup().id)}'
 var databaseName = 'contosoads'
 
 module network 'modules/network.bicep' = {
   name: 'network'
   params: {
     location: location
-    vnetName: vnetName
-    privateDnsZoneName: privateDnsZoneName
+    baseName: baseName
   }
 }
 
@@ -56,7 +51,6 @@ module environment 'modules/environment.bicep' = {
     location: location
     baseName: baseName
     infrastructureSubnetId: network.outputs.infraSubnetId
-    storageAccountName: storageAccountName
     containerName: containerName
     requestQueueName: requestQueueName
     resultQueueName: resultQueueName
@@ -67,7 +61,6 @@ module postgres 'modules/database.bicep' = {
   name: 'postgres'
   params: {
     location: location
-    serverName: postgresHostName
     databaseName: databaseName
     postgresSubnetId: network.outputs.pgSubnetId
     aciSubnetId: network.outputs.aciSubnetId
@@ -79,7 +72,7 @@ module postgres 'modules/database.bicep' = {
   }
 }
 
-var dbConnectionString = 'Host=${postgresHostName}.postgres.database.azure.com;Database=${databaseName};Username=${postgresLogin};Password=${postgresLoginPassword}'
+var dbConnectionString = 'Host=${postgres.outputs.fqdn};Database=${databaseName};Username=${postgresLogin};Password=${postgresLoginPassword}'
 
 module webapp 'modules/webapp.bicep' = {
   name: 'webapp'
