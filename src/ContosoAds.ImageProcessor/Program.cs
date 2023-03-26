@@ -13,6 +13,7 @@ builder.Services.AddHealthChecks();
 var app = builder.Build();
 
 app.MapHealthChecks("/healthz/live");
+app.MapHealthChecks("/healthz/ready");
 app.MapMethods("/thumbnail-request", new[] {HttpMethods.Options}, () => Results.Ok());
 app.MapPost("/thumbnail-request",
     async (ImageBlob imageBlob, DaprClient client, ImageProcessor imageProcessor) =>
