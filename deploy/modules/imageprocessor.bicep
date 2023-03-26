@@ -52,6 +52,25 @@ resource imageProcessor 'Microsoft.App/containerApps@2022-10-01' = {
             cpu: json('0.5')
             memory: '1Gi'
           }
+          probes: [
+            {
+              type: 'liveness'
+              httpGet: {
+                scheme: 'HTTP'
+                path: '/healthz/live'
+                port: containerPort
+              }
+            }
+            {
+              type: 'readiness'
+              httpGet: {
+                scheme: 'HTTP'
+                path: '/healthz/ready'
+                port: containerPort
+              }
+              initialDelaySeconds: 5
+            }
+          ]
         }
       ]
       scale: {

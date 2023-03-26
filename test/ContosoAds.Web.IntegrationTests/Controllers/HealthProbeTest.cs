@@ -13,29 +13,18 @@ public class HealthProbeTest : IClassFixture<TestWebApplicationFactory>
         _factory = factory;
     }
     
-    [Fact]
-    public async Task Live_Returns_OK()
+    [Theory]
+    [InlineData("/healthz/live")]
+    [InlineData("/healthz/ready")]
+    public async Task Probe_Returns_OK(string uri)
     {
         // Arrange
         using var client = _factory.CreateClient();
-        
-        // Act
-        using var response = await client.GetAsync("/healthz/live");
-        
+
         // Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-    }
-    
-    [Fact]
-    public async Task Ready_Returns_OK()
-    {
-        // Arrange
-        using var client = _factory.CreateClient();
-        
+        using var response = await client.GetAsync(uri);
+
         // Act
-        using var response = await client.GetAsync("/healthz/ready");
-    
-        // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 }
