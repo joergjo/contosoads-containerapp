@@ -6,8 +6,6 @@ on:
   push:
     branches:
       - 'main'
-    tags:
-      - 'stable'
     paths:
       - 'src/**'
 
@@ -25,7 +23,7 @@ jobs:
           images: |
             ${{ secrets.DOCKER_HUB_USERNAME }}/contosoads-web
           tags: |
-            type=ref,event=tag
+            type=ref,event=branch
             type=raw,value=latest,enable={{is_default_branch}}
             type=sha
             
