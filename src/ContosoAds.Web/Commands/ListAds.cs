@@ -17,7 +17,8 @@ public class ListAds
 
     public async Task<IList<Ad>> ExecuteAsync(Category? category)
     {
-        var query = from ad in _dbContext.Ads
+        IQueryable<Ad> query = from ad in _dbContext.Ads
+            orderby ad.PostedDate
             select ad;
         if (category.HasValue)
         {
