@@ -8,7 +8,7 @@ networks:
 
 services:
   imageprocessor:
-    image: contosoads-imageprocessor:${IMAGE_PROCESSOR_TAG:-latest}
+    image: ${IMAGEPROCESSOR_IMAGE:-contosoads-imageprocessor:latest}
     build:
       context: ./src/ContosoAds.ImageProcessor
       dockerfile: Dockerfile
@@ -37,7 +37,7 @@ services:
       - imageprocessor
   
   webapp:
-    image: contosoads-web:${WEB_TAG:-latest}
+    image: ${WEB_IMAGE:-contosoads-web:latest}
     build:
       context: ./src/ContosoAds.Web
       dockerfile: Dockerfile
@@ -71,7 +71,7 @@ services:
       - webapp
       
   db:
-    image: postgres:${POSTGRES_TAG:-14-alpine}
+    image: ${POSTGRES_IMAGE:-postgres:14-alpine}
     volumes:
       - contosoads-data:/var/lib/postgresql/data
       - ./deploy/migrate.sql:/docker-entrypoint-initdb.d/1-migrate.sql
@@ -88,6 +88,6 @@ services:
       - contosoads-network
   
   redis:
-    image: "redis:alpine"
+    image: ${REDIS_IMAGE:-redis:alpine}
     networks:
       - contosoads-network
