@@ -43,7 +43,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Build and push ContosoAds.Web
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: ./src/ContosoAds.Web
           push: true
@@ -51,7 +51,7 @@ jobs:
           labels: ${{ steps.meta-web.outputs.labels }}
 
       - name: Build and push ContosoAds.ImageProcessor
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: ./src/ContosoAds.ImageProcessor
           push: true
