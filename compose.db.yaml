@@ -5,7 +5,7 @@ volumes:
 
 services:
   db:
-    image: postgres:${POSTGRES_TAG:-14-alpine}
+    image: ${POSTGRES_IMAGE:-postgres:14-alpine}
     ports:
       - "5432:5432"
     volumes:
