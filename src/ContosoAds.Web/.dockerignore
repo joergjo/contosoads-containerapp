@@ -21,7 +21,7 @@
 **/obj
 **/secrets.dev.yaml
 **/values.dev.yaml
-**/secrets.json
+**/secrets*.json
 **/.envrc
 LICENSE
 README.md
