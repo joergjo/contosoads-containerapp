@@ -46,7 +46,8 @@ public class DeleteAd
         _logger.LogDebug("Deleting image blob '{ImageUri}'", blobUri);
         var metadata = new Dictionary<string, string>
         {
-            ["blobName"] = new Uri(blobUri).Segments[^1]
+            ["blobName"] = new Uri(blobUri).Segments[^1],
+            ["deleteSnapshots"] = "only" 
         };
         await _daprClient.InvokeBindingAsync<string?>("image-store", "delete", null, metadata);
         _logger.LogDebug("Deleted image blob '{ImageUri}'", blobUri);

@@ -23,5 +23,6 @@
 **/values.dev.yaml
 **/secrets*.json
 **/.envrc
+**/.dapr
 LICENSE
 README.md

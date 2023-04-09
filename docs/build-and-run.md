@@ -8,7 +8,7 @@
 * macOS, Linux, or Windows 10/11 with the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) set up
 * An Azure storage account or [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&tabs=visual-studio)
 
-### Create a new Azure storage account
+### Using an Azure storage account
 
 Run the following script to create a new Azure storage account and a secrets file for Dapr. 
 Make sure to set `name`, `resource_group`, and `location` to the appropriate values.
@@ -55,12 +55,14 @@ mv secrets.json src/ContosoAds.ImageProcessor/
 
 ### Using Azurite
 
-Using Azurite requires the manual creation of a publicly accessible blob container and adding the
-emulator's endpoints in Dapr's component configuration.
+Run the following script to create the required storage artifacts and a secrets file, then
+add the emulator's endpoints in Dapr's component configuration. 
 
 ```bash
-# Run this from the root directory of the repository
 cd contosoads-containerapp
+
+# Run Azurite
+azurite -l .azurite -d .azurite/debug.log
 
 # Create a secrets.json store for Dapr and Azurite
 # This file is already included in .gitignore
@@ -75,8 +77,11 @@ EOF
 cp secrets.json src/ContosoAds.Web/
 mv secrets.json src/ContosoAds.ImageProcessor/ 
 
-export AZURE_STORAGE_CONNECTION_STRING="DefaultEndpointsProtocol=https;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;"
+# Create blob container and queues
+export AZURE_STORAGE_CONNECTION_STRING="DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;QueueEndpoint=http://127.0.0.1:10001/devstoreaccount1;TableEndpoint=http://127.0.0.1:10002/devstoreaccount1;"
 az storage container create -n images --public-access blob
+az storage queue create -n thumbnail-request
+az storage queue create -n thumbnail-result
 ```
 
 Next, uncomment the endpoint settings for all Dapr components located in the `components` directory. 
@@ -89,9 +94,11 @@ Update the ports and protocol if you are running Azurite on non-default ports or
 
 # thumbnail-request.yaml and thumbnail-result.yaml
 - name: queueEndpointUrl
-  value: "http://localhost:10001/devstoreaccount1/thumbnail-request"
+  value: "http://localhost:10001"
 ```
 
+:point_right: Use a directory called `.azurite` or `azurite` in the project's root directory as Azurite's workspace. These 
+names are already included in the project's `.gitignore` and `.dockerignore` files. 
 
 ### Build the sample app from source 
 
@@ -109,7 +116,7 @@ Run the following commands in a shell:
 
 ```bash
 cd contosoads-containerapp
-docker compose -f compose.db.yaml up -d
+docker compose -f compose.deps.yaml --profile all up -d
 cd src/ContosoAds.Web
 dapr run --app-id web \
   --app-port 7125 \
