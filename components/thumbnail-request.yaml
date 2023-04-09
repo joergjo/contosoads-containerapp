@@ -14,9 +14,12 @@ spec:
         name: storageAccountKey
     - name: queue
       value: "thumbnail-request"
-#   When using Azurite, uncomment the next two lines to point Dapr to its Azure Blob Storage endpoint.
+#   When using Azurite, uncomment the next two lines to point Dapr to its Azure Storage Queue endpoint.
 #    - name: queueEndpointUrl
-#      value: "http://localhost:10001/devstoreaccount1/thumbnail-request"
+#      value: "http://localhost:10001"
+#   When using the included Docker Compose file, uncomment the next two lines to point Dapr to the Azurite endpoint.
+#    - name: endpoint
+#      value: "http://host.docker.internal:10001"
 
 auth:
   secretStore: dev-secrets

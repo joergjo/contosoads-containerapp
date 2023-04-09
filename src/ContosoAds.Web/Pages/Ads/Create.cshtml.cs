@@ -46,7 +46,7 @@ public class CreateModel : PageModel
         if (ImageFile is { Length: > MaxImageSize })
         {
             _logger.LogDebug("Image exceeds maximum byte size: {ActualSize} > {MaxSize}", ImageFile!.Length, MaxImageSize);
-            ModelState.AddModelError("ImageFile", "Image file size must be less than 4MB");
+            ModelState.AddModelError("ImageFile", $"Image file size must be less than {MaxImageSize} bytes");
             return Page();
         }
 

@@ -1,14 +1,15 @@
 version: "3.9"
 
 volumes:
-  contosoads-data:
-
+  contosoads-db:
+  contosoads-storage:
+    
 networks:
   contosoads-network:
 
 services:
   imageprocessor:
-    image: ${IMAGEPROCESSOR_IMAGE:-contosoads-imageprocessor:latest}
+    image: ${IMAGEPROCESSOR_IMAGE:-joergjo/contosoads-imageprocessor:dotnet6}
     build:
       context: ./src/ContosoAds.ImageProcessor
       dockerfile: Dockerfile
@@ -37,7 +38,7 @@ services:
       - imageprocessor
   
   webapp:
-    image: ${WEB_IMAGE:-contosoads-web:latest}
+    image: ${WEB_IMAGE:-joergjo/contosoads-web:dotnet6}
     build:
       context: ./src/ContosoAds.Web
       dockerfile: Dockerfile
@@ -73,7 +74,7 @@ services:
   db:
     image: ${POSTGRES_IMAGE:-postgres:14-alpine}
     volumes:
-      - contosoads-data:/var/lib/postgresql/data
+      - contosoads-db:/var/lib/postgresql/data
       - ./deploy/migrate.sql:/docker-entrypoint-initdb.d/1-migrate.sql
     environment:
       - POSTGRES_PASSWORD=pass@word1
@@ -89,5 +90,15 @@ services:
   
   redis:
     image: ${REDIS_IMAGE:-redis:alpine}
+    networks:
+      - contosoads-network
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    ports:
+      - "10000:10000"
+      - "10001:10001"
+    volumes:
+      - contosoads-storage:/data
     networks:
       - contosoads-network

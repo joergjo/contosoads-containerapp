@@ -1,0 +1,29 @@
+version: "3.9"
+
+volumes:
+  contosoads-db:
+  contosoads-storage:
+
+services:
+  db:
+    image: ${POSTGRES_IMAGE:-postgres:14-alpine}
+    profiles:
+      - "all"
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - contosoads-db:/var/lib/postgresql/data
+      - ./deploy/migrate.sql:/docker-entrypoint-initdb.d/1-migrate.sql
+    environment:
+      - POSTGRES_PASSWORD=pass@word1
+      - POSTGRES_DB=contosoads
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    restart: always
+    ports:
+      - "10000:10000"
+      - "10001:10001"
+    volumes:
+      - contosoads-storage:/data

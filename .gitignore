@@ -12,5 +12,6 @@ secrets*.json
 .envrc
 .vs/
 azurite/
+.azurite/
 components-local/
 **/.dapr/logs/
