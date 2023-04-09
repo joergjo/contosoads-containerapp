@@ -3,6 +3,11 @@ concurrency: contosoads-build-${{ github.ref }}
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - 'dotnet6'
+    paths:
+      - 'src/**'
 
 jobs:
   build:
