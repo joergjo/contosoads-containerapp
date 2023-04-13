@@ -75,18 +75,19 @@ public class CreateOrEditAd
         var hasNewImage = false;
         if (file is not null)
         {
-            // Note that we opt to create a new blob here to avoid caching issues.
+            // Note that we opt to create a new blob here to avoid caching issues and reset the thumbnail.
             ad.ImageUri = await WriteImageBlob(file);
+            ad.ThumbnailUri = null;
             hasNewImage = true;
             _logger.LogDebug("Created image blob with URI '{ImageUri}' for ad {AdId}", ad.ImageUri, ad.Id);
         }
         else
         {
             ad.ImageUri = existingAd.ImageUri;
+            ad.ThumbnailUri = existingAd.ThumbnailUri;
             _logger.LogDebug("No image file provided for ad {AdId}", ad.Id);
         }
 
-        ad.ThumbnailUri = null;
         ad.PostedDate = existingAd.PostedDate;
         _dbContext.Ads.Update(ad);
         return new CreateOrEditResult(true, hasNewImage);
