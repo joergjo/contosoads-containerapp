@@ -27,10 +27,10 @@ param postgresLoginPassword string
 param postgresVersion string = '14'
 
 @description('Specifies the tag for the contosoads-web image.')
-param webAppTag string = 'stable'
+param webAppTag string = 'latest'
 
 @description('Specifies the tag for the contosoads-imageprocessor image.')
-param imageProcessorTag string = 'stable'
+param imageProcessorTag string = 'latest'
 
 @description('Specifies the public Git repo that hosts the database migration script.')
 param repository string
