@@ -6,7 +6,7 @@
 * [Dapr](https://docs.dapr.io/getting-started/install-dapr-cli/)
 * [Docker Desktop](https://docs.docker.com/docker-desktop/install/) 
 * macOS, Linux, or Windows 10/11 with the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) set up
-* An Azure storage account or [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&tabs=visual-studio)
+
 
 ### Using an Azure storage account
 
@@ -90,11 +90,11 @@ Update the ports and protocol if you are running Azurite on non-default ports or
 ```yaml
 # image-store.yaml
 - name: endpoint
-  value: "http://localhost:10000"
+  value: "http://127.0.0.1:10000"
 
 # thumbnail-request.yaml and thumbnail-result.yaml
 - name: queueEndpointUrl
-  value: "http://localhost:10001"
+  value: "http://127.0.0.1:10001"
 ```
 
 :point_right: Use a directory called `.azurite` or `azurite` in the project's root directory as Azurite's workspace. These 
