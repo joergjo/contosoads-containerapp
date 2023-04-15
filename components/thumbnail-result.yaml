@@ -14,10 +14,10 @@ spec:
         name: storageAccountKey
     - name: queue
       value: "thumbnail-result"
-#   When using Azurite, uncomment the next two lines to point Dapr to its Azure Storage Queue endpoint.
-#    - name: queueEndpointUrl
-#      value: "http://localhost:10001"
-#   When using the included Docker Compose file, uncomment the next two lines to point Dapr to the Azurite endpoint.
+#   When running the application and Dapr locally, uncomment the next two lines to point Dapr to its Azure Storage Blob endpoint.
+#    - name: endpoint
+#      value: "http://127.0.0.1:10001"
+#   When running the entire software stack in Docker, uncomment the next two lines.
 #    - name: endpoint
 #      value: "http://host.docker.internal:10001"
 

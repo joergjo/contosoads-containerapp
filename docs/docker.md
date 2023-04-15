@@ -4,13 +4,12 @@
 
 * [Docker Desktop](https://docs.docker.com/docker-desktop/install/)
 * macOS, Linux, or Windows 10/11 with the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) set up
-* [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&tabs=visual-studio)
 
-### Preparing the storage artifacts
+### Preparing storage artifacts and secrets
 
-Run the following script to create the required storage artifacts and a secrets file, then
-add the emulator's endpoints in Dapr's component configuration. You only need to execute this step once, as long
-as you don't delete the Docker volume that stores Azurite's workspace.
+Run the following script to create the required storage artifacts and a secrets file.
+You only need to execute this step once, as long as you don't delete the Docker
+volume that stores Azurite's workspace (see [Storing and cleaning up](#cleanup)).
 
 ```bash
 cd contosoads-containerapp
@@ -41,11 +40,13 @@ docker compose -f compose.deps.yaml down
  
 ```
 
-Next, uncomment the endpoint settings for all Dapr components located in the `components` directory.
-In `image-store.yaml`, replace `IP_ADDRESS` with your computer's IP address (not 127.0.0.1).
-By doing so, we can expose Azurite's blob endpoint both to a web browser and the other Contoso Ads 
-containers. That is not required for the queue endpoints, since they are not accesses by a 
-web browser.
+Next, uncomment the endpoint settings for all Dapr components located in the [`components`](../components) directory.
+In `image-store.yaml`, replace the `IP_ADDRESS` placeholder with your computer's 
+IP address (_not_ 127.0.0.1).
+
+This way we can expose Azurite's blob endpoint both on your local network and to the
+Docker network that the other containers use. That is not required for the queue 
+endpoints, since they are not accesses by a web browser.
 
 ```yaml
 # image-store.yaml
@@ -60,40 +61,45 @@ web browser.
 ### Run application containers and dependencies
 
 The sample includes a Docker Compose file that launches the application containers, Dapr sidecars, Azurite and a PostgreSQL
-database. Run the following commands in a shell.
-
-If your Docker Desktop setup supports Docker Compose v2, run:
+database. Run the following commands to launch the entire stack.
 
 ```bash
 cd contosoads-containerapp
 docker compose up -d
 ```
 
-Otherwise, run:
+Open http://localhost:8080 in your favorite browser to use the Contoso Ads web application.
 
-```bash
-cd contosoads-containerapp
-docker-compose up -d
-```
+### Stopping and cleaning up
 
-Now, open http://localhost:8080 in your favorite browser to use the Contoso Ads web application.
-
-To shut down the application (if using Docker Compose v2), run
+To shut down the application run
 
 ```bash
 cd contosoads-containerapp
 docker compose down
 ```
 
-or 
+If you want to remove all Docker volumes created for PostgreSQL and Azurite
+(e.g., to quickly start from scratch with an empty database and storage), run
+
+```bash
+docker compose down -v
+```
+
+### Building and using your own container images 
+
+The Compose file uses the prebuilt images which I provide on Docker Hub. You can 
+override the image names and tags by creating an `.env` file and setting 
+`IMAGEPROCESSOR_IMAGE` and `WEB_IMAGE` to an image that you have built locally or 
+that is stored in another repository. 
+
+To build images for your local CPU architecture (e.g., ARM64 on an Apple Silicon Mac,
+AMD64 on an Intel based Windows PC) run, create an `.env` file as mentioned and run
 
 ```bash
 cd contosoads-containerapp
-docker-compose down
-```
+docker compose build
+````
 
-:point_right: The Compose files uses the prebuilt images on Docker Hub. You can override
-this by creating an `.env` file and setting `IMAGEPROCESSOR_IMAGE` and `WEB_IMAGE` to an image
-that you have built locally or that is stored in another repository. See the 
-[Compose docs](https://docs.docker.com/compose/environment-variables/set-environment-variables/#substitute-with-an-env-file)
+See the [Compose docs](https://docs.docker.com/compose/environment-variables/set-environment-variables/#substitute-with-an-env-file)
 to learn more about using `.env` files. 

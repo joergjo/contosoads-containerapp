@@ -1,68 +1,27 @@
-# Building the sample app on your PC or Mac
+# Building and running the sample app on your PC or Mac
 
 ## Prerequisites
 
-* [.NET 6.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) or an IDE such as Visual Studio, Visual Studio Code, or Rider
+* [.NET 6.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
 * [Dapr](https://docs.dapr.io/getting-started/install-dapr-cli/)
 * [Docker Desktop](https://docs.docker.com/docker-desktop/install/) 
 * macOS, Linux, or Windows 10/11 with the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) set up
 
+If you are using this method, the Contoso Ads applications run "natively" as processes along with 
+their Dapr sidecars, whereas PostgreSQL and Azure Storage run in Docker Containers. Azure Storage is
+emulated using [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&tabs=visual-studio).
 
-### Using an Azure storage account
+### Preparing storage artifacts and secrets
 
-Run the following script to create a new Azure storage account and a secrets file for Dapr. 
-Make sure to set `name`, `resource_group_name`, and `location` to the appropriate values.
-
-```bash
-name=<your-storage-account-name>
-resource_group=<your-resource-group>
-location=<your-storage-account-location>
-
-# Run this from the root directory of the repository
-cd contosoads-containerapp
-
-# Create a resource group
-az group create --name $resource_group \
-  --location $location
-  
-# Create an Azure storage account
-az storage account create --name $name \
-  --resource-group $resource_group \
-  --location $location \
-  --sku Standard_LRS \
-  --min-tls-version TLS1_2
-
-# Obtain the primary storage account key
-account_key=$(az storage account keys list \
-  --resource-group "$resource_group" \
-  --account-name "$name" \
-  --query "[0].value" \
-  --out tsv)
-
-# Create a secrets.json store for Dapr
-# This file is already included in .gitignore
-cat << EOF > secrets.json
-{
-  "storageAccountName": "$name",
-  "storageAccountKey": "$account_key"
-}
-EOF
-
-# Copy secrets file to every project
-cp secrets.json src/ContosoAds.Web/
-mv secrets.json src/ContosoAds.ImageProcessor/ 
-```
-
-### Using Azurite
-
-Run the following script to create the required storage artifacts and a secrets file, then
-add the emulator's endpoints in Dapr's component configuration. 
+Run the following script to create the required storage artifacts and a secrets file.
+You only need to execute this step once, as long as you don't delete the Docker 
+volume that stores Azurite's workspace (see [Stopping and cleaning up](#stopping-and-cleaning-up)).
 
 ```bash
 cd contosoads-containerapp
 
 # Run Azurite
-azurite -l .azurite -d .azurite/debug.log
+docker compose -f compose.deps.yaml up -d  
 
 # Create a secrets.json store for Dapr and Azurite
 # This file is already included in .gitignore
@@ -82,10 +41,12 @@ export AZURE_STORAGE_CONNECTION_STRING="DefaultEndpointsProtocol=http;AccountNam
 az storage container create -n images --public-access blob
 az storage queue create -n thumbnail-request
 az storage queue create -n thumbnail-result
+
+docker compose -f compose.deps.yaml down  
 ```
 
-Next, uncomment the endpoint settings for all Dapr components located in the `components` directory. 
-Update the ports and protocol if you are running Azurite on non-default ports or HTTPS.
+Next, uncomment the endpoint settings for all Dapr components located in the 
+[`components`](../components) directory. 
 
 ```yaml
 # image-store.yaml
@@ -97,51 +58,48 @@ Update the ports and protocol if you are running Azurite on non-default ports or
   value: "http://127.0.0.1:10001"
 ```
 
-:point_right: Use a directory called `.azurite` or `azurite` in the project's root directory as Azurite's workspace. These 
-names are already included in the project's `.gitignore` and `.dockerignore` files. 
+### Running the application
 
-### Build the sample app from source 
-
-Either open [ContosoAds.sln](../ContosoAds.sln) in your favorite IDE and build the solution, or run the 
-following commands in your system's shell.
-
-```bash
-cd contosoads-containerapp
-dotnet build
-```
-
-### Running the Contoso Ads web application
-
-Run the following commands in a shell:
+Run the following commands in a shell to compile the source code on the fly and 
+start the application and its dependencies:
 
 ```bash
 cd contosoads-containerapp
 docker compose -f compose.deps.yaml --profile all up -d
-cd src/ContosoAds.Web
-dapr run --app-id web \
-  --app-port 7125 \
-  --app-ssl \
-  --dapr-grpc-port 3501 \
-  --resources-path ../../components/ \
-  -- dotnet run
+dapr run -f .
 ```
 
-This also starts the Dapr sidecar and a PostgreSQL database container.
+Open http://localhost:7125 in your favorite browser to use the Contoso Ads web application.
 
-### Running the Contoso Ads image processor API
+### Stopping and cleaning up
 
-Run the following commands in shell:
+To stop the application, enter `CTRL-C` in the terminal window where you have run
+`dapr run -f .`. 
+
+To shut down the PostgreSQL and Azurite containers run
+```bash
+docker compose -f compose.deps.yaml --profile all down
+```
+
+If you want to remove all Docker volumes created for PostgreSQL and Azurite 
+(e.g., to quickly start from scratch with an empty database and storage), run
 
 ```bash
-cd contosoads-containerapp/src/ContosoAds.ImageProcessor
-dapr run --app-id imageprocessor \
-  --app-port 7073 \
-  --app-ssl \
-  --dapr-grpc-port 63501 \
-  --resources-path ../../components/ \
-  -- dotnet run
+docker compose -f compose.deps.yaml --profile all down -v
 ```
 
-This also starts the Dapr sidecar.
 
-Now, open http://localhost:7125 in your favorite browser to use the Contoso Ads web application.
+### Editing and building the solution (optional)
+
+Open [ContosoAds.sln](../ContosoAds.sln) in your favorite IDE or code editor to
+change it, runs tests and build the source code.
+
+To run in the included tests and build the application on the command line, run 
+the following commands.
+
+```bash
+cd contosoads-containerapp
+dotnet test
+dotnet build
+```
+
