@@ -51,7 +51,7 @@ You'll need an Azure subscription and a very small set of tools and skills to ge
 2. Either the [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli) installed locally, or the [Azure Cloud Shell](https://shell.azure.com) available online.
 3. If you are using a local installation of the Azure CLI: 
    1. You need a bash shell to execute the included deployment script - on Windows 10/11 use the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install).
-   2. Make sure to have Bicep CLI installed by running `az bicep install`
+   2. Make sure to have Bicep CLI installed by running `az bicep install`.
 
 ## Topology diagram
 
@@ -82,11 +82,15 @@ since the images must be accessible by a browser.
    ```bash
    az login
    subscription_id=$(az account show --query id --output tsv)
-   az ad sp create-for-rbac --sdk-auth --name ContosoAds-CICD --role contributor --scopes "/subscriptions/$subscription_id"
+   az ad sp create-for-rbac \
+     --name ContosoAds-CICD \
+     --role contributor \
+     --sdk-auth \
+     --scopes "/subscriptions/$subscription_id"
    ```
 
    > The output of that last command will include a deprecation warning for the `-sdk-auth`
-   > flag. This is expected at the time of writing using Azure CLI 2.40. 
+   > flag. This is expected at the time of writing using Azure CLI 2.45. 
 
 3. Copy the JSON written to the screen to your clipboard.
 
@@ -160,7 +164,7 @@ app is running in the cloud environment.
 | contosoads-vnet                        | Virtual network                                    | The Container Apps environment, the PostgreSQL server, and the Container Instance are all connected through this network using different subnets. |
 | contosoads.postgres.database.azure.com | Azure Private DNS zone                             | Provides name resolution for our private hosted PostgreSQL server.                                                                               |
 | contodoads<random_string>              | Azure storage account                              | Provides both the blob storage and the storage queues.                                                                                           |
-| server<random_string>                  | Azure Database for PostgreSQL Flexible Server      | Hosts the application's database and ASP.NET Core data protection keys.                                                                          |                                                                    |
+| server-<random_string>                 | Azure Database for PostgreSQL Flexible Server      | Hosts the application's database and ASP.NET Core data protection keys.                                                                          |                                                                    |
 | dbmigration                            | Azure Container Instance                           | This runs the database migration script to prepare the database during deployment.                                                               |                                                                    |
 
 The resources are shown here in the Azure portal:
@@ -183,8 +187,8 @@ After creating an ad, the web app will navigate back to the list view. No thumbn
 
 ![Creating a new ad.](docs/media/image-queued.png)
 
-After a few seconds, refresh the page in the web browser. The image processor has created
-the thumbnail and it is displayed.
+After a few seconds, once the image processor has created the the thumbnail, the web
+page will refresh itself display and the thumbnail.
 
 ![Creating a new ad.](docs/media/image-processed.png)
 
@@ -193,9 +197,10 @@ the thumbnail and it is displayed.
 These steps are optional and not required to deploy the application to Azure. Use them to learn 
 about building and running the application on your local machine and alternate deployment techniques.
 
-### Building and running the sample app on your PC or Mac with your favorite IDE or just the .NET SDK
+### Building and running the sample app on your PC or Mac with using the .NET SDK and Dapr
 
-See [this document](docs/build-and-run.md) for instructions on how to build and run the sample app on your PC or Mac. 
+See [this document](docs/build-and-run.md) for instructions on how to build and run the sample app on your PC or Mac
+if you have the .NET SDK and Dapr locally installed. 
 
 ### Running the sample app on your PC or Mac using Docker Desktop
 
