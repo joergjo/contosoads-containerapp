@@ -46,7 +46,7 @@ You'll need an Azure subscription and a very small set of tools and skills to ge
 2. Either the [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli) installed locally, or the [Azure Cloud Shell](https://shell.azure.com) available online.
 3. If you are using a local installation of the Azure CLI: 
    1. You need a bash shell to execute the included deployment script - on Windows 10/11 use the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install).
-   2. Make sure to have Bicep CLI installed by running `az bicep install`
+   2. Make sure to have Bicep CLI installed by running `az bicep install`.
 
 ## Topology diagram
 
@@ -149,18 +149,18 @@ The `deploy` CI/CD process creates a series of resources in your Azure subscript
 hosting the project code, but there are also additional resources that aid with monitoring and observing how the
 app is running in the cloud environment.
 
-| Resource                               | Resource Type                                      | Purpose                                                                                                                                          |
-|----------------------------------------|----------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| contosoads-web                         | An Azure Container App for the web app             | The web app is the Contoso Ads' web frontend where you can create, edit, and delete ads.                                                         |
-| contosoads-imageprocessor              | An Azure Container App for the image processor API | This API reads requests from a queue to render images stored in blob storage and creates thumbnail versions of these images.                     |
-| contosoads-env                         | An Azure Container Apps environment                | This environment serves as the logical container for all of the instances of all of the container apps comprising the app.                       |
-| contosoads-insights                    | Application Insights                               | This provides traces, logs, and metrics to troubleshoot the application.                                                                         |
-| contosoads-logs                        | Log Analytics workspace                            | This is the data sink for Application Insights and log output captured by the application containers.                                            |
+| Resource                               | Resource Type                                      | Purpose                                                                                                                                           |
+|----------------------------------------|----------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| contosoads-web                         | An Azure Container App for the web app             | The web app is the Contoso Ads' web frontend where you can create, edit, and delete ads.                                                          |
+| contosoads-imageprocessor              | An Azure Container App for the image processor API | This API reads requests from a queue to render images stored in blob storage and creates thumbnail versions of these images.                      |
+| contosoads-env                         | An Azure Container Apps environment                | This environment serves as the logical container for all of the instances of all of the container apps comprising the app.                        |
+| contosoads-insights                    | Application Insights                               | This provides traces, logs, and metrics to troubleshoot the application.                                                                          |
+| contosoads-logs                        | Log Analytics workspace                            | This is the data sink for Application Insights and log output captured by the application containers.                                             |
 | contosoads-vnet                        | Virtual network                                    | The Container Apps environment, the PostgreSQL server, and the Container Instance are all connected through this network using different subnets. |
-| contosoads.postgres.database.azure.com | Azure Private DNS zone                             | Provides name resolution for our private hosted PostgreSQL server.                                                                               |
-| contodoads<random_string>              | Azure storage account                              | Provides both the blob storage and the storage queues.                                                                                           |
-| server-<random_string>                 | Azure Database for PostgreSQL Flexible Server      | Hosts the application's database and ASP.NET Core data protection keys.                                                                          |                                                                    |
-| dbmigration                            | Azure Container Instance                           | This runs the database migration script to prepare the database during deployment.                                                               |                                                                    |
+| contosoads.postgres.database.azure.com | Azure Private DNS zone                             | Provides name resolution for our private hosted PostgreSQL server.                                                                                |
+| contodoads<random_string>              | Azure storage account                              | Provides both the blob storage and the storage queues.                                                                                            |
+| server-<random_string>                 | Azure Database for PostgreSQL Flexible Server      | Hosts the application's database and ASP.NET Core data protection keys.                                                                           |                                                                    |
+| dbmigration                            | Azure Container Instance                           | This runs the database migration script to prepare the database during deployment.                                                                |                                                                    |
 
 The resources are shown here in the Azure portal:
 
