@@ -5,7 +5,7 @@ deployment script to deploy the Contoso Ads sample app. This gives you
 a bit more flexibility for naming resources and selecting specific container
 images.
 
-## Prequisites
+## Prerequisites
 
 You'll need an Azure subscription and a very small set of tools and skills to get started:
 
@@ -13,7 +13,7 @@ You'll need an Azure subscription and a very small set of tools and skills to ge
 2. Either the [Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli) installed locally, or the [Azure Cloud Shell](https://shell.azure.com) available online.
 3. If you are using a local installation of the Azure CLI:
   1. You need a bash shell to execute the included deployment script - on Windows 10/11 use the [Window Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install).
-  2. Make sure to have Bicep CLI installed by running `az bicep install`
+  2. Make sure to have Bicep CLI installed by running `az bicep install`.
 
 ## Setup
 
@@ -21,7 +21,7 @@ By the end of this section you'll have Contoso Ads running in Azure. This setup 
 single deployment script, and should take you around 5-10 minutes.
 
 Before executing the deployment script, you have to export two environment variables:
-* `CONTOSOADS_RESOURCE_GROUP_NAME` must be set to the name of the resource group that hosts all resources for the sample app.
+* `CONTOSOADS_RESOURCE_GROUP` must be set to the name of the resource group that hosts all resources for the sample app.
   The script will also create the resource group itself.
 * `CONTOSOADS_DB_PWD` must be set to the password for the database user used by the application to access PostgreSQL.
 * `CONTOSOADS_REPO` must be set to your GitHub repo's URL (i.e., the URL of your clone of this repo).
@@ -29,7 +29,7 @@ Then, navigate tp the `deploy` directory and run `deploy.sh`:
 
 ```bash
 cd contosoads-containerapp/deploy
-export CONTOSOADS_RESOURCE_GROUP_NAME=<your-resource-group-name>
+export CONTOSOADS_RESOURCE_GROUP=<your-resource-group-name>
 export CONTOSOADS_DB_PWD=$(openssl rand -hex 20)
 export CONTOSOADS_REPO=<your-github-repo-url>
 ./deploy.sh
@@ -40,11 +40,11 @@ of the deployment script by exporting the following environment variables:
 
 | Environment variable            | Purpose                                    | Default value |
 |---------------------------------|--------------------------------------------|---------------|
-| `CONTOSOADS_LOCATION`           | Azure region to deploy to                  | `westeurope`  |
+| `CONTOSOADS_LOCATION`           | Azure region to deploy to                  | `northeurope` |
 | `CONTOSOADS_BASE_NAME`          | Common name prefix for Azure resources     | `contosoads`  |
-| `CONTOSOADS_WEBAPP_TAG`         | Web app container image tag                | `stable`      |
-| `CONTOSOADS_IMAGEPROCESSOR_TAG` | Image processor container image tag        | `stable`      |
-| `CONTOSOADS_POSTGRES_VERSION`   | PostgreSQL version to use (12, 13, or 14)  | `13`          |
+| `CONTOSOADS_WEBAPP_TAG`         | Web app container image tag                | `latest`      |
+| `CONTOSOADS_IMAGEPROCESSOR_TAG` | Image processor container image tag        | `latest`      |
+| `CONTOSOADS_POSTGRES_VERSION`   | PostgreSQL version to use (12, 13, or 14)  | `14`          |
 
 The deployment script will create the following resources:
 
@@ -58,7 +58,7 @@ The deployment script will create the following resources:
 | contosoads-vnet                        | Virtual network                                    | The Container Apps environment, the PostgreSQL server, and the Container Instance are all connected through this network using different subnets. |
 | contosoads.postgres.database.azure.com | Azure Private DNS zone                             | Provides name resolution for our private hosted PostgreSQL server.                                                                               |
 | contodoads<random_string>              | Azure storage account                              | Provides both the blob storage and the storage queues.                                                                                           |
-| server<random_string>                  | Azure Database for PostgreSQL Flexible Server      | Hosts the application's database and ASP.NET Core data protection keys.                                                                          |                                                                    |
+| server-<random_string>                 | Azure Database for PostgreSQL Flexible Server      | Hosts the application's database and ASP.NET Core data protection keys.                                                                          |                                                                    |
 | dbmigration                            | Azure Container Instance                           | This runs the database migration script to prepare the database during deployment.                                                               |                                                                    |
 
 > All names starting with `contosoads` depend on how `CONTOSOADS_BASE_NAME` is set.
