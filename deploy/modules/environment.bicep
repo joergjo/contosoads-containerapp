@@ -98,6 +98,7 @@ resource environment 'Microsoft.App/managedEnvironments@2022-10-01' = {
     vnetConfiguration: {
       infrastructureSubnetId: infrastructureSubnetId
     }
+    zoneRedundant: true
   }
 }
 
