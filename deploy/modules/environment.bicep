@@ -23,7 +23,7 @@ var workspaceName = '${baseName}-logs'
 var appInsightsName = '${baseName}-insights'
 var environmentName = '${baseName}-env'
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   name: storageAccountName
   location: location
   sku: {
@@ -36,12 +36,12 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   }
 }
 
-resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01' = {
+resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2023-01-01' = {
   name: 'default'
   parent: storageAccount
 }
 
-resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2022-09-01' = {
+resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01' = {
   name: containerName
   parent: blobService
   properties: {
@@ -49,17 +49,17 @@ resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@20
   }
 }
 
-resource queueService 'Microsoft.Storage/storageAccounts/queueServices@2022-09-01' = {
+resource queueService 'Microsoft.Storage/storageAccounts/queueServices@2023-01-01' = {
   name: 'default'
   parent: storageAccount
 }
 
-resource requestQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@2022-09-01' = {
+resource requestQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@2023-01-01' = {
   name: requestQueueName
   parent: queueService
 }
 
-resource resultQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@2022-09-01' = {
+resource resultQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@2023-01-01' = {
   name: resultQueueName
   parent: queueService
 }
@@ -84,7 +84,7 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   }
 }
 
-resource environment 'Microsoft.App/managedEnvironments@2023-04-01-preview' = {
+resource environment 'Microsoft.App/managedEnvironments@2023-05-01' = {
   name: environmentName
   location: location
   properties: {
@@ -108,7 +108,7 @@ resource environment 'Microsoft.App/managedEnvironments@2023-04-01-preview' = {
   }
 }
 
-resource imageStoreComponent 'Microsoft.App/managedEnvironments/daprComponents@2023-04-01-preview' = {
+resource imageStoreComponent 'Microsoft.App/managedEnvironments/daprComponents@2023-05-01' = {
   name: 'image-store'
   parent: environment
   properties: {
@@ -141,7 +141,7 @@ resource imageStoreComponent 'Microsoft.App/managedEnvironments/daprComponents@2
   }
 }
 
-resource requestQueueComponent 'Microsoft.App/managedEnvironments/daprComponents@2023-04-01-preview' = {
+resource requestQueueComponent 'Microsoft.App/managedEnvironments/daprComponents@2023-05-01' = {
   name: 'thumbnail-request'
   parent: environment
   properties: {
@@ -170,7 +170,7 @@ resource requestQueueComponent 'Microsoft.App/managedEnvironments/daprComponents
   }
 }
 
-resource resultQueueComponent 'Microsoft.App/managedEnvironments/daprComponents@2023-04-01-preview' = {
+resource resultQueueComponent 'Microsoft.App/managedEnvironments/daprComponents@2023-05-01' = {
   name: 'thumbnail-result'
   parent: environment
   properties: {
