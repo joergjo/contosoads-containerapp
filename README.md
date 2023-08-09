@@ -90,7 +90,7 @@ since the images must be accessible by a browser.
    ```
 
    > The output of that last command will include a deprecation warning for the `-sdk-auth`
-   > flag. This is expected at the time of writing using Azure CLI 2.45. 
+   > flag. This is expected at the time of writing using Azure CLI 2.50. 
 
 3. Copy the JSON written to the screen to your clipboard.
 
