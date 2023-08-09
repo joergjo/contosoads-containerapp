@@ -85,7 +85,7 @@ var command = [
   '/mnt/repo/deploy/migrate.sql'
 ]
 
-resource migration 'Microsoft.ContainerInstance/containerGroups@2021-10-01' = {
+resource migration 'Microsoft.ContainerInstance/containerGroups@2023-05-01' = {
   name: 'dbmigration'
   location: location
   dependsOn: [

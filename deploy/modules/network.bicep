@@ -9,7 +9,7 @@ param privateDnsZoneName string = '${baseName}.postgres.database.azure.com'
 @description('Specifies the location to deploy to.')
 param location string
 
-resource vnet 'Microsoft.Network/virtualNetworks@2022-09-01' = {
+resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   name: '${baseName}-vnet'
   location: location
   properties: {
@@ -68,7 +68,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2022-09-01' = {
   }
 }
 
-resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-02-01' = {
+resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2023-04-01' = {
   name: '${baseName}-infra-nsg'
   location: location
   properties: {
