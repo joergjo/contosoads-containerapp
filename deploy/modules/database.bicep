@@ -12,6 +12,7 @@ param location string
   '12'
   '13'
   '14'
+  '15'
 ])
 param version string
 
