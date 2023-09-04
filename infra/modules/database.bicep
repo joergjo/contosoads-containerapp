@@ -1,8 +1,8 @@
-@description('Specifies the name of the Azure Database for PostgreSQL flexible server.')
-param serverName string = 'server-${uniqueString(resourceGroup().id)}'
+@description('Specifies the name prefix of all resources.')
+param namePrefix string
 
 @description('Specifies the name of PostgreSQL database used by the application.')
-param databaseName string
+param database string = 'contosoads'
 
 @description('Specifies the location to deploy to.')
 param location string
@@ -14,7 +14,7 @@ param location string
   '14'
   '15'
 ])
-param version string
+param version string = '14'
 
 @description('Specifies the PostgreSQL administrator login name.')
 @secure()
@@ -36,13 +36,31 @@ param privateDnsZoneId string
 @description('Specifies the public Git repo that hosts the database migration script.')
 param repository string
 
-resource postgres 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' = {
+@description('Specifies the tags for all resources.')
+param tags object = {}
+
+var uid = uniqueString(resourceGroup().id)
+var serverName = '${namePrefix}${uid}'
+var command = [
+  'psql'
+  '-h'
+  '${serverName}.postgres.database.azure.com'
+  '-U'
+  administratorLogin
+  '-d'
+  database
+  '-f'
+  '/mnt/repo/deploy/migrate.sql'
+]
+
+resource postgresServer 'Microsoft.DBforPostgreSQL/flexibleServers@2023-03-01-preview' = {
   name: serverName
   location: location
   sku: {
     name: 'Standard_B1ms'
     tier: 'Burstable'
   }
+  tags: tags
   properties: {
     administratorLogin: administratorLogin
     administratorLoginPassword: administratorLoginPassword
@@ -65,32 +83,21 @@ resource postgres 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' = {
   }
 }
 
-resource database 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2022-12-01' = {
-  name: databaseName
-  parent: postgres
+resource postgresDatabase 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2023-03-01-preview' = {
+  name: database
+  parent: postgresServer
   properties: {
     charset: 'utf8'
     collation: 'en_US.utf8'
   }
 }
 
-var command = [
-  'psql'
-  '-h'
-  '${serverName}.postgres.database.azure.com'
-  '-U'
-  administratorLogin
-  '-d'
-  databaseName
-  '-f'
-  '/mnt/repo/deploy/migrate.sql'
-]
-
 resource migration 'Microsoft.ContainerInstance/containerGroups@2023-05-01' = {
-  name: 'dbmigration'
+  name: '${serverName}-migration'
   location: location
+  tags: tags
   dependsOn: [
-    database
+    postgresDatabase
   ]
   properties: {
     containers: [
@@ -145,4 +152,6 @@ resource migration 'Microsoft.ContainerInstance/containerGroups@2023-05-01' = {
   }
 }
 
-output fqdn string = postgres.properties.fullyQualifiedDomainName
+output serverFqdn string = postgresServer.properties.fullyQualifiedDomainName
+output serverName string = postgresServer.name
+output databaseName string = postgresDatabase.name

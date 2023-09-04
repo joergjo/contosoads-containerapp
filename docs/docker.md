@@ -2,12 +2,12 @@
 
 ## Prerequisites
 
+* macOS, Linux, or Windows 10/11 with the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) set up.
 * [Docker Desktop](https://docs.docker.com/docker-desktop/install/)
-* macOS, Linux, or Windows 10/11 with the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) set up
 
 ### Preparing storage artifacts and secrets
 
-Run the following script to create the required storage artifacts and a secrets file.
+Run the following shell script in bash or zsh to create the required storage artifacts and a secrets file.
 You only need to execute this step once, as long as you don't delete the Docker
 volume that stores Azurite's workspace (see [Storing and cleaning up](#cleanup)).
 
@@ -94,7 +94,7 @@ override the image names and tags by creating an `.env` file and setting
 that is stored in another repository. 
 
 To build images for your local CPU architecture (e.g., ARM64 on an Apple Silicon Mac,
-AMD64 on an Intel based Windows PC) run, create an `.env` file as mentioned and run
+AMD64 on an x64 based Windows PC) run, create an `.env` file as mentioned and run
 
 ```bash
 cd contosoads-containerapp

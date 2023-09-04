@@ -2,18 +2,18 @@
 
 ## Prerequisites
 
+* macOS, Linux, or Windows 10/11 with the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) set up
 * [.NET 7.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
 * [Dapr](https://docs.dapr.io/getting-started/install-dapr-cli/)
-* [Docker Desktop](https://docs.docker.com/docker-desktop/install/) 
-* macOS, Linux, or Windows 10/11 with the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) set up
+* [Docker Desktop](https://docs.docker.com/docker-desktop/install/)
 
-If you are using this method, the Contoso Ads applications run "natively" as processes along with 
-their Dapr sidecars, whereas PostgreSQL and Azure Storage run in Docker Containers. Azure Storage is
-emulated using [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&tabs=visual-studio).
+These instructions allow you to run the Contoso Ads applications "natively" on your development machine 
+including their Dapr sidecars. PostgreSQL and Azure Storage, emulated using [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&tabs=visual-studio), run in Docker 
+Containers. 
 
 ### Preparing storage artifacts and secrets
 
-Run the following script to create the required storage artifacts and a secrets file.
+Run the following shell script in bash or zsh to create the required storage artifacts and a secrets file.
 You only need to execute this step once, as long as you don't delete the Docker 
 volume that stores Azurite's workspace (see [Stopping and cleaning up](#stopping-and-cleaning-up)).
 
@@ -102,4 +102,3 @@ cd contosoads-containerapp
 dotnet test
 dotnet build
 ```
-

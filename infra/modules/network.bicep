@@ -1,17 +1,24 @@
-@description('Specifies the common name prefix for all resources.')
-@minLength(5)
-@maxLength(14)
-param baseName string
-
-@description('Specifies the name of the private DNS zone.')
-param privateDnsZoneName string = '${baseName}.postgres.database.azure.com'
+@description('Specifies the name prefix of all resources.')
+param namePrefix string
 
 @description('Specifies the location to deploy to.')
 param location string
 
+@description('Specifies whether a private DNS zone will be deployed')
+param deployDnsZone bool = true
+
+@description('Specifies the tags for all resources.')
+param tags object = {}
+
+var uid = uniqueString(resourceGroup().id)
+var vnetName = '${namePrefix}${uid}-vnet'
+var nsgName = '${namePrefix}${uid}-infra-nsg'
+var privateDnsZoneName = 'contosoads.postgres.database.azure.com'
+
 resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
-  name: '${baseName}-vnet'
+  name: vnetName
   location: location
+  tags: tags
   properties: {
     addressSpace: {
       addressPrefixes: [
@@ -32,7 +39,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
             }
           ]
           networkSecurityGroup: {
-            id: networkSecurityGroup.id
+            id: nsg.id
           }
         }
       }
@@ -68,9 +75,10 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   }
 }
 
-resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2023-04-01' = {
-  name: '${baseName}-infra-nsg'
+resource nsg 'Microsoft.Network/networkSecurityGroups@2023-04-01' = {
+  name: nsgName
   location: location
+  tags: tags
   properties: {
     securityRules: [
       {
@@ -103,15 +111,17 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2023-04-0
   }
 }
 
-resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: privateDnsZoneName
+resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = if (deployDnsZone) {
+  name: privateDnsZoneName 
   location: 'global'
+  tags: tags
 }
 
-resource privateDnsZoneLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
+resource privateDnsZoneLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = if (deployDnsZone) {
   parent: privateDnsZone
   name: '${vnet.name}-link'
   location: 'global'
+  tags: tags
   properties: {
     registrationEnabled: true
     virtualNetwork: {
