@@ -22,41 +22,39 @@ These steps are describe in more detail in the following sections.
 
    ```bash
    az login
+   
    subscription_id=$(az account show --query id --output tsv)
    az ad sp create-for-rbac \
-     --name ContosoAds-CICD \
+     --name contosoads-gh \
      --role contributor \
-     --sdk-auth \
+     --json-auth \
      --scopes "/subscriptions/$subscription_id"
    ```
-
-   > The output of that last command will include a deprecation warning for the `-sdk-auth`
-   > flag. This is expected at the time of writing using Azure CLI 2.50.
 
 3. Copy the JSON written to the screen to your clipboard.
 
    ```json
    {
-     "clientId": "...",
-     "clientSecret": "...",
-     "subscriptionId": "...",
-     "tenantId": "...",
-     "activeDirectoryEndpointUrl": "https://login.microsoftonline.com/",
-     "resourceManagerEndpointUrl": "https://brazilus.management.azure.com",
-     "activeDirectoryGraphResourceId": "https://graph.windows.net/",
-     "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
-     "galleryEndpointUrl": "https://gallery.azure.com",
-     "managementEndpointUrl": "https://management.core.windows.net"
+      "clientId": "<GUID>",
+      "clientSecret": "<STRING>",
+      "subscriptionId": "<GUID>",
+      "tenantId": "<GUID>",
+      "resourceManagerEndpointUrl": "<URL>"
+      (...)
    }
    ```
 
-4. Create a new GitHub secret in your fork of this repository named `AZURE_SPN`. Paste the JSON returned from the Azure CLI into this new secret. Once you've done this you'll see the secret in your fork of the repository.
+4. Create a new GitHub secret in your fork of this repository named `AZURE_CREDENTIALS`. Paste the JSON returned from the Azure CLI into this new secret. Once you've done this you'll see the secret in your fork of the repository.
    > Note: Never save the JSON to disk, for it will enable anyone who obtains this file to create or edit resources in your Azure subscription.
-
-5. Create a new GitHub secret in your fork of this repository named `DB_PWD` and set it to a secure password to be used for PostgreSQL.
+5. Create a new GitHub secret named `POSTGRES_LOGIN` and set it to a valid PostgreSQL user name (e.g., `contosoads`).
+6. Create a new GitHub secret named `POSTGRES_LOGIN_PWD` and set it to a secure password to be used for `POSTGRES_LOGIN`.
+7. Create a new GitHub secret named `AZURE_ENV_NAME` and set it to the name of the environment you want to deploy to.
+8. Create a new GitHub secret named `AZURE_LOCATION` and set it to the Azure region you want to deploy to (e.g., `northeurope`).
+9. Create a new GitHub secret named `AZURE_SUBSCRIPTION_ID` and set it to the GUID of your Azure subscription.
 
    ![Secrets in GitHub](media/secrets.png)
 
+# To be updated
 ### Deploy the code using GitHub Actions
 
 The easiest way to deploy the code is to make a commit directly to the `deploy` branch. Do this by navigating to the `deploy.yml` file in your browser and
