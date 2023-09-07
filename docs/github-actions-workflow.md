@@ -48,33 +48,22 @@ These steps are describe in more detail in the following sections.
    > Note: Never save the JSON to disk, for it will enable anyone who obtains this file to create or edit resources in your Azure subscription.
 5. Create a new GitHub secret named `POSTGRES_LOGIN` and set it to a valid PostgreSQL user name (e.g., `contosoads`).
 6. Create a new GitHub secret named `POSTGRES_LOGIN_PWD` and set it to a secure password to be used for `POSTGRES_LOGIN`.
-7. Create a new GitHub secret named `AZURE_ENV_NAME` and set it to the name of the environment you want to deploy to.
-8. Create a new GitHub secret named `AZURE_LOCATION` and set it to the Azure region you want to deploy to (e.g., `northeurope`).
-9. Create a new GitHub secret named `AZURE_SUBSCRIPTION_ID` and set it to the GUID of your Azure subscription.
 
    ![Secrets in GitHub](media/secrets.png)
+
+7. Create a new GitHub variable named `AZURE_ENV_NAME` and set it to the name of the environment you want to deploy to.
+8. Create a new GitHub variable named `AZURE_LOCATION` and set it to the Azure region you want to deploy to (e.g., `northeurope`). Make sure to pick one that [offers Azure Container Apps, Azure Database for PostgreSQL Flexible Server and Application Insights](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=monitor,postgresql,container-apps).
+9. Create a new GitHub variable named `AZURE_SUBSCRIPTION_ID` and set it to the GUID of your Azure subscription.
+
+   ![Envrionment variables in GitHub](media/envvars.png)
 
 # To be updated
 ### Deploy the code using GitHub Actions
 
-The easiest way to deploy the code is to make a commit directly to the `deploy` branch. Do this by navigating to the `deploy.yml` file in your browser and
-clicking the `Edit` button.
-
-![Edit the deployment workflow file.](media/edit-the-deploy-file.png)
-
-Provide a custom resource group name for the app, set the name of your GitHub repository and then commit the change to a new branch named `deploy`.
-If you want to deploy to a different region, make sure to pick one that [offers Azure Container Apps, Azure Database for PostgreSQL Flexible Server
-and Application Insights](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=monitor,postgresql,container-apps).
-
-![Create the deploy branch.](media/deploy.png)
-
-Once you click the `Propose changes` button, you'll be in "create a pull request" mode. Don't worry about creating the pull request yet, just click on the `Actions` tab, and you'll see that the deployment CI/CD process has already started.
+The easiest way to deploy the application is to manually start using the GitHub actions workflow
+named `azure-dev` by clicking `Run workflow` the button.
 
 ![Build started.](media/deploy-started.png)
-
-When you click into the workflow, you'll see the `deploy` job the CI/CD will run through:
-
-![Deployment details.](media/deploy-details.png)
 
 After a few minutes, the workflow will be completed and the workflow diagram will reflect success. If anything fails, you can click into the
 individual process step to see the detailed log output.
