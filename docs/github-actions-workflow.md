@@ -57,13 +57,12 @@ These steps are describe in more detail in the following sections.
 
    ![Envrionment variables in GitHub](media/envvars.png)
 
-# To be updated
 ### Deploy the code using GitHub Actions
 
 The easiest way to deploy the application is to manually start using the GitHub actions workflow
 named `azure-dev` by clicking `Run workflow` the button.
 
-![Build started.](media/deploy-started.png)
+![Build started.](media/workflow-run.png)
 
 After a few minutes, the workflow will be completed and the workflow diagram will reflect success. If anything fails, you can click into the
 individual process step to see the detailed log output.
@@ -71,7 +70,11 @@ individual process step to see the detailed log output.
 > Note: if you do see any failures or issues, please submit an Issue so we can update the sample. Likewise, if you have ideas that could make
 > it better, feel free to submit a pull request.
 
-![Deployment success.](media/success.png)
+![Workflow success.](media/workflow-success.png)
 
 With the projects deployed to Azure, you can now test the app to make sure it works.
 
+### Continuous Integration
+
+The GitHub Actions workflow can be also triggered automatically by committing
+code if the source branch is called `deploy`. 
