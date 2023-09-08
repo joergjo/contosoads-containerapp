@@ -1,92 +1,45 @@
 @description('Specifies the name prefix of all resources.')
-param baseName string
+param namePrefix string
 
 @description('Specifies the location to deploy to.')
-param location string 
+param location string
 
 @description('Specifies the subnet resource ID for the Container App environment.')
 param infrastructureSubnetId string
 
-@description('Specifies the name of the Azure Storage account.')
-param storageAccountName string = '${length(baseName) <=11 ? baseName : substring(baseName, 0, 11)}${uniqueString(resourceGroup().id)}'
+@description('Specifies the Log Analytics workspace to connect to.')
+param workspaceName string
 
-@description('Specifies the name of the blob container for images and thumbnails.')
-param containerName string
+@description('Specifies the name of the application\'s storage account.')
+param storageAccountName string
+
+@description('Specifies the name of the blob container.')
+param imageContainerName string = 'images'
 
 @description('Specifies the name of the request queue.')
-param requestQueueName string
+param requestQueueName string = 'thumbnail-request'
 
 @description('Specifies the name of the result queue.')
-param resultQueueName string
+param resultQueueName string = 'thumbnail-result'
 
-var workspaceName = '${baseName}-logs'
-var appInsightsName = '${baseName}-insights'
-var environmentName = '${baseName}-env'
+@description('Specifies the tags for all resources.')
+param tags object = {}
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
-  name: storageAccountName
-  location: location
-  sku: {
-    name: 'Standard_LRS'
-  }
-  kind: 'StorageV2'
-  properties: {
-    accessTier: 'Hot'
-    minimumTlsVersion: 'TLS1_2'
-  }
-}
+var uid = uniqueString(resourceGroup().id)
+var environmentName = '${namePrefix}${uid}-env'
 
-resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2023-01-01' = {
-  name: 'default'
-  parent: storageAccount
-}
-
-resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01' = {
-  name: containerName
-  parent: blobService
-  properties: {
-    publicAccess: 'Blob'
-  }
-}
-
-resource queueService 'Microsoft.Storage/storageAccounts/queueServices@2023-01-01' = {
-  name: 'default'
-  parent: storageAccount
-}
-
-resource requestQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@2023-01-01' = {
-  name: requestQueueName
-  parent: queueService
-}
-
-resource resultQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@2023-01-01' = {
-  name: resultQueueName
-  parent: queueService
-}
-
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
   name: workspaceName
-  location: location
-  properties: {
-    sku: {
-      name: 'PerGB2018'
-    }
-  }
 }
 
-resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
-  name: appInsightsName
-  location: location
-  kind: 'web'
-  properties: { 
-    Application_Type: 'web'
-    WorkspaceResourceId: logAnalyticsWorkspace.id
-  }
+resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' existing = {
+  name: storageAccountName
 }
 
 resource environment 'Microsoft.App/managedEnvironments@2023-05-01' = {
   name: environmentName
   location: location
+  tags: tags
   properties: {
     appLogsConfiguration: {
       destination: 'log-analytics'
@@ -113,7 +66,7 @@ resource imageStoreComponent 'Microsoft.App/managedEnvironments/daprComponents@2
   parent: environment
   properties: {
     componentType: 'bindings.azure.blobstorage'
-    version: 'v1' 
+    version: 'v1'
     metadata: [
       {
         name: 'storageAccount'
@@ -125,7 +78,7 @@ resource imageStoreComponent 'Microsoft.App/managedEnvironments/daprComponents@2
       }
       {
         name: 'container'
-        value: containerName
+        value: imageContainerName
       }
       {
         name: 'decodeBase64'
@@ -137,7 +90,7 @@ resource imageStoreComponent 'Microsoft.App/managedEnvironments/daprComponents@2
         name: 'storage-key'
         value: storageAccount.listKeys().keys[0].value
       }
-    ] 
+    ]
   }
 }
 
@@ -146,7 +99,7 @@ resource requestQueueComponent 'Microsoft.App/managedEnvironments/daprComponents
   parent: environment
   properties: {
     componentType: 'bindings.azure.storagequeues'
-    version: 'v1' 
+    version: 'v1'
     metadata: [
       {
         name: 'storageAccount'
@@ -166,7 +119,7 @@ resource requestQueueComponent 'Microsoft.App/managedEnvironments/daprComponents
         name: 'storage-key'
         value: storageAccount.listKeys().keys[0].value
       }
-    ] 
+    ]
   }
 }
 
@@ -175,7 +128,7 @@ resource resultQueueComponent 'Microsoft.App/managedEnvironments/daprComponents@
   parent: environment
   properties: {
     componentType: 'bindings.azure.storagequeues'
-    version: 'v1' 
+    version: 'v1'
     metadata: [
       {
         name: 'storageAccount'
@@ -195,10 +148,9 @@ resource resultQueueComponent 'Microsoft.App/managedEnvironments/daprComponents@
         name: 'storage-key'
         value: storageAccount.listKeys().keys[0].value
       }
-    ] 
+    ]
   }
 }
 
-output aiConnectionString string = appInsights.properties.ConnectionString
-output environmentId string = environment.id
-
+output id string = environment.id
+output name string = environment.name

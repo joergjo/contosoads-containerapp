@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+
+name: contosoads-containerapp
+services:
+  webapp:
+    project: ./src/ContosoAds.Web
+    language: csharp
+    host: containerapp
+    docker:
+      context: . 
+      path: ./Dockerfile.multiarch
+  imageprocessor:
+    project: ./src/ContosoAds.ImageProcessor
+    language: csharp
+    host: containerapp
+    docker:
+      context: .
+      path: ./Dockerfile.multiarch

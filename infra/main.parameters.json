@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "environmentName": {
+        "value": "${AZURE_ENV_NAME}"
+      },
+      "location": {
+        "value": "${AZURE_LOCATION}"
+      },
+      "postgresLogin": {
+        "value": "${POSTGRES_LOGIN}"
+      },
+      "postgresLoginPassword": {
+        "value": "${POSTGRES_LOGIN_PASSWORD}"
+      },
+      "webAppExists": {
+        "value": "${SERVICE_WEBAPP_RESOURCE_EXISTS=false}"
+      },
+      "imageProcessorExists": {
+        "value": "${SERVICE_IMAGEPROCESSOR_RESOURCE_EXISTS=false}"
+      }
+    }
+}

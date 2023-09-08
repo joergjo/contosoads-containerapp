@@ -20,6 +20,5 @@ spec:
 #   When running the entire software stack in Docker, uncomment the next two lines.
 #    - name: endpoint
 #      value: "http://host.docker.internal:10001"
-
 auth:
   secretStore: dev-secrets
