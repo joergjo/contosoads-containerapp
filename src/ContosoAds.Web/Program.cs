@@ -53,30 +53,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 var port = builder.Configuration.GetValue("HealthCheck:Port", 0);
-if (port > 0)
-{
-    var host = $"*:{port}";
-    app.MapHealthChecks("/healthz/live", new HealthCheckOptions
-    {
-        Predicate = _ => false
-    }).RequireHost(host);
-    app.MapHealthChecks("/healthz/ready", new HealthCheckOptions
-    {
-        Predicate = r => r.Name.Contains("ready")
-    }).RequireHost(host);
-}
-else
-{
-    app.MapHealthChecks("/healthz/live", new HealthCheckOptions
-    {
-        Predicate = _ => false
-    });
-    app.MapHealthChecks("/healthz/ready", new HealthCheckOptions
-    {
-        Predicate = r => r.Name.Contains("ready")
-    });
-}
-
+app.UseHealthChecks(port, "db_ready");
 app.MapRazorPages();
 app.MapControllers();
 
