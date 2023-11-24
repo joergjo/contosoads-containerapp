@@ -12,8 +12,9 @@ services:
     image: ${IMAGEPROCESSOR_IMAGE:-joergjo/contosoads-imageprocessor:latest}
     build:
       context: ./src/ContosoAds.ImageProcessor
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.multiarch
     environment:
+      - ASPNETCORE_URLS=http://*:8080
       - ASPNETCORE_ENVIRONMENT=Development
       - Logging__Console__FormatterName=Simple
       - DAPR_HTTP_PORT=50001
@@ -25,7 +26,7 @@ services:
     command: [
       "./daprd",
       "-app-id", "contosoads-imageprocessor",
-      "-app-port", "8081",
+      "-app-port", "8080",
       "-placement-host-address", "placement:50006",
       "-dapr-http-port", "50001",
       "-dapr-grpc-port", "50002",
@@ -41,11 +42,12 @@ services:
     image: ${WEB_IMAGE:-joergjo/contosoads-web:latest}
     build:
       context: ./src/ContosoAds.Web
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.multiarch
     ports:
       - "8080:8080"
     environment:
       - ConnectionStrings__DefaultConnection=Host=db;Database=contosoads;Username=postgres;Password=pass@word1
+      - ASPNETCORE_URLS=http://*:8080
       - ASPNETCORE_ENVIRONMENT=Development
       - Logging__Console__FormatterName=Simple
       - DAPR_HTTP_PORT=50001

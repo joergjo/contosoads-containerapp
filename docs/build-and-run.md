@@ -3,7 +3,7 @@
 ## Prerequisites
 
 * macOS, Linux, or Windows 10/11 with the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) set up
-* [.NET 7.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
+* [.NET 8.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 * [Dapr](https://docs.dapr.io/getting-started/install-dapr-cli/)
 * [Docker Desktop](https://docs.docker.com/docker-desktop/install/)
 
