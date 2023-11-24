@@ -1,5 +1,10 @@
 # Contoso Ads on Containers
 
+## Note
+You are looking at the .NET 7 branch of this sample. If you want to use the latest .NET
+version instead, please check out the [`main`](https://github.com/joergjo/contosoads-containerapp/tree/main)
+branch.
+
 ## Introduction
 This sample demonstrates how ASP.NET Core 7.0 can be used to build a cloud native application 
 that consists of a frontend web app and an API that communicate asynchronously via messaged 
@@ -40,7 +45,7 @@ This sample app uses a variety of technologies:
 * [ASP.NET Core Minimal API](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-7.0)
 * [Entity Framework Core 7.0](https://docs.microsoft.com/en-us/ef/core/overview)
 * [Dapr](https://dapr.io)
-* [C# 11](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10)
+* [C# 11](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-11)
 
 ## Prerequisites
 You'll a small set of tools and skills to get started:
