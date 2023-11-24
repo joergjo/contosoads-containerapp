@@ -1,22 +1,25 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS base
+EXPOSE 8080
 WORKDIR /app
-EXPOSE 8081
-ENV ASPNETCORE_URLS http://*:8081
 
-RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
-USER appuser
-
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
+ARG TARGETARCH
 WORKDIR /src
 COPY ["./ContosoAds.ImageProcessor.csproj", "."]
-RUN dotnet restore "ContosoAds.ImageProcessor.csproj"
+RUN dotnet restore -a $TARGETARCH
 COPY [".", "."]
-RUN dotnet build "ContosoAds.ImageProcessor.csproj" -c Release -o /app/build
-
-FROM build AS publish
-RUN dotnet publish "ContosoAds.ImageProcessor.csproj" -c Release -o /app/publish
+RUN dotnet publish -a $TARGETARCH --no-restore -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
+ENV \
+    DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
+    LC_ALL=en_US.UTF-8 \
+    LANG=en_US.UTF-8
+RUN apk add --no-cache \
+    icu-data-full \
+    icu-libs
+USER $APP_UID
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build ["/app/publish", "."]
 ENTRYPOINT ["dotnet", "ContosoAds.ImageProcessor.dll"]

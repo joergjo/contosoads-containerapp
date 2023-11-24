@@ -8,11 +8,11 @@ services:
     host: containerapp
     docker:
       context: . 
-      path: ./Dockerfile.multiarch
+      path: ./Dockerfile
   imageprocessor:
     project: ./src/ContosoAds.ImageProcessor
     language: csharp
     host: containerapp
     docker:
       context: .
-      path: ./Dockerfile.multiarch
+      path: ./Dockerfile
