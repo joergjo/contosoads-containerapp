@@ -53,7 +53,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./src/ContosoAds.Web
-          file: ./src/ContosoAds.Web/Dockerfile.multiarch
+          file: ./src/ContosoAds.Web/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta-web.outputs.tags }}
@@ -63,7 +63,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./src/ContosoAds.ImageProcessor
-          file: ./src/ContosoAds.ImageProcessor/Dockerfile.multiarch
+          file: ./src/ContosoAds.ImageProcessor/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta-imageprocessor.outputs.tags }}

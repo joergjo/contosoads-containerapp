@@ -1,4 +1,4 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8090
@@ -7,17 +7,23 @@ ENV ASPNETCORE_URLS=http://*:8080;http://*:8090
 RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
 USER appuser
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+# Learn about building .NET container images:
+# https://github.com/dotnet/dotnet-docker/blob/main/samples/README.md
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+ARG TARGETARCH
 WORKDIR /src
+
+# copy csproj and restore as distinct layers
 COPY ["./ContosoAds.Web.csproj", "."]
-RUN dotnet restore "ContosoAds.Web.csproj"
+RUN dotnet restore -a $TARGETARCH
+
+# copy everything else and build app
 COPY [".", "."]
-RUN dotnet build "ContosoAds.Web.csproj" -c Release -o /app/build
+RUN dotnet publish -a $TARGETARCH --self-contained false --no-restore -o /app
 
-FROM build AS publish
-RUN dotnet publish "ContosoAds.Web.csproj" -c Release -o /app/publish
-
+# final stage/image
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build /app .
 ENTRYPOINT ["dotnet", "ContosoAds.Web.dll"]
+
