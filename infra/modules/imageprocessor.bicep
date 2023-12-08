@@ -22,7 +22,7 @@ param containerRegistryName string
 @description('Specifies the tags for all resources.')
 param tags object = {}
 
-var containerPort = 8081
+var containerPort = 8080
 var acrPullRole = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
 var appIdentityName = '${name}-mi'
 
