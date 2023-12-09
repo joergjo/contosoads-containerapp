@@ -1,6 +1,9 @@
 version: 1
 common:
   resourcesPath: ./components
+  env:
+    # Set this to an actual connection string to enable tracing to Application Insights
+    ApplicationInsights__ConnectionString: ""
 apps:
   - appID: contosoads-web
     appDirPath: ./src/ContosoAds.Web
