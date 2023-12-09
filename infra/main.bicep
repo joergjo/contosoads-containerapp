@@ -28,8 +28,9 @@ param postgresLoginPassword string
   '13'
   '14'
   '15'
+  '16'
 ])
-param postgresVersion string = '14'
+param postgresVersion string = '15'
 
 @description('Specifies the public Git repo that hosts the database migration script.')
 param repository string = 'https://github.com/joergjo/contosoads-containerapp.git'
@@ -49,10 +50,10 @@ var tags = {
   'azd-env-name': environmentName
 }
 
-// var defaultImageProcessorImage = !empty(imageProcessorImage) ? imageProcessorImage : 'joergjo/contosoads-imageprocessor:latest'
 var imageContainerName = 'images'
 var requestQueueName = 'thumbnail-request'
 var resultQueueName = 'thumbnail-result'
+var databaseName = 'contosoads'
 
 resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: environmentName
@@ -102,6 +103,7 @@ module postgres 'modules/database.bicep' = {
     namePrefix: namePrefix
     administratorLogin: postgresLogin
     administratorLoginPassword: postgresLoginPassword
+    databaseName: databaseName
     postgresSubnetId: network.outputs.pgSubnetId
     aciSubnetId: network.outputs.aciSubnetId
     privateDnsZoneId: network.outputs.privateDnsZoneId

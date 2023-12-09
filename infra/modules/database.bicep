@@ -2,7 +2,7 @@
 param namePrefix string
 
 @description('Specifies the name of PostgreSQL database used by the application.')
-param database string = 'contosoads'
+param databaseName string
 
 @description('Specifies the location to deploy to.')
 param location string
@@ -13,8 +13,9 @@ param location string
   '13'
   '14'
   '15'
+  '16'
 ])
-param version string = '14'
+param version string
 
 @description('Specifies the PostgreSQL administrator login name.')
 @secure()
@@ -48,7 +49,7 @@ var command = [
   '-U'
   administratorLogin
   '-d'
-  database
+  databaseName
   '-f'
   '/mnt/repo/deploy/migrate.sql'
 ]
@@ -84,7 +85,7 @@ resource postgresServer 'Microsoft.DBforPostgreSQL/flexibleServers@2023-03-01-pr
 }
 
 resource postgresDatabase 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2023-03-01-preview' = {
-  name: database
+  name: databaseName
   parent: postgresServer
   properties: {
     charset: 'utf8'
