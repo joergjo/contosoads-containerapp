@@ -19,6 +19,8 @@ services:
       - Logging__Console__FormatterName=Simple
       - DAPR_HTTP_PORT=50001
       - DAPR_GRPC_PORT=50002
+      # Set this to an actual connection string to enable tracing to Application Insights
+      - ApplicationInsights__ConnectionString=""
     networks:
       - contosoads-network
   imageprocessor-dapr:
@@ -52,6 +54,8 @@ services:
       - Logging__Console__FormatterName=Simple
       - DAPR_HTTP_PORT=50001
       - DAPR_GRPC_PORT=50002
+      # Set this to an actual connection string to enable tracing to Application Insights
+      - ApplicationInsights__ConnectionString=""
     networks:
       - contosoads-network
     depends_on:
