@@ -6,7 +6,7 @@ volumes:
 
 services:
   db:
-    image: ${POSTGRES_IMAGE:-postgres:14-alpine}
+    image: ${POSTGRES_IMAGE:-postgres:15-alpine}
     profiles:
       - "all"
     restart: always
