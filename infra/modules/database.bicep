@@ -56,7 +56,7 @@ var uid = uniqueString(resourceGroup().id)
 var serverName = '${namePrefix}${uid}'
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
-  name: migrationIdentityObjectId
+  name: migrationIdentityName
 }
 
 resource postgresServer 'Microsoft.DBforPostgreSQL/flexibleServers@2023-06-01-preview' = {
@@ -180,6 +180,7 @@ resource containerInstance 'Microsoft.ContainerInstance/containerGroups@2023-05-
         gitRepo: {
           repository: repository
           directory: '.'
+          revision: '2ac6afadc7c5557c8863d078663a1c84e2fc0d33'
         }
       }
     ]

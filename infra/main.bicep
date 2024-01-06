@@ -196,7 +196,7 @@ module imageprocessor 'modules/imageprocessor-upsert.bicep' = {
   params: {
     location: location
     tags: tags
-    name: webAppName
+    name: imageProcessorName
     environmentId: environment.outputs.id
     aiConnectionString: monitoring.outputs.aiConnectionString
     containerRegistryName: registry.outputs.name
