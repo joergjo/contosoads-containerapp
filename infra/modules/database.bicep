@@ -31,6 +31,12 @@ param entraIdAdmin string
 @description('Specifies the Entra ID PostgreSQL administrator user\'s object ID.')
 param entraIdAdminObjectId string
 
+@description('Specifies the User Assigned Managed Identity for database migrations.')
+param migrationIdentityName string
+
+@description('Specifies the User Assigned Managed Identity for database migrations.')
+param migrationIdentityObjectId string
+
 @description('Specifies the subnet resource ID of the delegated subnet for Azure Database for PostgreSQL server.')
 param postgresSubnetId string
 
@@ -48,19 +54,12 @@ param tags object = {}
 
 var uid = uniqueString(resourceGroup().id)
 var serverName = '${namePrefix}${uid}'
-var command = [
-  'psql'
-  '-h'
-  '${serverName}.postgres.database.azure.com'
-  '-U'
-  administratorLogin
-  '-d'
-  databaseName
-  '-f'
-  '/mnt/repo/deploy/migrate.sql'
-]
 
-resource postgresServer 'Microsoft.DBforPostgreSQL/flexibleServers@2023-03-01-preview' = {
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
+  name: migrationIdentityObjectId
+}
+
+resource postgresServer 'Microsoft.DBforPostgreSQL/flexibleServers@2023-06-01-preview' = {
   name: serverName
   location: location
   sku: {
@@ -95,7 +94,7 @@ resource postgresServer 'Microsoft.DBforPostgreSQL/flexibleServers@2023-03-01-pr
   }
 }
 
-resource postgresDatabase 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2023-03-01-preview' = {
+resource postgresDatabase 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2023-06-01-preview' = {
   name: databaseName
   parent: postgresServer
   properties: {
@@ -104,7 +103,7 @@ resource postgresDatabase 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2
   }
 }
 
-resource postgresAzureADAdmin 'Microsoft.DBforPostgreSQL/flexibleServers/administrators@2023-03-01-preview' = {
+resource postgresEntraIdAdmin 'Microsoft.DBforPostgreSQL/flexibleServers/administrators@2023-06-01-preview' = {
   name: entraIdAdminObjectId
   parent: postgresServer
   properties: {
@@ -114,24 +113,49 @@ resource postgresAzureADAdmin 'Microsoft.DBforPostgreSQL/flexibleServers/adminis
   }
 }
 
-resource migration 'Microsoft.ContainerInstance/containerGroups@2023-05-01' = {
+resource postgresMigrationIdentity 'Microsoft.DBforPostgreSQL/flexibleServers/administrators@2023-06-01-preview' = {
+  name: migrationIdentityObjectId
+  parent: postgresServer
+  properties: {
+    principalName: migrationIdentityName
+    principalType: 'ServicePrincipal'
+    tenantId: subscription().tenantId
+  }
+}
+
+resource containerInstance 'Microsoft.ContainerInstance/containerGroups@2023-05-01' = {
   name: '${serverName}-migration'
   location: location
   tags: tags
-  dependsOn: [
-    postgresDatabase
-  ]
+  identity: {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${managedIdentity.id}': {}
+    }
+  }
   properties: {
     containers: [
       {
         name: 'psql'
         properties: {
           image: 'postgres:15-alpine'
-          command: command
+          command: [ '/mnt/repo/deploy/migrate.sh' ]
           environmentVariables: [
             {
-              name: 'PGPASSWORD'
-              value: administratorLoginPassword
+              name: 'CLIENT_ID'
+              value: managedIdentity.properties.clientId
+            }
+            {
+              name: 'PGHOST'
+              value: postgresServer.properties.fullyQualifiedDomainName
+            }
+            {
+              name: 'PGUSER'
+              value: migrationIdentityName
+            }
+            {
+              name: 'PGDATABASE'
+              value: postgresDatabase.name
             }
           ]
           volumeMounts: [

@@ -56,6 +56,9 @@ var tags = {
   'azd-env-name': environmentName
 }
 
+var webAppName = 'contosoads-web'
+var imageProcessorName = 'contosoads-imageprocessor'
+
 var imageContainerName = 'images'
 var requestQueueName = 'thumbnail-request'
 var resultQueueName = 'thumbnail-result'
@@ -65,6 +68,26 @@ resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: environmentName
   location: location
   tags: tags
+}
+
+module webAppIdentity 'modules/identity.bicep' = {
+  name: 'webAppIdentity'
+  scope: rg
+  params: {
+    namePrefix: webAppName
+    location: location
+    tags: tags
+  }
+}
+
+module imageProcessorIdentity 'modules/identity.bicep' = {
+  name: 'imageProcessorIdentity'
+  scope: rg
+  params: {
+    namePrefix: imageProcessorName
+    location: location
+    tags: tags
+  }
 }
 
 module storage 'modules/storage.bicep' = {
@@ -111,6 +134,8 @@ module postgres 'modules/database.bicep' = {
     administratorLoginPassword: postgresLoginPassword
     entraIdAdmin: entraIdAdmin
     entraIdAdminObjectId:entraIdAdminObjectId
+    migrationIdentityName: webAppIdentity.outputs.name
+    migrationIdentityObjectId: webAppIdentity.outputs.clientId
     databaseName: databaseName
     postgresSubnetId: network.outputs.pgSubnetId
     aciSubnetId: network.outputs.aciSubnetId
@@ -152,9 +177,11 @@ module webapp 'modules/webapp-upsert.bicep' = {
   params: {
     location: location
     tags: tags
+    name: webAppName
     environmentId: environment.outputs.id
     aiConnectionString: monitoring.outputs.aiConnectionString
     containerRegistryName: registry.outputs.name
+    identityName: webAppIdentity.outputs.name
     postgresFqdn: postgres.outputs.serverFqdn
     postgresDatabase: postgres.outputs.databaseName
     postgresLogin: postgresLogin
@@ -169,9 +196,11 @@ module imageprocessor 'modules/imageprocessor-upsert.bicep' = {
   params: {
     location: location
     tags: tags
+    name: webAppName
     environmentId: environment.outputs.id
     aiConnectionString: monitoring.outputs.aiConnectionString
     containerRegistryName: registry.outputs.name
+    identityName: imageProcessorIdentity.outputs.name
     exists: imageProcessorExists
   }
 }

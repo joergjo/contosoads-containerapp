@@ -19,40 +19,41 @@ param envVars array
 @description('Specifies the Azure Container registry name to pull from.')
 param containerRegistryName string
 
+@description('Specifies the name of the User-Assigned Managed Identity for the Container App.')
+param identityName string
+
 @description('Specifies the tags for all resources.')
 param tags object = {}
 
 var containerPort = 8080
 var acrPullRole = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
-var appIdentityName = '${name}-mi'
 
 resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-06-01-preview' existing = {
   name: containerRegistryName
 }
 
-resource appIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
-  location: location
-  name: appIdentityName
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
+  name: identityName
 }
 
 resource acrPullAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   scope: containerRegistry
-  name: guid(subscription().id, resourceGroup().id, appIdentity.id, acrPullRole)
+  name: guid(subscription().id, resourceGroup().id, managedIdentity.id, acrPullRole)
   properties: {
     roleDefinitionId: acrPullRole
     principalType: 'ServicePrincipal'
-    principalId: appIdentity.properties.principalId
+    principalId: managedIdentity.properties.principalId
   }
 }
 
-resource imageprocessor 'Microsoft.App/containerApps@2023-05-01' = {
+resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   name: name
   location: location
   tags: union(tags, { 'azd-service-name': 'imageprocessor' })
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${appIdentity.id}': {}
+      '${managedIdentity.id}': {}
     }
   }
   dependsOn: [
@@ -70,7 +71,7 @@ resource imageprocessor 'Microsoft.App/containerApps@2023-05-01' = {
       registries: [
         {
           server: containerRegistry.properties.loginServer
-          identity: appIdentity.id
+          identity: managedIdentity.id
         }
       ]
       secrets: secrets
@@ -115,4 +116,4 @@ resource imageprocessor 'Microsoft.App/containerApps@2023-05-01' = {
   }
 }
 
-output name string = imageprocessor.name
+output name string = containerApp.name
