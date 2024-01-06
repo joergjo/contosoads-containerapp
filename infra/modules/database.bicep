@@ -25,7 +25,13 @@ param administratorLogin string
 @secure()
 param administratorLoginPassword string
 
-@description('Specifies the subnet resource ID of the delegated subnet for Azure Database.')
+@description('Specifies the Entra ID PostgreSQL administrator user principal name.')
+param entraIdAdmin string
+
+@description('Specifies the Entra ID PostgreSQL administrator user\'s object ID.')
+param entraIdAdminObjectId string
+
+@description('Specifies the subnet resource ID of the delegated subnet for Azure Database for PostgreSQL server.')
 param postgresSubnetId string
 
 @description('Specifies the subnet resource ID of the delegated subnet for Azure Container Instances.')
@@ -65,6 +71,11 @@ resource postgresServer 'Microsoft.DBforPostgreSQL/flexibleServers@2023-03-01-pr
   properties: {
     administratorLogin: administratorLogin
     administratorLoginPassword: administratorLoginPassword
+    authConfig: {
+      activeDirectoryAuth: 'Enabled'
+      passwordAuth: 'Enabled'
+      tenantId: subscription().tenantId
+    }
     storage: {
       storageSizeGB: 32
     }
@@ -93,6 +104,16 @@ resource postgresDatabase 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2
   }
 }
 
+resource postgresAzureADAdmin 'Microsoft.DBforPostgreSQL/flexibleServers/administrators@2023-03-01-preview' = {
+  name: entraIdAdminObjectId
+  parent: postgresServer
+  properties: {
+    principalName: entraIdAdmin
+    principalType: 'User'
+    tenantId: subscription().tenantId
+  }
+}
+
 resource migration 'Microsoft.ContainerInstance/containerGroups@2023-05-01' = {
   name: '${serverName}-migration'
   location: location
@@ -107,12 +128,6 @@ resource migration 'Microsoft.ContainerInstance/containerGroups@2023-05-01' = {
         properties: {
           image: 'postgres:15-alpine'
           command: command
-          ports: [
-            {
-              port: 5432
-              protocol: 'TCP'
-            }
-          ]
           environmentVariables: [
             {
               name: 'PGPASSWORD'

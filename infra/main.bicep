@@ -22,6 +22,12 @@ param postgresLogin string
 @secure()
 param postgresLoginPassword string
 
+@description('Specifies the Azure AD PostgreSQL administrator user principal name.')
+param entraIdAdmin string
+
+@description('Specifies the Azure AD PostgreSQL administrator user\'s object ID.')
+param entraIdAdminObjectId string
+
 @description('Specifies the PostgreSQL version.')
 @allowed([
   '12'
@@ -103,6 +109,8 @@ module postgres 'modules/database.bicep' = {
     namePrefix: namePrefix
     administratorLogin: postgresLogin
     administratorLoginPassword: postgresLoginPassword
+    entraIdAdmin: entraIdAdmin
+    entraIdAdminObjectId:entraIdAdminObjectId
     databaseName: databaseName
     postgresSubnetId: network.outputs.pgSubnetId
     aciSubnetId: network.outputs.aciSubnetId

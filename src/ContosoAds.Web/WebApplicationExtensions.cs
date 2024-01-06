@@ -4,6 +4,7 @@ namespace ContosoAds.Web;
 
 public static class WebApplicationExtensions
 {
+    // ReSharper disable once UnusedMethodReturnValue.Global
     public static WebApplication UseHealthChecks(this WebApplication app, int port, params string[] tags)
     {
         var host = port > 0 ? $"*:{port}" : null;

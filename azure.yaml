@@ -1,6 +1,15 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
 
 name: contosoads-containerapp
+hooks:
+  preprovision:
+    posix:
+      shell: sh
+      run: |
+        current_user_upn=$(az ad signed-in-user show --query userPrincipalName --output tsv)
+        azd env set CURRENT_USER_UPN "$current_user_upn"
+        current_user_objectid=$(az ad signed-in-user show --query id --output tsv)
+        azd env set CURRENT_USER_OBJECTID "$current_user_objectid"
 services:
   webapp:
     project: ./src/ContosoAds.Web

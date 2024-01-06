@@ -3,21 +3,33 @@ using ContosoAds.Web.Commands;
 using ContosoAds.Web.DataAccess;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add monitoring services.
 builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.AddSingleton<ITelemetryInitializer, TelemetryInitializer>();
-builder.Services.AddHealthChecks().AddDbContextCheck<AdsContext>("AdsContext", tags: new[] {"db_ready"});
+
+#pragma warning disable CA1861
+builder.Services.AddHealthChecks().AddDbContextCheck<AdsContext>("AdsContext", tags: ["db_ready"]);
+#pragma warning restore CA1861
+
+// Add MVC and Razor Pages with Dapr support.
 builder.Services.AddRazorPages().AddDapr();
 builder.Services.AddControllers().AddDapr();
-builder.Services.AddDbContext<AdsContext>(options =>
-    options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        pgOptions => pgOptions.EnableRetryOnFailure(3)));
+
+// Configure Npgsql data source and Entity Framework.
+var useEntraId = builder.Configuration.GetValue("DataSource:UseEntraID", false);
+builder.Services.AddNpgsqlDataSource(
+    builder.Configuration.GetConnectionString("DefaultConnection")!, 
+    useEntraId);
+builder.Services.AddDbContext<AdsContext>((sp, options) =>
+{
+    var dataSource = sp.GetRequiredService<NpgsqlDataSource>();
+    options.UseNpgsql(dataSource, pgOptions => pgOptions.EnableRetryOnFailure(3));
+});
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDataProtection().PersistKeysToDbContext<AdsContext>();
 
@@ -29,7 +41,7 @@ builder.Services.Scan(scan =>
         .WithScopedLifetime());
 
 // Force en-US for a consistent culture.
-var supportedCultures = new[] {"en-US"};
+string[] supportedCultures = ["en-US"];
 var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
     .AddSupportedCultures(supportedCultures)
     .AddSupportedUICultures(supportedCultures);
