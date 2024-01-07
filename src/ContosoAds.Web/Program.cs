@@ -21,10 +21,17 @@ builder.Services.AddRazorPages().AddDapr();
 builder.Services.AddControllers().AddDapr();
 
 // Configure Npgsql data source and Entity Framework.
-var useEntraId = builder.Configuration.GetValue("DataSource:UseEntraID", false);
+var useEntraId = builder.Configuration.GetValue(
+    "DataSource:UseEntraId",
+    false);
+var managedIdentityClientId = builder.Configuration.GetValue(
+    "DataSource:ManagedIdentityClientId", 
+    default(string));
+
 builder.Services.AddNpgsqlDataSource(
     builder.Configuration.GetConnectionString("DefaultConnection")!, 
-    useEntraId);
+    useEntraId,
+    managedIdentityClientId);
 builder.Services.AddDbContext<AdsContext>((sp, options) =>
 {
     var dataSource = sp.GetRequiredService<NpgsqlDataSource>();

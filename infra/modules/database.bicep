@@ -139,7 +139,7 @@ resource containerInstance 'Microsoft.ContainerInstance/containerGroups@2023-05-
         name: 'psql'
         properties: {
           image: 'postgres:15-alpine'
-          command: [ '/mnt/repo/deploy/migrate.sh' ]
+          command: [ 'sh', '/mnt/repo/deploy/migrate.sh' ]
           environmentVariables: [
             {
               name: 'CLIENT_ID'
@@ -180,7 +180,6 @@ resource containerInstance 'Microsoft.ContainerInstance/containerGroups@2023-05-
         gitRepo: {
           repository: repository
           directory: '.'
-          revision: '2ac6afadc7c5557c8863d078663a1c84e2fc0d33'
         }
       }
     ]
