@@ -39,12 +39,14 @@ public class TestWebApplicationFactory : WebApplicationFactory<Program>
         var context = services.GetRequiredService<AdsContext>();
         await context.Database.EnsureDeletedAsync();
         await context.Database.EnsureCreatedAsync();
-        if (ads.Length > 0)
+        
+        if (ads.Length == 0)
         {
-            await context.Ads.AddRangeAsync(ads);
-            await context.SaveChangesAsync();
+            return ads.Select(a => a.Id);
         }
-
+        
+        await context.Ads.AddRangeAsync(ads);
+        await context.SaveChangesAsync();
         return ads.Select(a => a.Id);
     }
 }

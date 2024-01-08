@@ -60,7 +60,9 @@ public class ApiTest : IClassFixture<TestWebApplicationFactory>
             bindingRequest,
             JpegBytes,
             A.Fake<IReadOnlyDictionary<string, string>>());
-        A.CallTo(() => _factory.DaprClient.InvokeBindingAsync(A<BindingRequest>._, A<CancellationToken>._))
+        A.CallTo(() => _factory.DaprClient.InvokeBindingAsync(
+                A<BindingRequest>._, 
+                A<CancellationToken>._))
             .Returns(Task.FromResult(bindingResponse));
         A.CallTo(() => _factory.DaprClient.InvokeBindingAsync<byte[], JsonNode>(
                 A<string>._,
@@ -85,7 +87,9 @@ public class ApiTest : IClassFixture<TestWebApplicationFactory>
     public async Task Post_WithMissingImage_Returns_Ok()
     {
         // Arrange
-        A.CallTo(() => _factory.DaprClient.InvokeBindingAsync(A<BindingRequest>._, A<CancellationToken>._))
+        A.CallTo(() => _factory.DaprClient.InvokeBindingAsync(
+                A<BindingRequest>._, 
+                A<CancellationToken>._))
             .Throws<DaprApiException>();
         using var client = _factory.CreateClient();
 

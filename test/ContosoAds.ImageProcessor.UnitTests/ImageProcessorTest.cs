@@ -17,12 +17,12 @@ public class ImageProcessorTest
         // Arrange
         var logger = A.Fake<ILogger<ImageProcessor>>();
         var imageProcessor = new ImageProcessor(logger);
-        await using var imageStream = new MemoryStream(Convert.FromBase64String(imageBase64)); 
-        
+        await using var imageStream = new MemoryStream(Convert.FromBase64String(imageBase64));
+
         // Act
         await using var result = new MemoryStream();
         await imageProcessor.RenderAsync(imageStream, result);
-        
+
         // Assert
         result.Position = 0;
         using var image = await Image.LoadAsync(result);
@@ -30,10 +30,10 @@ public class ImageProcessorTest
         Assert.Equal(expectedHeight, image.Height);
     }
 
-    public static IEnumerable<object[]> Images => new List<object[]>
-    {
-        new object[] {TestImages.Jpeg100By200, 40, 80},
-        new object[] {TestImages.Jpeg200By100, 80, 40},
-        new object[] {TestImages.Jpeg160By160, 80, 80}
-    };
+    public static IEnumerable<object[]> Images =>
+    [
+        [TestImages.Jpeg100By200, 40, 80],
+        [TestImages.Jpeg200By100, 80, 40],
+        [TestImages.Jpeg160By160, 80, 80]
+    ];
 }

@@ -43,16 +43,15 @@ public class EditTest : IClassFixture<TestWebApplicationFactory>
         var request = new HttpRequestMessage(HttpMethod.Post, $"/ads/edit/1")
         {
             Content = new FormUrlEncodedContent(
-                new[]
-                {
-                    new KeyValuePair<string, string>("Ad.Id", "1"),
-                    new KeyValuePair<string, string>("Ad.Category", "Cars"),
-                    new KeyValuePair<string, string>("Ad.Description", "Updated Description"),
-                    new KeyValuePair<string, string>("Ad.Phone", "425-555-1212"),
-                    new KeyValuePair<string, string>("Ad.Price", "20000"),
-                    new KeyValuePair<string, string>("Ad.Title", "Test Ad"),
-                    new KeyValuePair<string, string>("__RequestVerificationToken", csrfToken!)
-                })
+            [
+                new KeyValuePair<string, string>("Ad.Id", "1"),
+                new KeyValuePair<string, string>("Ad.Category", "Cars"),
+                new KeyValuePair<string, string>("Ad.Description", "Updated Description"),
+                new KeyValuePair<string, string>("Ad.Phone", "425-555-1212"),
+                new KeyValuePair<string, string>("Ad.Price", "20000"),
+                new KeyValuePair<string, string>("Ad.Title", "Test Ad"),
+                new KeyValuePair<string, string>("__RequestVerificationToken", csrfToken!)
+            ])
         };
         using var postResponse = await client.SendAsync(request);
 
@@ -60,7 +59,7 @@ public class EditTest : IClassFixture<TestWebApplicationFactory>
         Assert.Equal(HttpStatusCode.Redirect, postResponse.StatusCode);
         Assert.Equal("/ads", postResponse.Headers.Location?.ToString().ToLower());
     }
-    
+
     [Fact]
     public async Task Post_ForInValidId_Returns_NotFound()
     {
@@ -88,16 +87,15 @@ public class EditTest : IClassFixture<TestWebApplicationFactory>
         var request = new HttpRequestMessage(HttpMethod.Post, $"/ads/edit/1")
         {
             Content = new FormUrlEncodedContent(
-                new[]
-                {
-                    new KeyValuePair<string, string>("Ad.Id", "1"),
-                    new KeyValuePair<string, string>("Ad.Category", "Cars"),
-                    new KeyValuePair<string, string>("Ad.Description", "Updated Description"),
-                    new KeyValuePair<string, string>("Ad.Phone", "425-555-1212"),
-                    new KeyValuePair<string, string>("Ad.Price", "20000"),
-                    new KeyValuePair<string, string>("Ad.Title", "Test Ad"),
-                    new KeyValuePair<string, string>("__RequestVerificationToken", csrfToken!)
-                })
+            [
+                new KeyValuePair<string, string>("Ad.Id", "1"),
+                new KeyValuePair<string, string>("Ad.Category", "Cars"),
+                new KeyValuePair<string, string>("Ad.Description", "Updated Description"),
+                new KeyValuePair<string, string>("Ad.Phone", "425-555-1212"),
+                new KeyValuePair<string, string>("Ad.Price", "20000"),
+                new KeyValuePair<string, string>("Ad.Title", "Test Ad"),
+                new KeyValuePair<string, string>("__RequestVerificationToken", csrfToken!)
+            ])
         };
         using var postResponse = await client.SendAsync(request);
 

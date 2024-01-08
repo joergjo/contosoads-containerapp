@@ -63,20 +63,19 @@ public class CreateTest : IClassFixture<TestWebApplicationFactory>
         using var getResponse = await client.GetAsync(uri);
         using var document = await getResponse.ToDocumentAsync();
         var csrfToken = document.QuerySelector("input[name=__RequestVerificationToken]")?.GetAttribute("value");
-        
+
         // Act
         var request = new HttpRequestMessage(HttpMethod.Post, uri)
         {
             Content = new FormUrlEncodedContent(
-                new[]
-                {
-                    new KeyValuePair<string, string>("Ad.Category", "Cars"),
-                    new KeyValuePair<string, string>("Ad.Description", "Test Description"),
-                    new KeyValuePair<string, string>("Ad.Phone", "425-555-1212"),
-                    new KeyValuePair<string, string>("Ad.Price", "10000"),
-                    new KeyValuePair<string, string>("Ad.Title", "Test Ad"),
-                    new KeyValuePair<string, string>("__RequestVerificationToken", csrfToken!)
-                })
+            [
+                new KeyValuePair<string, string>("Ad.Category", "Cars"),
+                new KeyValuePair<string, string>("Ad.Description", "Test Description"),
+                new KeyValuePair<string, string>("Ad.Phone", "425-555-1212"),
+                new KeyValuePair<string, string>("Ad.Price", "10000"),
+                new KeyValuePair<string, string>("Ad.Title", "Test Ad"),
+                new KeyValuePair<string, string>("__RequestVerificationToken", csrfToken!)
+            ])
         };
         using var postResponse = await client.SendAsync(request);
 

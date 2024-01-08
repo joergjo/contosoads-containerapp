@@ -42,10 +42,10 @@ public class DeleteTest : IClassFixture<TestWebApplicationFactory>
         // Act
         var request = new HttpRequestMessage(HttpMethod.Post, $"/ads/delete/1")
         {
-            Content = new FormUrlEncodedContent(new[]
-            {
+            Content = new FormUrlEncodedContent(
+            [
                 new KeyValuePair<string, string>("__RequestVerificationToken", csrfToken!)
-            })
+            ])
         };
         using var postResponse = await client.SendAsync(request);
 
@@ -75,7 +75,7 @@ public class DeleteTest : IClassFixture<TestWebApplicationFactory>
         using var getResponse = await client.GetAsync($"/ads/delete/1");
         using var document = await getResponse.ToDocumentAsync();
         var csrfToken = document.QuerySelector("input[name=__RequestVerificationToken]")?.GetAttribute("value");
-        
+
         await _factory.SeedDatabaseAsync();
 
         // Act
