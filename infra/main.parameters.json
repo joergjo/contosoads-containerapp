@@ -14,6 +14,12 @@
       "postgresLoginPassword": {
         "value": "${POSTGRES_LOGIN_PASSWORD}"
       },
+      "entraIdAdmin": {
+        "value": "${CURRENT_USER_UPN}"
+      },
+      "entraIdAdminObjectId": {
+         "value": "${CURRENT_USER_OBJECTID}"
+      },
       "postgresVersion": {
         "value": "${POSTGRES_VERSION=15}"
       },

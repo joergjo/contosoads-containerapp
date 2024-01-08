@@ -12,7 +12,8 @@ param tags object = {}
 
 var uid = uniqueString(resourceGroup().id)
 var vnetName = '${namePrefix}${uid}-vnet'
-var nsgName = '${namePrefix}${uid}-infra-nsg'
+var appNsgName = '${namePrefix}${uid}-app-nsg'
+var postgresNsgName = '${namePrefix}${uid}-postgres-nsg'
 var privateDnsZoneName = 'contosoads.postgres.database.azure.com'
 
 resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
@@ -27,7 +28,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
     }
     subnets: [
       {
-        name: 'infrastructure'
+        name: 'containerapps'
         properties: {
           addressPrefix: '10.150.0.0/23'
           delegations: [
@@ -39,12 +40,12 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
             }
           ]
           networkSecurityGroup: {
-            id: nsg.id
+            id: appNsg.id
           }
         }
       }
       {
-        name: 'postgres-delegated'
+        name: 'postgresql'
         properties: {
           addressPrefix: '10.150.2.0/24'
           delegations: [
@@ -55,10 +56,13 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
               }
             }
           ]
+          networkSecurityGroup: {
+            id: postgresNsg.id
+          }
         }
       }
       {
-        name: 'aci-delegated'
+        name: 'containergroups'
         properties: {
           addressPrefix: '10.150.3.0/24'
           delegations: [
@@ -75,8 +79,8 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   }
 }
 
-resource nsg 'Microsoft.Network/networkSecurityGroups@2023-04-01' = {
-  name: nsgName
+resource appNsg 'Microsoft.Network/networkSecurityGroups@2023-04-01' = {
+  name: appNsgName
   location: location
   tags: tags
   properties: {
@@ -107,6 +111,16 @@ resource nsg 'Microsoft.Network/networkSecurityGroups@2023-04-01' = {
           destinationAddressPrefix: '*'
         }
       }
+    ]
+  }
+}
+
+resource postgresNsg 'Microsoft.Network/networkSecurityGroups@2023-04-01' = {
+  name: postgresNsgName
+  location: location
+  tags: tags
+  properties: {
+    securityRules: [
     ]
   }
 }

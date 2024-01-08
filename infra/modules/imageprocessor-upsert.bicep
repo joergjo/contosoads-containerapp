@@ -1,3 +1,6 @@
+@description('Specifies the Container App\'s name.')
+param name string
+
 @description('Specifies the location to deploy to.')
 param location string
 
@@ -10,13 +13,15 @@ param aiConnectionString string
 @description('Specifies the Azure Container registry name to pull from.')
 param containerRegistryName string
 
+@description('Specifies the name of the User-Assigned Managed Identity for the Container App.')
+param identityName string
+
 @description('Specifies whether the app has been previously deployed.')
 param exists bool
 
 @description('Specifies the tags for all resources.')
 param tags object = {}
 
-var appName = 'contosoads-imageprocessor'
 var defaultImage = 'joergjo/contosoads-imageprocessor:latest'
 
 var secrets = [
@@ -38,13 +43,13 @@ var envVars = [
 ]
 
 resource existingContainerApp 'Microsoft.App/containerApps@2023-05-01' existing = if (exists) {
-  name: appName
+  name: name
 }
 
-module imageprocessor 'imageprocessor.bicep' = {
+module containerApp 'imageprocessor.bicep' = {
   name: '${deployment().name}-update'
   params: {
-    name: appName
+    name: name
     location: location
     tags: tags
     environmentId: environmentId
@@ -52,7 +57,8 @@ module imageprocessor 'imageprocessor.bicep' = {
     secrets: secrets
     envVars: envVars
     containerRegistryName: containerRegistryName
+    identityName: identityName
   }
 }
 
-output name string = imageprocessor.outputs.name
+output name string = containerApp.outputs.name

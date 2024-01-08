@@ -1,3 +1,6 @@
+@description('Specifies the Container App\'s name.')
+param name string
+
 @description('Specifies the location to deploy to.')
 param location string
 
@@ -24,15 +27,25 @@ param aiConnectionString string
 @description('Specifies the Azure Container registry name to pull from.')
 param containerRegistryName string
 
+@description('Specifies the name of the User-Assigned Managed Identity for the Container App.')
+param identityName string
+
+@description('Specifies whether to connect to the database using Entra ID')
+param useEntraId bool = true
+
 @description('Specifies whether the app has been previously deployed.')
 param exists bool
 
 @description('Specifies the tags for all resources.')
 param tags object = {}
 
-var appName = 'contosoads-web'
-var dbConnectionString = 'Host=${postgresFqdn};Database=${postgresDatabase};Username=${postgresLogin};Password=${postgresLoginPassword}'
+
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
+  name: identityName
+}
+
 var defaultImage = 'joergjo/contosoads-web:latest'
+var dbConnectionString = useEntraId ? 'Host=${postgresFqdn};Database=${postgresDatabase};Username=${managedIdentity.name};' : 'Host=${postgresFqdn};Database=${postgresDatabase};Username=${postgresLogin};Password=${postgresLoginPassword}'
 
 var secrets = [
   {
@@ -58,16 +71,24 @@ var envVars = [
     name: 'Logging__ApplicationInsights__LogLevel__ContosoAds'
     value: 'Debug'
   }
+  {
+    name: 'DataSource__UseEntraId'
+    value: useEntraId ? 'true' : 'false'
+  }
+  {
+    name: 'DataSource__ManagedIdentityClientId'
+    value: useEntraId ? managedIdentity.properties.clientId : ''
+  }
 ]
 
 resource existingContainerApp 'Microsoft.App/containerApps@2023-05-01' existing = if (exists) {
-  name: appName
+  name: name
 }
 
 module containerApp 'webapp.bicep' = {
   name: '${deployment().name}-update'
   params: {
-    name: appName
+    name: name
     location: location
     tags: tags
     environmentId: environmentId
@@ -75,6 +96,7 @@ module containerApp 'webapp.bicep' = {
     secrets: secrets
     envVars: envVars
     containerRegistryName: containerRegistryName
+    identityName: identityName
   }
 }
 
