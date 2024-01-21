@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AngleSharp" Version="1.0.7" />
+        <PackageReference Include="AngleSharp" Version="1.1.0" />
         <PackageReference Include="Dapr.Client" Version="1.11.0" />
         <PackageReference Include="FakeItEasy" Version="8.1.0" />
         <PackageReference Include="FakeItEasy.Analyzer.CSharp" Version="6.1.1">
