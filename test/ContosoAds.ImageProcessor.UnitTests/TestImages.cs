@@ -1,3 +1,4 @@
+// ReSharper disable RawStringCanBeSimplified
 namespace ContosoAds.ImageProcessor.UnitTests;
 
 internal static class TestImages

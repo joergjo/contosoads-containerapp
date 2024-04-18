@@ -78,10 +78,10 @@ public class ThumbnailControllerTest : IClassFixture<TestWebApplicationFactory>
     }
 
     [Theory]
-    [InlineData(default, "1")]
+    [InlineData(null, "1")]
     [InlineData("", "1")]
     [InlineData("relative_uri", "1")]
-    [InlineData("https://example.com/image.jpg", default)]
+    [InlineData("https://example.com/image.jpg", null)]
     [InlineData("relative_uri", "not_an_int")]
     public async Task Post_WithInvalidContent_Returns_BadRequest(string? uri, string? adId)
     {
