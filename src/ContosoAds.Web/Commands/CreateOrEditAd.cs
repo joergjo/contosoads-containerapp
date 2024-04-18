@@ -117,7 +117,7 @@ public class CreateOrEditAd
 
     private static string GetBlobName(string fileName, string? blobUri)
     {
-        if (blobUri is not null)
+        if (blobUri is { Length: > 0 })
         {
             var uri = new Uri(blobUri);
             return uri.Segments[^1];

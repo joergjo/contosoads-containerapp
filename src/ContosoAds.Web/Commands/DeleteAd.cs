@@ -28,12 +28,12 @@ public class DeleteAd
         _dbContext.Ads.Remove(ad);
         await _dbContext.SaveChangesAsync();
 
-        if (ad.ImageUri is not null)
+        if (ad.ImageUri is { Length: > 0 })
         {
             await DeleteImageBlob(ad.ImageUri);
         }
 
-        if (ad.ThumbnailUri is not null)
+        if (ad.ThumbnailUri is { Length: > 0 })
         {
             await DeleteImageBlob(ad.ThumbnailUri);
         }

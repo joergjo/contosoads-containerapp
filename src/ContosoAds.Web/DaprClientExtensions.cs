@@ -29,7 +29,7 @@ public static class DaprClientExtensions
         {
             {"blobName", blobName}
         };
-        if (contentType is not null)
+        if (contentType is { Length: > 0 })
         {
             metadata.Add("contentType", contentType);
         }

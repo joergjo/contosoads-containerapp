@@ -21,7 +21,7 @@ public static class DaprClientExtensions
             Data = data
         };
         request.Metadata.Add("blobName", blobName);
-        if (contentType is not null)
+        if (contentType is { Length: > 0 })
         {
             request.Metadata.Add("contentType", contentType);
         }

@@ -7,7 +7,7 @@ public class CloudRoleNameInitializer : ITelemetryInitializer
 {
     public void Initialize(ITelemetry telemetry)
     {
-        if (!string.IsNullOrEmpty(telemetry.Context.Cloud.RoleName)) return;
+        if (telemetry.Context.Cloud.RoleName is { Length: > 0 }) return;
 
         telemetry.Context.Cloud.RoleName = "contosoads-imageprocessor";
     }
