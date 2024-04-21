@@ -121,6 +121,20 @@ resource postgresNsg 'Microsoft.Network/networkSecurityGroups@2023-04-01' = {
   tags: tags
   properties: {
     securityRules: [
+      {
+        name: 'AllowAzureActiveDirectoryOutbound'
+        properties: {
+          priority: 1000
+          access: 'Allow'
+          direction: 'Outbound'
+          protocol: '*'
+          sourceAddressPrefix: 'VirtualNetwork'
+          sourcePortRange: '*'
+          destinationAddressPrefix: 'AzureActiveDirectory'
+          destinationPortRange: '*'
+        }
+      }
+
     ]
   }
 }

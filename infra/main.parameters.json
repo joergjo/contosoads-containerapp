@@ -18,7 +18,10 @@
         "value": "${CURRENT_USER_UPN}"
       },
       "entraIdAdminObjectId": {
-         "value": "${CURRENT_USER_OBJECTID}"
+         "value": "${CURRENT_USER_OBJECT_ID}"
+      },
+      "entraIdAdminPrincipalType": {
+        "value": "${CURRENT_USER_PRINCIPAL_TYPE}"
       },
       "postgresVersion": {
         "value": "${POSTGRES_VERSION=15}"

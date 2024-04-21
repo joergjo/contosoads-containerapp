@@ -26,7 +26,7 @@ These steps are describe in more detail in the following sections.
    subscription_id=$(az account show --query id --output tsv)
    az ad sp create-for-rbac \
      --name contosoads-gh \
-     --role contributor \
+     --role owner \
      --json-auth \
      --scopes "/subscriptions/$subscription_id"
    ```

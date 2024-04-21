@@ -28,6 +28,13 @@ param entraIdAdmin string
 @description('Specifies the Azure AD PostgreSQL administrator user\'s object ID.')
 param entraIdAdminObjectId string
 
+@description('Specifies the Azure AD PostgreSQL administrator principal type.')
+@allowed([
+  'User'
+  'ServicePrincipal'
+])
+param entraIdAdminPrincipalType string = 'User'
+
 @description('Specifies the PostgreSQL version.')
 @allowed([
   '12'
@@ -40,6 +47,9 @@ param postgresVersion string = '15'
 
 @description('Specifies the public Git repo that hosts the database migration script.')
 param repository string = 'https://github.com/joergjo/contosoads-containerapp.git'
+
+@description('Specifies the Git revision.')
+param revision string = 'HEAD'
 
 @description('Specifies whether the web app has been previously deployed.')
 param webAppExists bool = false
@@ -134,6 +144,7 @@ module postgres 'modules/database.bicep' = {
     administratorLoginPassword: postgresLoginPassword
     entraIdAdmin: entraIdAdmin
     entraIdAdminObjectId:entraIdAdminObjectId
+    entraIdAdminPrincipalType: entraIdAdminPrincipalType
     migrationIdentityName: webAppIdentity.outputs.name
     migrationIdentityObjectId: webAppIdentity.outputs.clientId
     databaseName: databaseName
@@ -142,6 +153,8 @@ module postgres 'modules/database.bicep' = {
     privateDnsZoneId: network.outputs.privateDnsZoneId
     version: postgresVersion
     repository: repository
+    revision: revision
+    workspaceName: monitoring.outputs.workspaceName
   }
 }
 
@@ -188,6 +201,9 @@ module webapp 'modules/webapp-upsert.bicep' = {
     postgresLoginPassword: postgresLoginPassword
     exists: webAppExists
   }
+  dependsOn: [
+    postgres
+  ]
 }
 
 module imageprocessor 'modules/imageprocessor-upsert.bicep' = {
@@ -203,6 +219,9 @@ module imageprocessor 'modules/imageprocessor-upsert.bicep' = {
     identityName: imageProcessorIdentity.outputs.name
     exists: imageProcessorExists
   }
+  dependsOn: [
+    postgres
+  ]
 }
 
 output AZURE_RESOURCE_GROUP string = rg.name
