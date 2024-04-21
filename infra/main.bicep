@@ -28,6 +28,13 @@ param entraIdAdmin string
 @description('Specifies the Azure AD PostgreSQL administrator user\'s object ID.')
 param entraIdAdminObjectId string
 
+@description('Specifies the Azure AD PostgreSQL administrator principal type.')
+@allowed([
+  'User'
+  'ServicePrincipal'
+])
+param entraIdAdminPrincipalType string = 'User'
+
 @description('Specifies the PostgreSQL version.')
 @allowed([
   '12'
@@ -134,6 +141,7 @@ module postgres 'modules/database.bicep' = {
     administratorLoginPassword: postgresLoginPassword
     entraIdAdmin: entraIdAdmin
     entraIdAdminObjectId:entraIdAdminObjectId
+    entraIdAdminPrincipalType: entraIdAdminPrincipalType
     migrationIdentityName: webAppIdentity.outputs.name
     migrationIdentityObjectId: webAppIdentity.outputs.clientId
     databaseName: databaseName

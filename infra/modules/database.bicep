@@ -31,6 +31,10 @@ param entraIdAdmin string
 @description('Specifies the Entra ID PostgreSQL administrator user\'s object ID.')
 param entraIdAdminObjectId string
 
+@description('Specifies the Entra ID PostgreSQL administrator user\'s object ID.')
+param entraIdAdminPrincipalType string
+
+
 @description('Specifies the User Assigned Managed Identity for database migrations.')
 param migrationIdentityName string
 
@@ -108,7 +112,7 @@ resource postgresEntraIdAdmin 'Microsoft.DBforPostgreSQL/flexibleServers/adminis
   parent: postgresServer
   properties: {
     principalName: entraIdAdmin
-    principalType: 'User'
+    principalType: entraIdAdminPrincipalType
     tenantId: subscription().tenantId
   }
 }
