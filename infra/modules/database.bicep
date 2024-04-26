@@ -34,7 +34,6 @@ param entraIdAdminObjectId string
 @description('Specifies the Entra ID PostgreSQL administrator user\'s object ID.')
 param entraIdAdminPrincipalType string
 
-
 @description('Specifies the User Assigned Managed Identity for database migrations.')
 param migrationIdentityName string
 
@@ -52,6 +51,12 @@ param privateDnsZoneId string
 
 @description('Specifies the public Git repo that hosts the database migration script.')
 param repository string
+
+@description('Specifies the Git revision.')
+param revision string
+
+@description('Specifies the Log Analytics workspace to connect to.')
+param workspaceName string
 
 @description('Specifies the tags for all resources.')
 param tags object = {}
@@ -127,6 +132,11 @@ resource postgresMigrationIdentity 'Microsoft.DBforPostgreSQL/flexibleServers/ad
   }
 }
 
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' existing = {
+  name: workspaceName
+}
+
+
 resource containerInstance 'Microsoft.ContainerInstance/containerGroups@2023-05-01' = {
   name: '${serverName}-migration'
   location: location
@@ -184,6 +194,7 @@ resource containerInstance 'Microsoft.ContainerInstance/containerGroups@2023-05-
         gitRepo: {
           repository: repository
           directory: '.'
+          revision: revision
         }
       }
     ]
@@ -192,7 +203,13 @@ resource containerInstance 'Microsoft.ContainerInstance/containerGroups@2023-05-
         id: aciSubnetId
       }
     ]
-    restartPolicy: 'Never'
+    restartPolicy: 'OnFailure'
+    diagnostics: {
+      logAnalytics: {
+        workspaceId: logAnalyticsWorkspace.properties.customerId
+        workspaceKey: logAnalyticsWorkspace.listKeys().primarySharedKey
+      }
+    }
   }
 }
 

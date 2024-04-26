@@ -12,5 +12,10 @@ do
   sleep $t
 done
 
+if [ -z "$PGPASSWORD" ]; then
+  echo "Failed to fetch token"
+  exit 1
+fi
+
 psql -w -f /mnt/repo/deploy/migrate.sql
 unset PGPASSWORD

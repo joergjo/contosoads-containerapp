@@ -48,6 +48,9 @@ param postgresVersion string = '15'
 @description('Specifies the public Git repo that hosts the database migration script.')
 param repository string = 'https://github.com/joergjo/contosoads-containerapp.git'
 
+@description('Specifies the Git revision.')
+param revision string = 'HEAD'
+
 @description('Specifies whether the web app has been previously deployed.')
 param webAppExists bool = false
 
@@ -150,6 +153,8 @@ module postgres 'modules/database.bicep' = {
     privateDnsZoneId: network.outputs.privateDnsZoneId
     version: postgresVersion
     repository: repository
+    revision: revision
+    workspaceName: monitoring.outputs.workspaceName
   }
 }
 
