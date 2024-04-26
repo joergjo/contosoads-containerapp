@@ -201,6 +201,9 @@ module webapp 'modules/webapp-upsert.bicep' = {
     postgresLoginPassword: postgresLoginPassword
     exists: webAppExists
   }
+  dependsOn: [
+    postgres
+  ]
 }
 
 module imageprocessor 'modules/imageprocessor-upsert.bicep' = {
@@ -216,6 +219,9 @@ module imageprocessor 'modules/imageprocessor-upsert.bicep' = {
     identityName: imageProcessorIdentity.outputs.name
     exists: imageProcessorExists
   }
+  dependsOn: [
+    postgres
+  ]
 }
 
 output AZURE_RESOURCE_GROUP string = rg.name
