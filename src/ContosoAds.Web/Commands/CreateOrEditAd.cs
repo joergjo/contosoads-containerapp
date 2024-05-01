@@ -110,7 +110,11 @@ public class CreateOrEditAd
 
     private async Task RequestRenderThumbnail(Ad ad)
     {
-        var imageBlob = new ImageBlob(new Uri(ad.ImageUri!), ad.Id);
+        var imageBlob = new ImageBlob
+        {
+            Uri = new Uri(ad.ImageUri!),
+            AdId = ad.Id
+        };
         await _daprClient.InvokeBindingAsync("thumbnail-request", "create", imageBlob);
         _logger.LogDebug("Requested thumbnail rendering for ad {AdId}", ad.Id);
     }

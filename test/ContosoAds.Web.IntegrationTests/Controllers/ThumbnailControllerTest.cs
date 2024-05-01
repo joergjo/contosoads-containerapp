@@ -55,7 +55,11 @@ public class ThumbnailControllerTest : IClassFixture<TestWebApplicationFactory>
         // Act
         using var response = await client.PostAsJsonAsync(
             "/thumbnail-result",
-            new ImageBlob(new Uri(thumbnailUri), adId));
+            new ImageBlob
+            {
+                Uri = new Uri(thumbnailUri),
+                AdId = adId
+            });
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -71,7 +75,11 @@ public class ThumbnailControllerTest : IClassFixture<TestWebApplicationFactory>
         // Act
         using var response = await client.PostAsJsonAsync(
             "/thumbnail-result",
-            new ImageBlob(new Uri("https://contosoads.blob.core.windows.net/images/thumbnail.jpg"), 1));
+            new ImageBlob
+            {
+                Uri = new Uri("https://contosoads.blob.core.windows.net/images/thumbnail.jpg"),
+                AdId = 1
+            });
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);

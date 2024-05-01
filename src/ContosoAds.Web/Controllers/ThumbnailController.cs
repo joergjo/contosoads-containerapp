@@ -25,7 +25,7 @@ public class ThumbnailController : Controller
         ImageBlob imageBlob,
         CancellationToken cancellationToken = default)
     {
-        var (uri, adId) = imageBlob;
+        var (uri, adId) = (imageBlob.Uri, imageBlob.AdId);
         // The built-in model binder allows both absolute and relative URIs. We expect an absolute URI.
         // This should not happen unless someone POSTs junk requests directly to our endpoint.
         if (!uri.IsAbsoluteUri)

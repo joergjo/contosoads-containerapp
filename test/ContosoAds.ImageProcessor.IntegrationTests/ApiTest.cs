@@ -77,7 +77,11 @@ public class ApiTest : IClassFixture<TestWebApplicationFactory>
         // Act
         using var response = await client.PostAsJsonAsync(
             "/thumbnail-request",
-            new ImageBlob(new Uri("https://example.com/foo.jpg"), 1));
+            new ImageBlob
+            {
+                Uri = new Uri("https://example.com/foo.jpg"),
+                AdId = 1
+            });
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -96,7 +100,11 @@ public class ApiTest : IClassFixture<TestWebApplicationFactory>
         // Act
         using var response = await client.PostAsJsonAsync(
             "/thumbnail-request",
-            new ImageBlob(new Uri("https://example.com/foo.jpg"), 1));
+            new ImageBlob
+            {
+                Uri = new Uri("https://example.com/foo.jpg"),
+                AdId = 1
+            });
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);

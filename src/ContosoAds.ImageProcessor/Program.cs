@@ -54,7 +54,7 @@ app.MapPost("/thumbnail-request",
 
         app.Logger.LogInformation("Thumbnail for image with id '{AdId}' stored at '{ThumbnailUri}'", imageBlob.AdId,
             thumbnailUri);
-        var thumbnailBlob = new ImageBlob(new Uri(thumbnailUri!), imageBlob.AdId);
+        var thumbnailBlob = imageBlob with { Uri = new Uri(thumbnailUri!) };
         try
         {
             await client.InvokeBindingAsync("thumbnail-result", "create", thumbnailBlob);
