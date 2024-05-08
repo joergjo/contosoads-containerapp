@@ -157,7 +157,7 @@ page will refresh itself display and the thumbnail.
 If you want to change the sample app's source code and run these changes in Azure, you will need 
 to install additional tools:
 
-* [.NET 7.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
+* [.NET 8.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 * [Dapr](https://docs.dapr.io/getting-started/install-dapr-cli/)
 * (Optional, but recommended) An IDE or code editor (e.g., [Visual Studio](https://visualstudio.microsoft.com/vs/), [Visual Studio Code](https://code.visualstudio.com), [Rider](https://www.jetbrains.com/rider/))
 
