@@ -54,7 +54,7 @@ param revision string = 'HEAD'
 @description('Specifies whether the web app has been previously deployed.')
 param webAppExists bool = false
 
-@description('Specifies whether the imageProcessor has been previously deployed.')
+@description('Specifies whether the image processor has been previously deployed.')
 param imageProcessorExists bool = false
 
 // Tags that should be applied to all resources.
@@ -110,6 +110,8 @@ module storage 'modules/storage.bicep' = {
     imageContainerName: imageContainerName
     requestQueueName: requestQueueName
     resultQueueName: resultQueueName
+    webAppIdentityName: webAppIdentity.outputs.name
+    imageProcessorIdentityName: imageProcessorIdentity.outputs.name
   }
 }
 
@@ -181,6 +183,10 @@ module environment 'modules/environment.bicep' = {
     imageContainerName: imageContainerName
     requestQueueName: requestQueueName
     resultQueueName: resultQueueName
+    webAppId: webAppName
+    imageProcessorAppId: imageProcessorName
+    webAppIdentityName: webAppIdentity.outputs.name
+    imageProcessorIdentityName: imageProcessorIdentity.outputs.name
   }
 }
 

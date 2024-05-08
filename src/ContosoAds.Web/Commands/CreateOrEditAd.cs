@@ -97,7 +97,7 @@ public class CreateOrEditAd
     {
         await using var buffer = new MemoryStream(0x10000);
         await file.CopyToAsync(buffer);
-        var newUri = await _daprClient.WriteAzureBlobBase64Async("image-store", GetBlobName(file.FileName, currentUri),
+        var newUri = await _daprClient.WriteAzureBlobBase64Async("web-storage", GetBlobName(file.FileName, currentUri),
             buffer.ToArray(), file.ContentType);
 
         if (newUri is null)
@@ -115,7 +115,7 @@ public class CreateOrEditAd
             Uri = new Uri(ad.ImageUri!),
             AdId = ad.Id
         };
-        await _daprClient.InvokeBindingAsync("thumbnail-request", "create", imageBlob);
+        await _daprClient.InvokeBindingAsync("thumbnail-request-sender", "create", imageBlob);
         _logger.LogDebug("Requested thumbnail rendering for ad {AdId}", ad.Id);
     }
 

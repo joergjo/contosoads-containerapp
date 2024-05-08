@@ -26,7 +26,7 @@ param identityName string
 param tags object = {}
 
 var containerPort = 8080
-var acrPullRole = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
+var acrPullRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
 
 resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-06-01-preview' existing = {
   name: containerRegistryName
@@ -38,9 +38,9 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-
 
 resource acrPullAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   scope: containerRegistry
-  name: guid(subscription().id, resourceGroup().id, managedIdentity.id, acrPullRole)
+  name: guid(containerRegistry.id, managedIdentity.id, acrPullRoleId)
   properties: {
-    roleDefinitionId: acrPullRole
+    roleDefinitionId: acrPullRoleId
     principalType: 'ServicePrincipal'
     principalId: managedIdentity.properties.principalId
   }
@@ -63,7 +63,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
     managedEnvironmentId: environmentId
     configuration: {
       dapr: {
-        appId: 'contosoads-imageprocessor'
+        appId: name
         appPort: containerPort
         enabled: true
         logLevel: 'info'
@@ -80,7 +80,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
       containers: [
         {
           image: image
-          name: 'contosoads-imageprocessor'
+          name: name
           env: envVars
           resources: {
             cpu: json('0.5')

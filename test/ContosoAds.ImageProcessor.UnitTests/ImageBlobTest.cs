@@ -33,8 +33,8 @@ public class ImageBlobTest
         var imageBlob = JsonSerializer.Deserialize<ImageBlob>(json);
 
         // Assert
-        Assert.Equal(new Uri("https://fake.com/image.jpg"), imageBlob.Uri);
-        Assert.Equal(1, imageBlob.AdId);
+        Assert.Equal(new Uri("https://fake.com/image.jpg"), imageBlob?.Uri);
+        Assert.Equal(1, imageBlob?.AdId);
     }
     
     [Theory]

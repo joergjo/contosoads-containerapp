@@ -1,0 +1,29 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: imageprocessor-storage
+spec:
+  type: bindings.azure.blobstorage
+  version: v1
+  metadata:
+    - name: storageAccount
+      secretKeyRef:
+        name: storageAccount
+    - name: storageAccessKey
+      secretKeyRef:
+        name: storageAccountKey
+    - name: container
+      value: "images"
+    - name: decodeBase64
+      value: true
+#   When running the application and Dapr locally, uncomment the next two lines to point Dapr to its Azure Storage Blob endpoint.
+#    - name: endpoint
+#      value: "http://127.0.0.1:10000"
+#   When running the entire software stack in Docker, uncomment the next two lines and insert your machine's IP address 
+#   (_not_ 127.0.0.1).
+#    - name: endpoint
+#      value: "http://IP_ADDRESS:10000"
+auth:
+  secretStore: dev-secrets
+scopes:
+  - contosoads-imageprocessor

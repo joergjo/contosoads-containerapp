@@ -22,6 +22,18 @@ param requestQueueName string = 'thumbnail-request'
 @description('Specifies the name of the result queue.')
 param resultQueueName string = 'thumbnail-result'
 
+@description('Specifies the web app\'s Dapr app ID.')
+param webAppId string
+
+@description('Specifies the image processor\'s Dapr app ID.')
+param imageProcessorAppId string
+
+@description('Specifies the name of the User-Assigned Managed Identity for the web app.')
+param webAppIdentityName string
+
+@description('Specifies the name of the User-Assigned Managed Identity for the image processor.')
+param imageProcessorIdentityName string
+
 @description('Specifies the tags for all resources.')
 param tags object = {}
 
@@ -32,8 +44,12 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10
   name: workspaceName
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' existing = {
-  name: storageAccountName
+resource webAppIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
+  name: webAppIdentityName
+}
+
+resource imageProcessorIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
+  name: imageProcessorIdentityName
 }
 
 resource environment 'Microsoft.App/managedEnvironments@2023-05-01' = {
@@ -61,8 +77,8 @@ resource environment 'Microsoft.App/managedEnvironments@2023-05-01' = {
   }
 }
 
-resource imageStoreComponent 'Microsoft.App/managedEnvironments/daprComponents@2023-05-01' = {
-  name: 'image-store'
+resource webImageStorageComponent 'Microsoft.App/managedEnvironments/daprComponents@2023-05-01' = {
+  name: 'web-storage'
   parent: environment
   properties: {
     componentType: 'bindings.azure.blobstorage'
@@ -73,8 +89,34 @@ resource imageStoreComponent 'Microsoft.App/managedEnvironments/daprComponents@2
         value: storageAccountName
       }
       {
-        name: 'storageAccessKey'
-        secretRef: 'storage-key'
+        name: 'container'
+        value: imageContainerName
+      }
+      {
+        name: 'decodeBase64'
+        value: 'true'
+      }
+      {
+        name: 'azureClientId'
+        value: webAppIdentity.properties.clientId
+      }
+    ]
+    scopes: [
+      webAppId
+    ]
+  }
+}
+
+resource imageProcessorStorageComponent 'Microsoft.App/managedEnvironments/daprComponents@2023-05-01' = {
+  name: 'imageprocessor-storage'
+  parent: environment
+  properties: {
+    componentType: 'bindings.azure.blobstorage'
+    version: 'v1'
+    metadata: [
+      {
+        name: 'storageAccount'
+        value: storageAccountName
       }
       {
         name: 'container'
@@ -84,18 +126,19 @@ resource imageStoreComponent 'Microsoft.App/managedEnvironments/daprComponents@2
         name: 'decodeBase64'
         value: 'true'
       }
-    ]
-    secrets: [
       {
-        name: 'storage-key'
-        value: storageAccount.listKeys().keys[0].value
+        name: 'azureClientId'
+        value: imageProcessorIdentity.properties.clientId
       }
+    ]
+    scopes: [
+      imageProcessorAppId
     ]
   }
 }
 
-resource requestQueueComponent 'Microsoft.App/managedEnvironments/daprComponents@2023-05-01' = {
-  name: 'thumbnail-request'
+resource requestQueueSendComponent 'Microsoft.App/managedEnvironments/daprComponents@2023-05-01' = {
+  name: 'thumbnail-request-sender'
   parent: environment
   properties: {
     componentType: 'bindings.azure.storagequeues'
@@ -104,27 +147,24 @@ resource requestQueueComponent 'Microsoft.App/managedEnvironments/daprComponents
       {
         name: 'storageAccount'
         value: storageAccountName
-      }
-      {
-        name: 'storageAccessKey'
-        secretRef: 'storage-key'
       }
       {
         name: 'queue'
         value: requestQueueName
       }
-    ]
-    secrets: [
       {
-        name: 'storage-key'
-        value: storageAccount.listKeys().keys[0].value
+        name: 'azureClientId'
+        value: webAppIdentity.properties.clientId
       }
+    ]
+    scopes: [
+      webAppId
     ]
   }
 }
 
-resource resultQueueComponent 'Microsoft.App/managedEnvironments/daprComponents@2023-05-01' = {
-  name: 'thumbnail-result'
+resource requestQueueReceiveComponent 'Microsoft.App/managedEnvironments/daprComponents@2023-05-01' = {
+  name: 'thumbnail-request-receiver'
   parent: environment
   properties: {
     componentType: 'bindings.azure.storagequeues'
@@ -135,19 +175,76 @@ resource resultQueueComponent 'Microsoft.App/managedEnvironments/daprComponents@
         value: storageAccountName
       }
       {
-        name: 'storageAccessKey'
-        secretRef: 'storage-key'
+        name: 'queue'
+        value: requestQueueName
+      }
+      {
+        name: 'azureClientId'
+        value: imageProcessorIdentity.properties.clientId
+      }
+      {
+        name: 'route'
+        value: '/thumbnail-request'
+      }
+    ]
+    scopes: [
+      imageProcessorAppId
+    ]
+  }
+}
+
+resource resultQueueSendComponent 'Microsoft.App/managedEnvironments/daprComponents@2023-05-01' = {
+  name: 'thumbnail-result-sender'
+  parent: environment
+  properties: {
+    componentType: 'bindings.azure.storagequeues'
+    version: 'v1'
+    metadata: [
+      {
+        name: 'storageAccount'
+        value: storageAccountName
       }
       {
         name: 'queue'
         value: resultQueueName
       }
-    ]
-    secrets: [
       {
-        name: 'storage-key'
-        value: storageAccount.listKeys().keys[0].value
+        name: 'azureClientId'
+        value: imageProcessorIdentity.properties.clientId
       }
+    ]
+    scopes: [
+      imageProcessorAppId
+    ]
+  }
+}
+
+resource resultQueueReceiveComponent 'Microsoft.App/managedEnvironments/daprComponents@2023-05-01' = {
+  name: 'thumbnail-result-receiver'
+  parent: environment
+  properties: {
+    componentType: 'bindings.azure.storagequeues'
+    version: 'v1'
+    metadata: [
+      {
+        name: 'storageAccount'
+        value: storageAccountName
+      }
+      {
+        name: 'queue'
+        value: resultQueueName
+      }
+      {
+        name: 'azureClientId'
+        value: webAppIdentity.properties.clientId
+      }
+      {
+        name: 'route'
+        value: '/thumbnail-result'
+      }
+    ]
+    scopes: [
+      webAppId
     ]
   }
 }

@@ -49,7 +49,7 @@ public class DeleteAd
             ["blobName"] = new Uri(blobUri).Segments[^1],
             ["deleteSnapshots"] = "include" 
         };
-        await _daprClient.InvokeBindingAsync<string?>("image-store", "delete", null, metadata);
+        await _daprClient.InvokeBindingAsync<string?>("web-storage", "delete", null, metadata);
         _logger.LogDebug("Deleted image blob '{ImageUri}'", blobUri);
     }
 }

@@ -1,7 +1,7 @@
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: thumbnail-request
+  name: thumbnail-result-receiver
 spec:
   type: bindings.azure.storagequeues
   version: v1
@@ -13,7 +13,9 @@ spec:
       secretKeyRef:
         name: storageAccountKey
     - name: queue
-      value: "thumbnail-request"
+      value: "thumbnail-result"
+    - name: route
+      value: "/thumbnail-result"
 #   When running the application and Dapr locally, uncomment the next two lines to point Dapr to its Azure Storage Blob endpoint.
 #    - name: endpoint
 #      value: "http://127.0.0.1:10001"
@@ -22,3 +24,5 @@ spec:
 #      value: "http://host.docker.internal:10001"
 auth:
   secretStore: dev-secrets
+scopes:
+  - contosoads-web

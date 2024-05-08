@@ -110,8 +110,14 @@ public class ApiTest : IClassFixture<TestWebApplicationFactory>
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
-    [Fact]
-    public async Task Post_WithInvalidMessageContent_Returns_BadRequest()
+    [Theory]
+    [InlineData("http://some/image.jpg", null)]
+    [InlineData("", 1)]
+    [InlineData("image.jpg", 1)]
+    [InlineData(null, 1)]
+    [InlineData(null, null)]
+
+    public async Task Post_WithInvalidMessageContent_Returns_BadRequest(string? url, int? adId)
     {
         // Arrange
         using var client = _factory.CreateClient();
@@ -119,7 +125,7 @@ public class ApiTest : IClassFixture<TestWebApplicationFactory>
         // Act
         using var response = await client.PostAsJsonAsync(
             "/thumbnail-request",
-            new {Uri = default(string), AdId = 0});
+            new {Uri = url, AdId = adId});
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);

@@ -75,7 +75,7 @@ public class DeleteAdTest
 
         // Assert
         A.CallTo(() => daprClient.InvokeBindingAsync(
-            A<string>.That.IsEqualTo("image-store"),
+            A<string>.That.IsEqualTo("web-storage"),
             A<string>.That.IsEqualTo("delete"),
             A<string>.That.IsNull(),
             A<Dictionary<string, string>>.That.Matches(m => m.ContainsKey("blobName")),
@@ -112,7 +112,7 @@ public class DeleteAdTest
 
         // Assert
         A.CallTo(() => daprClient.InvokeBindingAsync(
-            A<string>.That.IsEqualTo("image-store"),
+            A<string>.That.IsEqualTo("web-storage"),
             A<string>.That.IsEqualTo("delete"),
             A<string>.That.IsNull(),
             A<Dictionary<string, string>>.That.Matches(m => m.ContainsKey("blobName")),
@@ -149,7 +149,7 @@ public class DeleteAdTest
 
         // Assert
         A.CallTo(() => daprClient.InvokeBindingAsync(
-            A<string>.That.IsEqualTo("image-store"),
+            A<string>.That.IsEqualTo("web-storage"),
             A<string>.That.IsEqualTo("delete"),
             A<string>.That.IsNull(),
             A<Dictionary<string, string>>.That.Matches(m => m.ContainsKey("blobName")),

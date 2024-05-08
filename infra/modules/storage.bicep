@@ -13,10 +13,19 @@ param requestQueueName string
 @description('Specifies the name of the result queue.')
 param resultQueueName string
 
+@description('Specifies the name of the User-Assigned Managed Identity for the Web app.')
+param webAppIdentityName string
+
+@description('Specifies the name of the User-Assigned Managed Identity for the Image Processor.')
+param imageProcessorIdentityName string
+
 @description('Specifies the tags for all resources.')
 param tags object = {}
 
 var storageAccountName = '${length(namePrefix) <= 11 ? namePrefix : substring(namePrefix, 0, 11)}${uniqueString(resourceGroup().id)}'
+
+var blobDataContributorRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')
+var queueDataContributorRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '974c5e8b-45b9-4653-ba55-5f855dd0fb88')
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   name: storageAccountName
@@ -39,7 +48,7 @@ resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2023-01-01'
   parent: storageAccount
 }
 
-resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01' = {
+resource imageContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01' = {
   name: imageContainerName
   parent: blobService
   properties: {
@@ -61,5 +70,74 @@ resource resultQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@202
   name: resultQueueName
   parent: queueService
 }
+
+resource webAppIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
+  name: webAppIdentityName
+}
+
+resource imageProcessorIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
+  name: imageProcessorIdentityName
+}
+
+resource webAppBlobDataContributorAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: imageContainer
+  name: guid(imageContainer.id, webAppIdentity.id, blobDataContributorRoleId)
+  properties: {
+    roleDefinitionId: blobDataContributorRoleId
+    principalType: 'ServicePrincipal'
+    principalId: webAppIdentity.properties.principalId
+  }
+}
+
+resource imageProcessorBlobDataContributorAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: imageContainer
+  name: guid(imageContainer.id, imageProcessorIdentity.id, blobDataContributorRoleId)
+  properties: {
+    roleDefinitionId: blobDataContributorRoleId
+    principalType: 'ServicePrincipal'
+    principalId: imageProcessorIdentity.properties.principalId
+  }
+}
+
+resource requestQueueMessageSenderAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: requestQueue
+  name: guid(requestQueue.id, webAppIdentity.id, queueDataContributorRoleId)
+  properties: {
+    roleDefinitionId: queueDataContributorRoleId
+    principalType: 'ServicePrincipal'
+    principalId: webAppIdentity.properties.principalId
+  }
+}
+
+resource requestQueueMessageProcessorAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: requestQueue
+  name: guid(requestQueue.id, imageProcessorIdentity.id, queueDataContributorRoleId)
+  properties: {
+    roleDefinitionId: queueDataContributorRoleId
+    principalType: 'ServicePrincipal'
+    principalId: imageProcessorIdentity.properties.principalId
+  }
+}
+
+resource resultQueueMessageSenderAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: resultQueue
+  name: guid(resultQueue.id, imageProcessorIdentity.id, queueDataContributorRoleId)
+  properties: {
+    roleDefinitionId: queueDataContributorRoleId
+    principalType: 'ServicePrincipal'
+    principalId: imageProcessorIdentity.properties.principalId
+  }
+}
+
+resource resultQueueMessageProcessorAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: resultQueue
+  name: guid(resultQueue.id, webAppIdentity.id, queueDataContributorRoleId)
+  properties: {
+    roleDefinitionId: queueDataContributorRoleId
+    principalType: 'ServicePrincipal'
+    principalId: webAppIdentity.properties.principalId
+  }
+}
+
 
 output storageAccoutName string = storageAccount.name

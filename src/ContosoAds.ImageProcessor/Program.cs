@@ -14,20 +14,31 @@ var app = builder.Build();
 
 app.MapHealthChecks("/healthz/live");
 app.MapHealthChecks("/healthz/ready");
-app.MapMethods("/thumbnail-request", new[] {HttpMethods.Options}, () => Results.Ok());
+app.MapMethods("/thumbnail-request", [HttpMethods.Options], () => Results.Ok());
 app.MapPost("/thumbnail-request",
     async (ImageBlob imageBlob, DaprClient client, ImageProcessor imageProcessor) =>
     {
         app.Logger.LogInformation("Received thumbnail image rendering request for '{BlobUri}'", imageBlob.Uri);
-
+        if (!imageBlob.IsValid)
+        {
+            app.Logger.LogWarning("Received invalid image blob with URI '{BlobUri}' and AdId '{AdId}'", 
+                imageBlob.Uri,
+                imageBlob.AdId);
+            return Results.Problem(statusCode: StatusCodes.Status400BadRequest,
+                title: "Validation error",
+                detail: $"Received invalid image blob with URI '{imageBlob.Uri}' and AdId '{imageBlob.AdId}");
+        }
+        
         byte[] rawData;
         try
         {
-            rawData = await client.ReadAzureBlobAsync("image-store", imageBlob.Name);
+            rawData = await client.ReadAzureBlobAsync("imageprocessor-storage", imageBlob.Name!);
         }
         catch (DaprException ex)
         {
-            app.Logger.LogError(ex, "Failed to read image blob '{BlobUri}' from blob storage", imageBlob.Uri);
+            app.Logger.LogError(ex, 
+                "Failed to read image blob '{BlobUri}' from blob storage", 
+                imageBlob.Uri);
             // The blob no longer exists in blob storage, hence we return OK. 
             return Results.Ok();
         }
@@ -40,28 +51,34 @@ app.MapPost("/thumbnail-request",
         string? thumbnailUri;
         try
         {
-            thumbnailUri =
-                await client.WriteAzureBlobBase64Async("image-store", $"tn-{imageBlob.Name}", output.ToArray(),
-                    "image/jpeg");
+            thumbnailUri = await client.WriteAzureBlobBase64Async("imageprocessor-storage", 
+                $"tn-{imageBlob.Name}", 
+                output.ToArray(),
+                "image/jpeg");
         }
         catch (DaprException ex)
         {
-            app.Logger.LogError(ex, "Failed to upload thumbnail for ad '{AdId} to image store", imageBlob.AdId);
+            app.Logger.LogError(ex, 
+                "Failed to upload thumbnail for ad '{AdId} to image store", 
+                imageBlob.AdId);
             return Results.Problem(statusCode: StatusCodes.Status500InternalServerError,
                 title: "Blob storage error",
                 detail: $"Failed to upload thumbnail for ad '{imageBlob.AdId}' to image store");
         }
 
-        app.Logger.LogInformation("Thumbnail for image with id '{AdId}' stored at '{ThumbnailUri}'", imageBlob.AdId,
+        app.Logger.LogInformation("Thumbnail for image with id '{AdId}' stored at '{ThumbnailUri}'", 
+            imageBlob.AdId,
             thumbnailUri);
         var thumbnailBlob = imageBlob with { Uri = new Uri(thumbnailUri!) };
         try
         {
-            await client.InvokeBindingAsync("thumbnail-result", "create", thumbnailBlob);
+            await client.InvokeBindingAsync("thumbnail-result-sender", "create", thumbnailBlob);
         }
         catch (DaprException ex)
         {
-            app.Logger.LogError(ex, "Failed to submit message for ad '{AdId} to result queue", imageBlob.AdId);
+            app.Logger.LogError(ex, 
+                "Failed to submit message for ad '{AdId} to result queue", 
+                imageBlob.AdId);
             return Results.Problem(statusCode: StatusCodes.Status500InternalServerError,
                 title: "Messaging error",
                 detail: $"Failed to submit result for ad '{imageBlob.AdId}' to result queue");
