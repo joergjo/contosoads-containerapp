@@ -5,13 +5,13 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-      <UserSecretsId>e243d7e1-ba52-45b2-844a-e8ec05237ead</UserSecretsId>
-  </PropertyGroup>
+        <UserSecretsId>e243d7e1-ba52-45b2-844a-e8ec05237ead</UserSecretsId>
+    </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Dapr.AspNetCore" Version="1.11.0" />
-      <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
-      <PackageReference Include="SixLabors.ImageSharp" Version="3.1.4" />
+        <PackageReference Include="Dapr.AspNetCore" Version="1.11.0"/>
+        <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0"/>
+        <PackageReference Include="SixLabors.ImageSharp" Version="3.1.4"/>
     </ItemGroup>
 
 </Project>
