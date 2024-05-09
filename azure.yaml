@@ -6,10 +6,16 @@ hooks:
     posix:
       shell: sh
       run: ./hooks/current-user.sh
+    windows:
+      shell: pwsh
+      run: .\hooks\current-user.ps1
   preprovision:
     posix:
       shell: sh
       run: ./hooks/current-user.sh
+    windows:
+      shell: pwsh
+      run: .\hooks\current-user.ps1
 services:
   webapp:
     project: ./src/ContosoAds.Web
