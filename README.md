@@ -47,10 +47,11 @@ You'll a small set of tools and skills to get started:
 
 * macOS, Linux, or Windows 10/11 
 * The [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/overview)
+* The [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
 * [Docker Desktop](https://docs.docker.com/docker-desktop/install/)
 * A Microsoft Azure subscription
 
-You an sign up for a Microsoft Azure subscription for free [here](https://azure.microsoft.com/free/).
+You can sign up for a Microsoft Azure subscription for free [here](https://azure.microsoft.com/free/).
 
 ## Topology diagram
 
@@ -81,10 +82,14 @@ to deploy the application in a few simple steps.
 deploying the app for the first time.
 
 Run the following commands in your preferred
-shell (e.g., zsh, bash, PowerShell, &hellip;)
+shell (e.g., zsh, bash, PowerShell, &hellip;). Login to Azure CLI and Azure Developer CLI 
+using the same user account.
 
 ```bash
-# Log in to azd (only required before first use)
+# Log in to Azure CLI (only required before first use)
+azd auth login
+
+# Log in to Azure Developer CLI (only required before first use)
 azd auth login
 
 # Set a Postgres admin login and password
