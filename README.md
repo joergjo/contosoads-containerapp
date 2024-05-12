@@ -54,7 +54,8 @@ You'll need an Azure subscription and a very small set of tools and skills to ge
 * macOS, Linux, or Windows 10/11 
 * The [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/overview)
 * [Docker Desktop](https://docs.docker.com/docker-desktop/install/)
-* A Microsoft Azure subscription
+* A [Microsoft Azure subscription](https://azure.microsoft.com/en-us/free)
+* [OpenSSL](https://www.openssl.org) (optional, used to generate a secure password)
 
 You an sign up for a Microsoft Azure subscription for free [here](https://azure.microsoft.com/free/).
 
