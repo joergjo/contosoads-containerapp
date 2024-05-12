@@ -49,7 +49,8 @@ You'll a small set of tools and skills to get started:
 * The [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/overview)
 * The [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
 * [Docker Desktop](https://docs.docker.com/docker-desktop/install/)
-* A Microsoft Azure subscription
+* A [Microsoft Azure subscription](https://azure.microsoft.com/en-us/free)
+* [OpenSSL](https://www.openssl.org) (optional, used to generate a secure password)
 
 You can sign up for a Microsoft Azure subscription for free [here](https://azure.microsoft.com/free/).
 
