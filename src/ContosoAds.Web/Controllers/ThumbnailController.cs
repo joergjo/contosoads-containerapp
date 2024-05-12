@@ -36,7 +36,7 @@ public class ThumbnailController : Controller
             return BadRequest();
         }
 
-        var ad = await _dbContext.Ads.FindAsync(new object[] {adId}, cancellationToken);
+        var ad = await _dbContext.Ads.FindAsync([adId], cancellationToken);
         if (ad is null)
         {
             _logger.LogWarning(

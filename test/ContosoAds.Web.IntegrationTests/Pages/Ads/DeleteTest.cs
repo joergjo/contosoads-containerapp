@@ -81,10 +81,8 @@ public class DeleteTest : IClassFixture<TestWebApplicationFactory>
         // Act
         var request = new HttpRequestMessage(HttpMethod.Post, $"/ads/delete/1")
         {
-            Content = new FormUrlEncodedContent(new[]
-            {
-                new KeyValuePair<string, string>("__RequestVerificationToken", csrfToken!)
-            })
+            Content = new FormUrlEncodedContent(
+                [new KeyValuePair<string, string>("__RequestVerificationToken", csrfToken!)])
         };
         using var postResponse = await client.SendAsync(request);
 
