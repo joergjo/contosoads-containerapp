@@ -1,9 +1,13 @@
 # Contoso Ads on Containers
 
-## Note
-You are looking at the .NET 7 branch of this sample. If you want to use the latest .NET
-version instead, please check out the [`main`](https://github.com/joergjo/contosoads-containerapp/tree/main)
-branch.
+## ‼️ Note ‼️
+**This is the .NET 7 branch of this sample and no longer maintained.** 
+
+.NET 7 has reached [end-of-life as of May 14th, 2024](https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core#lifecycle). 
+Please use the version published in the [`main`](https://github.com/joergjo/contosoads-containerapp/tree/main)
+branch instead.
+
+***
 
 ## Introduction
 This sample demonstrates how ASP.NET Core 7.0 can be used to build a cloud native application 
