@@ -11,18 +11,18 @@
     <ItemGroup>
       <PackageReference Include="Dapr.AspNetCore" Version="1.12.0" />
       <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
-      <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="6.0.30" />
-      <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.30" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.30" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.30">
+      <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="6.0.31" />
+      <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.31" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.31" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.31">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.30">
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.31">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="6.0.30" />
+      <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="6.0.31" />
       <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.29" />
       <PackageReference Include="Scrutor" Version="4.2.2" />
