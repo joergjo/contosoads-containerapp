@@ -18,7 +18,7 @@ param tags object = {}
 
 var storageAccountName = '${length(namePrefix) <= 11 ? namePrefix : substring(namePrefix, 0, 11)}${uniqueString(resourceGroup().id)}'
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2023-04-01' = {
   name: storageAccountName
   location: location
   tags: tags
@@ -34,12 +34,12 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   }
 }
 
-resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2023-01-01' = {
+resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2023-04-01' = {
   name: 'default'
   parent: storageAccount
 }
 
-resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01' = {
+resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-04-01' = {
   name: imageContainerName
   parent: blobService
   properties: {
@@ -47,17 +47,17 @@ resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@20
   }
 }
 
-resource queueService 'Microsoft.Storage/storageAccounts/queueServices@2023-01-01' = {
+resource queueService 'Microsoft.Storage/storageAccounts/queueServices@2023-04-01' = {
   name: 'default'
   parent: storageAccount
 }
 
-resource requestQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@2023-01-01' = {
+resource requestQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@2023-04-01' = {
   name: requestQueueName
   parent: queueService
 }
 
-resource resultQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@2023-01-01' = {
+resource resultQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@2023-04-01' = {
   name: resultQueueName
   parent: queueService
 }

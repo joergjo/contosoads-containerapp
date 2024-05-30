@@ -36,7 +36,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' existing 
   name: storageAccountName
 }
 
-resource environment 'Microsoft.App/managedEnvironments@2023-05-01' = {
+resource environment 'Microsoft.App/managedEnvironments@2024-03-01' = {
   name: environmentName
   location: location
   tags: tags
@@ -61,7 +61,7 @@ resource environment 'Microsoft.App/managedEnvironments@2023-05-01' = {
   }
 }
 
-resource imageStoreComponent 'Microsoft.App/managedEnvironments/daprComponents@2023-05-01' = {
+resource imageStoreComponent 'Microsoft.App/managedEnvironments/daprComponents@2024-03-01' = {
   name: 'image-store'
   parent: environment
   properties: {
@@ -94,7 +94,7 @@ resource imageStoreComponent 'Microsoft.App/managedEnvironments/daprComponents@2
   }
 }
 
-resource requestQueueComponent 'Microsoft.App/managedEnvironments/daprComponents@2023-05-01' = {
+resource requestQueueComponent 'Microsoft.App/managedEnvironments/daprComponents@2024-03-01' = {
   name: 'thumbnail-request'
   parent: environment
   properties: {
@@ -123,7 +123,7 @@ resource requestQueueComponent 'Microsoft.App/managedEnvironments/daprComponents
   }
 }
 
-resource resultQueueComponent 'Microsoft.App/managedEnvironments/daprComponents@2023-05-01' = {
+resource resultQueueComponent 'Microsoft.App/managedEnvironments/daprComponents@2024-03-01' = {
   name: 'thumbnail-result'
   parent: environment
   properties: {

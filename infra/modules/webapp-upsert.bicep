@@ -60,7 +60,7 @@ var envVars = [
   }
 ]
 
-resource existingContainerApp 'Microsoft.App/containerApps@2023-05-01' existing = if (exists) {
+resource existingContainerApp 'Microsoft.App/containerApps@2024-03-01' existing = if (exists) {
   name: appName
 }
 
