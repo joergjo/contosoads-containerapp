@@ -1,7 +1,7 @@
 volumes:
   contosoads-db:
   contosoads-storage:
-    
+
 networks:
   contosoads-network:
 
@@ -22,7 +22,7 @@ services:
     networks:
       - contosoads-network
   imageprocessor-dapr:
-    image: "daprio/daprd:edge"
+    image: "daprio/daprd:1.12.3"
     command: [
       "./daprd",
       "-app-id", "contosoads-imageprocessor",
@@ -30,7 +30,7 @@ services:
       "-placement-host-address", "placement:50006",
       "-dapr-http-port", "50001",
       "-dapr-grpc-port", "50002",
-      "-components-path", "/components" ]
+      "-resources-path", "/components" ]
     volumes:
       - "./components/:/components"
       - "./src/ContosoAds.ImageProcessor/secrets.json:/secrets.json"
@@ -59,7 +59,7 @@ services:
     depends_on:
       - db
   webapp-dapr:
-    image: "daprio/daprd:edge"
+    image: "daprio/daprd:1.12.3"
     command: [
       "./daprd",
       "-app-id", "contosoads-web",
@@ -67,14 +67,14 @@ services:
       "-placement-host-address", "placement:50006",
       "-dapr-http-port", "50001",
       "-dapr-grpc-port", "50002",
-      "-components-path", "/components"]
+      "-resources-path", "/components"]
     volumes:
       - "./components/:/components"
       - "./src/ContosoAds.Web/secrets.json:/secrets.json"
     network_mode: "service:webapp"
     depends_on:
       - webapp
-      
+  
   db:
     image: ${POSTGRES_IMAGE:-postgres:15-alpine}
     volumes:
@@ -87,7 +87,7 @@ services:
       - contosoads-network
   
   placement:
-    image: "daprio/dapr"
+    image: "daprio/dapr:1.12.3"
     command: ["./placement", "-port", "50006"]
     networks:
       - contosoads-network
