@@ -99,7 +99,7 @@ azd env set POSTGRES_LOGIN contosoads
 # If you don't have OpenSSL installed or don't want to use a 
 # a random password, set POSTGRES_LOGIN_PASSWORD to a secure 
 # password of your choice
-azd env set POSTGRES_LOGIN_PASSWORD "$(openssl rand -hex 20)##"
+azd env set POSTGRES_LOGIN_PASSWORD "$(openssl rand -base64 32 | tr -dc 'A-Za-z0-9' | head -c 24)"
 
 # Provision the infrastructure, build and deploy the application's container images
 azd up
