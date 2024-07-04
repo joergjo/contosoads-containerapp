@@ -1,17 +1,13 @@
-
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS base
-EXPOSE 8080
-WORKDIR /app
-
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
 ARG TARGETARCH
-WORKDIR /src
+WORKDIR /source
 COPY ["./ContosoAds.ImageProcessor.csproj", "."]
 RUN dotnet restore -a $TARGETARCH
 COPY [".", "."]
-RUN dotnet publish -a $TARGETARCH --no-restore -o /app/publish /p:UseAppHost=false
+RUN dotnet publish -a $TARGETARCH --no-restore -o /app /p:UseAppHost=false
 
-FROM base AS final
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS base
+EXPOSE 8080
 ENV \
     DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
     LC_ALL=en_US.UTF-8 \
@@ -21,5 +17,5 @@ RUN apk add --no-cache \
     icu-libs
 USER $APP_UID
 WORKDIR /app
-COPY --from=build ["/app/publish", "."]
+COPY --from=build ["/app", "."]
 ENTRYPOINT ["dotnet", "ContosoAds.ImageProcessor.dll"]
