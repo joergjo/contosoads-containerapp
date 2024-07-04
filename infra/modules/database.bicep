@@ -152,8 +152,8 @@ resource containerInstance 'Microsoft.ContainerInstance/containerGroups@2023-05-
       {
         name: 'psql'
         properties: {
-          image: 'postgres:15-alpine'
-          command: [ 'sh', '/mnt/repo/deploy/migrate.sh' ]
+          image: 'mcr.microsoft.com/cbl-mariner/base/postgres:14'
+          command: [ 'sh', '/mnt/repo/deploy/migrate-bash.sh' ]
           environmentVariables: [
             {
               name: 'CLIENT_ID'

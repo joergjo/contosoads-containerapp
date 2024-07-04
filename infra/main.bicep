@@ -43,7 +43,7 @@ param entraIdAdminPrincipalType string = 'User'
   '15'
   '16'
 ])
-param postgresVersion string = '15'
+param postgresVersion string = '14'
 
 @description('Specifies the public Git repo that hosts the database migration script.')
 param repository string = 'https://github.com/joergjo/contosoads-containerapp.git'
