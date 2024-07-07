@@ -105,7 +105,7 @@ resource migration 'Microsoft.ContainerInstance/containerGroups@2023-05-01' = {
       {
         name: 'psql'
         properties: {
-          image: 'postgres:15-alpine'
+          image: 'mcr.microsoft.com/cbl-mariner/base/postgres:14'
           command: command
           ports: [
             {
