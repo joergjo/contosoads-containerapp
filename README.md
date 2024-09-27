@@ -88,7 +88,7 @@ using the same user account.
 
 ```bash
 # Log in to Azure CLI (only required before first use)
-azd auth login
+az auth login
 
 # Log in to Azure Developer CLI (only required before first use)
 azd auth login
