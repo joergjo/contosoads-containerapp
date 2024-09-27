@@ -43,7 +43,7 @@ This sample app uses a variety of technologies:
 * [C# 12](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-12)
 
 ## Prerequisites
-You'll a small set of tools and skills to get started:
+You'll need a very small set of tools and skills to get started:
 
 * macOS, Linux, or Windows 10/11 
 * The [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/overview)
