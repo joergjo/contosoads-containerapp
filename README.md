@@ -53,11 +53,12 @@ You'll need an Azure subscription and a very small set of tools and skills to ge
 
 * macOS, Linux, or Windows 10/11 
 * The [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/overview)
+* The [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
 * [Docker Desktop](https://docs.docker.com/docker-desktop/install/)
 * A [Microsoft Azure subscription](https://azure.microsoft.com/en-us/free)
 * [OpenSSL](https://www.openssl.org) (optional, used to generate a secure password)
 
-You an sign up for a Microsoft Azure subscription for free [here](https://azure.microsoft.com/free/).
+You can sign up for a Microsoft Azure subscription for free [here](https://azure.microsoft.com/free/).
 
 ## Topology diagram
 
@@ -88,10 +89,14 @@ to deploy the application in a few simple steps.
 deploying the app for the first time.
 
 Run the following commands in your preferred
-shell (e.g., zsh, bash, PowerShell, &hellip;)
+shell (e.g., zsh, bash, PowerShell, &hellip;). Login to Azure CLI and Azure Developer CLI 
+using the same user account.
 
 ```bash
-# Log in to azd (only required before first use)
+# Log in to Azure CLI (only required before first use)
+az auth login
+
+# Log in to Azure Developer CLI (only required before first use)
 azd auth login
 
 # Set a Postgres admin login and password
@@ -114,10 +119,8 @@ the app!
 
 ## Using the app in Azure
 
-## Try the app in Azure
-
-The `deploy` CI/CD process creates a series of resources in your Azure subscription. These are used primarily for
-hosting the project code, but there are also additional resources that aid with monitoring and observing how the
+The Bicep templates used by `azd` create a series of resources in your Azure subscription. These are used primarily for
+hosting the application and its database, but there are also additional resources that aid with monitoring and observing how the
 app is running in the cloud environment.
 
 | Resource                               | Resource Type                                      | Purpose                                                                                                                                           |
