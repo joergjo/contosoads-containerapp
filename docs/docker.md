@@ -45,8 +45,8 @@ In `image-store.yaml`, replace the `IP_ADDRESS` placeholder with your computer's
 IP address (_not_ 127.0.0.1).
 
 This way we can expose Azurite's blob endpoint both on your local network and to the
-Docker network that the other containers use. That is not required for the queue 
-endpoints, since they are not accesses by a web browser.
+Docker network that the other containers use. Note that this is not required for the queue 
+endpoint, since it is accessed only by the .NET backend services.
 
 ```yaml
 # image-store.yaml
@@ -93,7 +93,7 @@ override the image names and tags by creating an `.env` file and setting
 `IMAGEPROCESSOR_IMAGE` and `WEB_IMAGE` to an image that you have built locally or 
 that is stored in another repository. 
 
-To build images for your local CPU architecture (e.g., ARM64 on an Apple Silicon Mac,
+To build images for your local CPU architecture (e.g., ARM64 on an Apple silicon Mac,
 AMD64 on an x64 based Windows PC) run, create an `.env` file as mentioned and run
 
 ```bash
