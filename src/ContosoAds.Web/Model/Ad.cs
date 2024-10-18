@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
 
 namespace ContosoAds.Web.Model;
 
@@ -9,7 +10,7 @@ public class Ad
 
     [Required]
     [StringLength(100)]
-    public string Title { get; set; } = string.Empty;
+    public string Title { get; set; } = default!;
 
     [Required]
     [DataType(DataType.Currency)]

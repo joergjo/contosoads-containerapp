@@ -1,8 +1,10 @@
 using ContosoAds.Web;
 using ContosoAds.Web.Commands;
 using ContosoAds.Web.DataAccess;
+using ContosoAds.Web.TagHelpers;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
@@ -20,16 +22,24 @@ builder.Services.AddHealthChecks().AddDbContextCheck<AdsContext>("AdsContext", t
 builder.Services.AddRazorPages().AddDapr();
 builder.Services.AddControllers().AddDapr();
 
+// Initialize TagHelper to adjust <img src="..."> URLs when running the
+// entire application stack in Docker. In this case, URLs must be rewritten
+// from "host.docker.internal" to "127.0.0.1".
+var imgSrcHost = builder.Configuration.GetValue<string?>("ImageSource:Host");
+var imgSrcPort = builder.Configuration.GetValue<int?>("ImageSource:Port");
+builder.Services.AddSingleton<ITagHelperInitializer<ImgTagHelper>>(
+    new ImgTagHelperInitializer(imgSrcHost, imgSrcPort));
+
 // Configure Npgsql data source and Entity Framework.
 var useEntraId = builder.Configuration.GetValue(
     "DataSource:UseEntraId",
     false);
 var managedIdentityClientId = builder.Configuration.GetValue(
-    "DataSource:ManagedIdentityClientId", 
+    "DataSource:ManagedIdentityClientId",
     default(string));
 
 builder.Services.AddNpgsqlDataSource(
-    builder.Configuration.GetConnectionString("DefaultConnection")!, 
+    builder.Configuration.GetConnectionString("DefaultConnection")!,
     useEntraId,
     managedIdentityClientId);
 builder.Services.AddDbContext<AdsContext>((sp, options) =>

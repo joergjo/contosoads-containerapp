@@ -4,6 +4,9 @@ common:
   env:
     # Set this to an actual connection string to enable tracing to Application Insights
     ApplicationInsights__ConnectionString: ""
+    # Always override the host name to localhost for the image source to seamlessly switch
+    # between "dapr run -f ." and "docker compose up -d" using the same database 
+    ImageSource__Host: "127.0.0.1"
 apps:
   - appID: contosoads-web
     appDirPath: ./src/ContosoAds.Web

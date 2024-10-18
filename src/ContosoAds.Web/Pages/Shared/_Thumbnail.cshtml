@@ -6,7 +6,7 @@
 }
 else if (Model.ThumbnailUri is not null)
 {
-    <img alt="@Model.Title" src="@Html.Raw(Model.ThumbnailUri)"/>
+    <img alt="@Model.Title" src="@Html.Raw(Model.ThumbnailUri)" class="img-fluid" />
 }
 else
 {
