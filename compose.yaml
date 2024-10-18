@@ -77,7 +77,7 @@ services:
       - webapp
   
   db:
-    image: ${POSTGRES_IMAGE:-postgres:15-alpine}
+    image: ${POSTGRES_IMAGE:-postgres:16-alpine}
     volumes:
       - contosoads-db:/var/lib/postgresql/data
       - ./deploy/migrate.sql:/docker-entrypoint-initdb.d/1-migrate.sql
