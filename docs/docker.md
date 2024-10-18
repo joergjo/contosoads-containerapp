@@ -40,27 +40,24 @@ docker compose -f compose.deps.yaml down
  
 ```
 
-Next, uncomment the endpoint settings for all Dapr components located in the [`components`](../components) directory.
-In `image-store.yaml`, replace the `IP_ADDRESS` placeholder with your computer's 
-IP address (_not_ 127.0.0.1).
-
-This way we can expose Azurite's blob endpoint both on your local network and to the
-Docker network that the other containers use. Note that this is not required for the queue 
-endpoint, since it is accessed only by the .NET backend services.
+Next, make sure the endpoint settings for all Dapr components located in the
+[`components`](../components) directory use `host.docker.internal` as endpoint (these endpoints are set to `127.0.0.1`
+by default to run the application without Docker).
 
 ```yaml
-# image-store.yaml
+# imageprocessor-storage.yaml and web-storage.yaml
 - name: endpoint
-  value: "http://IP_ADDRESS:10000"
+  value: "http://host.docker.internal:10000"
 
-# thumbnail-request.yaml and thumbnail-result.yaml
-- name: queueEndpointUrl
+# thumbnail-request-receiver.yaml, thumbnail-request-sender.yaml, 
+# thumbnail-result-receiver.yaml and thumbnail-result-sender.yaml
+- name: endpoint
   value: "http://host.docker.internal:10001"
 ```
 
 ### Run application containers and dependencies
 
-The sample includes a Docker Compose file that launches the application containers, Dapr sidecars, Azurite and a PostgreSQL
+The repository includes a Docker Compose file that launches the application containers, Dapr sidecars, Azurite and a PostgreSQL
 database. Run the following commands to launch the entire stack.
 
 ```bash

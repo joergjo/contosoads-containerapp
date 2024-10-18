@@ -16,10 +16,10 @@ spec:
       value: "thumbnail-result"
     - name: route
       value: "/thumbnail-result"
-#   When running the application and Dapr locally, uncomment the next two lines to point Dapr to its Azure Storage Blob endpoint.
-#    - name: endpoint
-#      value: "http://127.0.0.1:10001"
-#   When running the entire software stack in Docker, uncomment the next two lines.
+#   When running the application with Docker Compose, comment the next two lines.
+    - name: endpoint
+      value: "http://127.0.0.1:10001"
+#   When running the application with Docker Compose, uncomment the next two lines.
 #    - name: endpoint
 #      value: "http://host.docker.internal:10001"
 auth:

@@ -45,16 +45,18 @@ az storage queue create -n thumbnail-result
 docker compose -f compose.deps.yaml down  
 ```
 
-Next, uncomment the endpoint settings for all Dapr components located in the 
-[`components`](../components) directory. 
+Next, make sure the endpoint settings for all Dapr components located in the 
+[`components`](../components) directory use `127.0.0.1` as endpoint (these are the default
+settings).
 
 ```yaml
-# image-store.yaml
+# imageprocessor-storage.yaml and web-storage.yaml
 - name: endpoint
   value: "http://127.0.0.1:10000"
 
-# thumbnail-request.yaml and thumbnail-result.yaml
-- name: queueEndpointUrl
+# thumbnail-request-receiver.yaml, thumbnail-request-sender.yaml, 
+# thumbnail-result-receiver.yaml and thumbnail-result-sender.yaml
+- name: endpoint
   value: "http://127.0.0.1:10001"
 ```
 
@@ -69,7 +71,7 @@ docker compose -f compose.deps.yaml --profile all up -d
 dapr run -f .
 ```
 
-Open http://localhost:7125 in your favorite browser to use the Contoso Ads web application.
+Open https://localhost:7125 in your favorite browser to use the Contoso Ads web application.
 
 ### Stopping and cleaning up
 
@@ -88,17 +90,16 @@ If you want to remove all Docker volumes created for PostgreSQL and Azurite
 docker compose -f compose.deps.yaml --profile all down -v
 ```
 
-
 ### Editing and building the solution (optional)
 
 Open [ContosoAds.sln](../ContosoAds.sln) in your favorite IDE or code editor to
-change it, runs tests and build the source code.
+change the source code, build it, and runs tests.
 
-To run in the included tests and build the application on the command line, run 
+To build the application and run in the included tests, execute 
 the following commands.
 
 ```bash
 cd contosoads-containerapp
-dotnet test
 dotnet build
+dotnet test
 ```
