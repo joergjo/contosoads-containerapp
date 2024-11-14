@@ -16,7 +16,7 @@ var appNsgName = '${namePrefix}${uid}-app-nsg'
 var postgresNsgName = '${namePrefix}${uid}-postgres-nsg'
 var privateDnsZoneName = 'contosoads.postgres.database.azure.com'
 
-resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
+resource vnet 'Microsoft.Network/virtualNetworks@2023-11-01' = {
   name: vnetName
   location: location
   tags: tags
@@ -79,7 +79,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
   }
 }
 
-resource appNsg 'Microsoft.Network/networkSecurityGroups@2023-04-01' = {
+resource appNsg 'Microsoft.Network/networkSecurityGroups@2023-11-01' = {
   name: appNsgName
   location: location
   tags: tags
@@ -115,7 +115,7 @@ resource appNsg 'Microsoft.Network/networkSecurityGroups@2023-04-01' = {
   }
 }
 
-resource postgresNsg 'Microsoft.Network/networkSecurityGroups@2023-04-01' = {
+resource postgresNsg 'Microsoft.Network/networkSecurityGroups@2023-11-01' = {
   name: postgresNsgName
   location: location
   tags: tags
@@ -139,13 +139,13 @@ resource postgresNsg 'Microsoft.Network/networkSecurityGroups@2023-04-01' = {
   }
 }
 
-resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = if (deployDnsZone) {
+resource privateDnsZone 'Microsoft.Network/privateDnsZones@2024-06-01' = if (deployDnsZone) {
   name: privateDnsZoneName 
   location: 'global'
   tags: tags
 }
 
-resource privateDnsZoneLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = if (deployDnsZone) {
+resource privateDnsZoneLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2024-06-01' = if (deployDnsZone) {
   parent: privateDnsZone
   name: '${vnet.name}-link'
   location: 'global'

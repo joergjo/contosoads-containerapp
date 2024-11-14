@@ -68,7 +68,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-
   name: migrationIdentityName
 }
 
-resource postgresServer 'Microsoft.DBforPostgreSQL/flexibleServers@2023-06-01-preview' = {
+resource postgresServer 'Microsoft.DBforPostgreSQL/flexibleServers@2024-08-01' = {
   name: serverName
   location: location
   sku: {
@@ -103,7 +103,7 @@ resource postgresServer 'Microsoft.DBforPostgreSQL/flexibleServers@2023-06-01-pr
   }
 }
 
-resource postgresDatabase 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2023-06-01-preview' = {
+resource postgresDatabase 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2024-08-01' = {
   name: databaseName
   parent: postgresServer
   properties: {
@@ -112,7 +112,7 @@ resource postgresDatabase 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2
   }
 }
 
-resource postgresEntraIdAdmin 'Microsoft.DBforPostgreSQL/flexibleServers/administrators@2023-06-01-preview' = {
+resource postgresEntraIdAdmin 'Microsoft.DBforPostgreSQL/flexibleServers/administrators@2024-08-01' = {
   name: entraIdAdminObjectId
   parent: postgresServer
   properties: {
@@ -122,7 +122,7 @@ resource postgresEntraIdAdmin 'Microsoft.DBforPostgreSQL/flexibleServers/adminis
   }
 }
 
-resource postgresMigrationIdentity 'Microsoft.DBforPostgreSQL/flexibleServers/administrators@2023-06-01-preview' = {
+resource postgresMigrationIdentity 'Microsoft.DBforPostgreSQL/flexibleServers/administrators@2024-08-01' = {
   name: migrationIdentityObjectId
   parent: postgresServer
   properties: {
