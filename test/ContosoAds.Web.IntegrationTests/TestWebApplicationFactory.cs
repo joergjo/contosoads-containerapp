@@ -21,12 +21,23 @@ public class TestWebApplicationFactory : WebApplicationFactory<Program>
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.UseEnvironment("IntegrationTest");
+        // builder.UseEnvironment("IntegrationTest");
         builder.ConfigureTestServices(services =>
         {
             services.RemoveAll<DbContextOptions<AdsContext>>();
-            services.AddDbContext<AdsContext>(options => 
-                options.UseInMemoryDatabase("ContosoAds", _root));
+            services.AddDbContext<AdsContext>(options =>
+            {
+                // In .NET 9, there must have been a change in the way the
+                // services are registered, which causes tests to fail
+                // because Entity Framework still resolves the Npgsql
+                // provider. To fix this, we use an internal service provider
+                // to resolve the Entity Framework services.
+                var efServices = new ServiceCollection();
+                efServices.AddEntityFrameworkInMemoryDatabase();
+                var provider = efServices.BuildServiceProvider();
+                options.UseInternalServiceProvider(provider);
+                options.UseInMemoryDatabase("ContosoAds", _root);
+            });
             services.RemoveAll<DaprClient>();
             services.AddSingleton(A.Fake<DaprClient>());
         });
@@ -42,7 +53,7 @@ public class TestWebApplicationFactory : WebApplicationFactory<Program>
         
         if (ads.Length == 0)
         {
-            return ads.Select(a => a.Id);
+            return [];
         }
         
         await context.Ads.AddRangeAsync(ads);
