@@ -1,7 +1,7 @@
 # Contoso Ads on Containers
 
 ## ‼️ Note ‼️
-**This is the .NET 7 branch of this sample and no longer maintained.** 
+**This is the .NET 6 branch of this sample and no longer maintained.** 
 
 .NET 6 has reached [end-of-life as of November 12th, 2024](https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core#lifecycle). 
 Please use the version published in the [`main`](https://github.com/joergjo/contosoads-containerapp/tree/main)
