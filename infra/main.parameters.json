@@ -24,7 +24,7 @@
         "value": "${CURRENT_USER_PRINCIPAL_TYPE}"
       },
       "postgresVersion": {
-        "value": "${POSTGRES_VERSION=15}"
+        "value": "${POSTGRES_VERSION=16}"
       },
       "webAppExists": {
         "value": "${SERVICE_WEBAPP_RESOURCE_EXISTS=false}"
