@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - 'main'
+      - 'dotnet8'
       - 'dotnet7'
       - 'dotnet6'
     paths:
