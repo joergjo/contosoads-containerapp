@@ -1,7 +1,7 @@
 # Contoso Ads on Containers
 
 ## Introduction
-This sample demonstrates how ASP.NET Core 8.0 can be used to build a cloud native application 
+This sample demonstrates how ASP.NET Core 9.0 can be used to build a cloud native application 
 that consists of a frontend web app and an API that communicate asynchronously via messaged 
 queues. Messaging between frontend and API is implemented using Dapr and both frontend and API 
 are hosted in Azure Container Apps.
@@ -38,9 +38,9 @@ This sample app uses a variety of technologies:
 * [Azure Bicep](https://docs.microsoft.com/azure/azure-resource-manager/bicep/overview?tabs=**bicep**)
 * [ASP.NET Core Razor Pages](https://learn.microsoft.com/en-us/aspnet/core/razor-pages/?view=aspnetcore-8.0&tabs=visual-studio-code)
 * [ASP.NET Core Minimal API](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-8.0)
-* [Entity Framework Core 8.0](https://learn.microsoft.com/en-us/ef/core/)
+* [Entity Framework Core 9.0](https://learn.microsoft.com/en-us/ef/core/)
 * [Dapr](https://dapr.io)
-* [C# 12](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-12)
+* [C# 13](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-13)
 
 ## Prerequisites
 You'll need a very small set of tools and skills to get started:
