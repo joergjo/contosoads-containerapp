@@ -175,7 +175,6 @@ module environment 'modules/environment.bicep' = {
   scope: rg
   params: {
     location: location
-    tags: tags
     namePrefix: namePrefix
     infrastructureSubnetId: network.outputs.infraSubnetId
     workspaceName: monitoring.outputs.workspaceName
