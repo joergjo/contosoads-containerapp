@@ -38,7 +38,7 @@ public class CommonPageTest : IClassFixture<TestWebApplicationFactory>
         using var client = _factory.CreateClient();
 
         // Act
-        using var response = await client.GetAsync($"/ads/{action}/{id}");
+        using var response = await client.GetAsync($"/ads/{action}/{id}", TestContext.Current.CancellationToken);
 
         // Assert
         using var document = await response.ToDocumentAsync();
@@ -64,7 +64,7 @@ public class CommonPageTest : IClassFixture<TestWebApplicationFactory>
         using var client = _factory.CreateClient();
         
         // Act
-        using var response = await client.GetAsync($"/ads/{action}/{id}");
+        using var response = await client.GetAsync($"/ads/{action}/{id}", TestContext.Current.CancellationToken);
         
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);

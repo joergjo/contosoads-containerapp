@@ -46,7 +46,9 @@ public class CreateOrEditTest
 
         // Assert
         await using var testDbContext = await CreateTestDbContext(dbName);
+#pragma warning disable xUnit1051
         var createdAd = await testDbContext.Ads.FindAsync(ad.Id);
+#pragma warning restore xUnit1051
         Assert.Equal(title, createdAd?.Title);
         Assert.Equal(description, createdAd?.Description);
         Assert.Equal(phone, createdAd?.Phone);
@@ -107,7 +109,7 @@ public class CreateOrEditTest
                 A<string>._,
                 A<byte[]>._,
                 A<IReadOnlyDictionary<string, string>>._, 
-                default))
+                A<CancellationToken>._))
             .MustHaveHappenedOnceExactly();
     }
 }

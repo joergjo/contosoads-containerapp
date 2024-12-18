@@ -35,7 +35,7 @@ public class EditTest : IClassFixture<TestWebApplicationFactory>
                 Title = "A car"
             });
         using var client = _factory.CreateClient();
-        using var getResponse = await client.GetAsync($"/ads/edit/1");
+        using var getResponse = await client.GetAsync($"/ads/edit/1", TestContext.Current.CancellationToken);
         using var document = await getResponse.ToDocumentAsync();
         var csrfToken = document.QuerySelector("input[name=__RequestVerificationToken]")?.GetAttribute("value");
 
@@ -53,7 +53,7 @@ public class EditTest : IClassFixture<TestWebApplicationFactory>
                 new KeyValuePair<string, string>("__RequestVerificationToken", csrfToken!)
             ])
         };
-        using var postResponse = await client.SendAsync(request);
+        using var postResponse = await client.SendAsync(request, TestContext.Current.CancellationToken);
 
         // Assert
         Assert.Equal(HttpStatusCode.Redirect, postResponse.StatusCode);
@@ -78,7 +78,7 @@ public class EditTest : IClassFixture<TestWebApplicationFactory>
                 Title = "A car"
             });
         using var client = _factory.CreateClient();
-        using var getResponse = await client.GetAsync($"/ads/edit/1");
+        using var getResponse = await client.GetAsync($"/ads/edit/1", TestContext.Current.CancellationToken);
         using var document = await getResponse.ToDocumentAsync();
         var csrfToken = document.QuerySelector("input[name=__RequestVerificationToken]")?.GetAttribute("value");
         await _factory.SeedDatabaseAsync();
@@ -97,7 +97,7 @@ public class EditTest : IClassFixture<TestWebApplicationFactory>
                 new KeyValuePair<string, string>("__RequestVerificationToken", csrfToken!)
             ])
         };
-        using var postResponse = await client.SendAsync(request);
+        using var postResponse = await client.SendAsync(request, TestContext.Current.CancellationToken);
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, postResponse.StatusCode);
