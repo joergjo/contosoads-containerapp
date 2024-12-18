@@ -35,7 +35,7 @@ public class DeleteTest : IClassFixture<TestWebApplicationFactory>
                 Title = "A car"
             });
         using var client = _factory.CreateClient();
-        using var getResponse = await client.GetAsync($"/ads/delete/1");
+        using var getResponse = await client.GetAsync($"/ads/delete/1", TestContext.Current.CancellationToken);
         using var document = await getResponse.ToDocumentAsync();
         var csrfToken = document.QuerySelector("input[name=__RequestVerificationToken]")?.GetAttribute("value");
 
@@ -47,7 +47,7 @@ public class DeleteTest : IClassFixture<TestWebApplicationFactory>
                 new KeyValuePair<string, string>("__RequestVerificationToken", csrfToken!)
             ])
         };
-        using var postResponse = await client.SendAsync(request);
+        using var postResponse = await client.SendAsync(request, TestContext.Current.CancellationToken);
 
         // Assert
         Assert.Equal(HttpStatusCode.Redirect, postResponse.StatusCode);
@@ -72,7 +72,7 @@ public class DeleteTest : IClassFixture<TestWebApplicationFactory>
                 Title = "A car"
             });
         using var client = _factory.CreateClient();
-        using var getResponse = await client.GetAsync($"/ads/delete/1");
+        using var getResponse = await client.GetAsync($"/ads/delete/1", TestContext.Current.CancellationToken);
         using var document = await getResponse.ToDocumentAsync();
         var csrfToken = document.QuerySelector("input[name=__RequestVerificationToken]")?.GetAttribute("value");
 
@@ -84,7 +84,7 @@ public class DeleteTest : IClassFixture<TestWebApplicationFactory>
             Content = new FormUrlEncodedContent(
                 [new KeyValuePair<string, string>("__RequestVerificationToken", csrfToken!)])
         };
-        using var postResponse = await client.SendAsync(request);
+        using var postResponse = await client.SendAsync(request, TestContext.Current.CancellationToken);
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, postResponse.StatusCode);

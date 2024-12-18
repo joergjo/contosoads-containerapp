@@ -25,7 +25,7 @@ public class CreateTest : IClassFixture<TestWebApplicationFactory>
         using var client = _factory.CreateClient();
 
         // Act
-        using var response = await client.GetAsync(uri);
+        using var response = await client.GetAsync(uri, TestContext.Current.CancellationToken);
 
         // Assert
         using var document = await response.ToDocumentAsync();
@@ -46,7 +46,9 @@ public class CreateTest : IClassFixture<TestWebApplicationFactory>
         using var client = _factory.CreateClient();
 
         // Act
-        using var response = await client.SendAsync(new HttpRequestMessage(HttpMethod.Get, uri));
+        using var response = await client.SendAsync(
+            new HttpRequestMessage(HttpMethod.Get, uri), 
+            TestContext.Current.CancellationToken);
 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -60,7 +62,7 @@ public class CreateTest : IClassFixture<TestWebApplicationFactory>
         const string uri = "/ads/create";
         await _factory.SeedDatabaseAsync();
         var client = _factory.CreateClient();
-        using var getResponse = await client.GetAsync(uri);
+        using var getResponse = await client.GetAsync(uri, TestContext.Current.CancellationToken);
         using var document = await getResponse.ToDocumentAsync();
         var csrfToken = document.QuerySelector("input[name=__RequestVerificationToken]")?.GetAttribute("value");
 
@@ -77,7 +79,7 @@ public class CreateTest : IClassFixture<TestWebApplicationFactory>
                 new KeyValuePair<string, string>("__RequestVerificationToken", csrfToken!)
             ])
         };
-        using var postResponse = await client.SendAsync(request);
+        using var postResponse = await client.SendAsync(request, TestContext.Current.CancellationToken);
 
         // Assert
         Assert.Equal(HttpStatusCode.Redirect, postResponse.StatusCode);

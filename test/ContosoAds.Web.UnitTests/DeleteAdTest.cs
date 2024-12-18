@@ -79,7 +79,7 @@ public class DeleteAdTest
             A<string>.That.IsEqualTo("delete"),
             A<string>.That.IsNull(),
             A<Dictionary<string, string>>.That.Matches(m => m.ContainsKey("blobName")),
-            default)).MustHaveHappenedOnceExactly();
+            A<CancellationToken>._)).MustHaveHappenedOnceExactly();
     }
 
     [Fact]
@@ -116,7 +116,7 @@ public class DeleteAdTest
             A<string>.That.IsEqualTo("delete"),
             A<string>.That.IsNull(),
             A<Dictionary<string, string>>.That.Matches(m => m.ContainsKey("blobName")),
-            default)).MustHaveHappenedOnceExactly();
+            A<CancellationToken>._)).MustHaveHappenedOnceExactly();
     }
 
     [Fact]
@@ -153,7 +153,7 @@ public class DeleteAdTest
             A<string>.That.IsEqualTo("delete"),
             A<string>.That.IsNull(),
             A<Dictionary<string, string>>.That.Matches(m => m.ContainsKey("blobName")),
-            default)).MustHaveHappenedTwiceExactly();
+            A<CancellationToken>._)).MustHaveHappenedTwiceExactly();
     }
 
     [Fact]

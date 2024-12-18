@@ -25,7 +25,7 @@ public class ImageProcessorTest
 
         // Assert
         result.Position = 0;
-        using var image = await Image.LoadAsync(result);
+        using var image = await Image.LoadAsync(result, TestContext.Current.CancellationToken);
         Assert.Equal(expectedWidth, image.Width);
         Assert.Equal(expectedHeight, image.Height);
     }

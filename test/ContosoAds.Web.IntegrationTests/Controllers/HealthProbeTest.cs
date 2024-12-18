@@ -22,7 +22,7 @@ public class HealthProbeTest : IClassFixture<TestWebApplicationFactory>
         using var client = _factory.CreateClient();
 
         // Assert
-        using var response = await client.GetAsync(uri);
+        using var response = await client.GetAsync(uri, TestContext.Current.CancellationToken);
 
         // Act
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);

@@ -30,7 +30,7 @@ public class IndexTest : IClassFixture<TestWebApplicationFactory>
         using var client = _factory.CreateClient();
 
         // Act
-        using var response = await client.GetAsync(uri);
+        using var response = await client.GetAsync(uri, TestContext.Current.CancellationToken);
 
         // Assert
         using var document = await response.ToDocumentAsync();
@@ -51,7 +51,7 @@ public class IndexTest : IClassFixture<TestWebApplicationFactory>
         using var client = _factory.CreateClient();
 
         // Act
-        using var response = await client.GetAsync($"/ads?Category={category}");
+        using var response = await client.GetAsync($"/ads?Category={category}", TestContext.Current.CancellationToken);
 
         // Assert
         using var document = await response.ToDocumentAsync();
