@@ -27,7 +27,7 @@
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
         <PackageReference Include="Npgsql.DependencyInjection" Version="9.0.2" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.2" />
-        <PackageReference Include="Scrutor" Version="5.0.2" />
+        <PackageReference Include="Scrutor" Version="5.1.0" />
     </ItemGroup>
 
     <ItemGroup>
