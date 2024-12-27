@@ -42,7 +42,7 @@ public class CreateOrEditTest
 
         // Act
         var command = new CreateOrEditAd(initialDbContext, daprClient, logger);
-        await command.ExecuteAsync(ad, default);
+        await command.ExecuteAsync(ad, null);
 
         // Assert
         await using var testDbContext = await CreateTestDbContext(dbName);
