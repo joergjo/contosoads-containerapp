@@ -10,7 +10,7 @@ public class Ad
 
     [Required]
     [StringLength(100)]
-    public string Title { get; set; } = default!;
+    public string Title { get; set; } = string.Empty;
 
     [Required]
     [DataType(DataType.Currency)]
@@ -38,7 +38,7 @@ public class Ad
     [Required]
     [Phone]
     [DisplayName("Phone number")]
-    public string Phone { get; set; } = default!;
+    public string Phone { get; set; } = string.Empty;
     
     public bool IsNew => Id == 0;
 }

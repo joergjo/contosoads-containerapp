@@ -10,7 +10,7 @@ namespace ContosoAds.Web.UnitTests;
 internal static class TestSupport
 {
     internal static async Task<AdsContext> CreateTestDbContext(string databaseName, bool recreate = false,
-        IReadOnlyList<Ad>? ads = default)
+        IReadOnlyList<Ad>? ads = null)
     {
         var options = new DbContextOptionsBuilder<AdsContext>()
             .UseInMemoryDatabase(databaseName: databaseName)

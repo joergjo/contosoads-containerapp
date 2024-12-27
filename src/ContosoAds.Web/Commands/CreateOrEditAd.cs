@@ -93,7 +93,7 @@ public class CreateOrEditAd
         return new CreateOrEditResult(true, hasNewImage);
     }
 
-    private async Task<string?> WriteImageBlob(IFormFile file, string? currentUri = default)
+    private async Task<string?> WriteImageBlob(IFormFile file, string? currentUri = null)
     {
         await using var buffer = new MemoryStream(0x10000);
         await file.CopyToAsync(buffer);

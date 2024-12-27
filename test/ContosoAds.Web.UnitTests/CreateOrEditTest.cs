@@ -46,9 +46,7 @@ public class CreateOrEditTest
 
         // Assert
         await using var testDbContext = await CreateTestDbContext(dbName);
-#pragma warning disable xUnit1051
-        var createdAd = await testDbContext.Ads.FindAsync(ad.Id);
-#pragma warning restore xUnit1051
+        var createdAd = await testDbContext.Ads.FindAsync([ad.Id], TestContext.Current.CancellationToken);
         Assert.Equal(title, createdAd?.Title);
         Assert.Equal(description, createdAd?.Description);
         Assert.Equal(phone, createdAd?.Phone);
@@ -102,7 +100,7 @@ public class CreateOrEditTest
 
         // Assert
         await using var testDbContext = await CreateTestDbContext(dbName);
-        var createdAd = await testDbContext.Ads.FindAsync(ad.Id);
+        var createdAd = await testDbContext.Ads.FindAsync([ad.Id], TestContext.Current.CancellationToken);
         Assert.NotNull(createdAd?.ImageUri);
         A.CallTo(() => daprClient.InvokeBindingAsync<byte[], JsonNode>(
                 A<string>._, 

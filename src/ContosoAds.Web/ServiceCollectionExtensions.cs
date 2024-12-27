@@ -10,7 +10,7 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         string connectionString,
         bool useEntraId,
-        string? managedIdentityClientId = default)
+        string? managedIdentityClientId = null)
     {
         services.AddNpgsqlDataSource(connectionString,
             dataSourceBuilder =>
