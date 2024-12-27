@@ -10,7 +10,7 @@ public class ImgTagHelper : TagHelper
     private const string PortAttributeName = "port";
 
     // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
-    public string Src { get; set; } = default!;
+    public string Src { get; set; } = string.Empty;
 
     public string? Host { get; set; }
 

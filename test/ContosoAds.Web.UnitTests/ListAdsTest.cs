@@ -32,7 +32,7 @@ public class ListAdsTest
 
         // Act
         var command = new ListAds(testDbContext, logger);
-        var result = await command.ExecuteAsync(default);
+        var result = await command.ExecuteAsync(null);
 
         Assert.Equal(numberOfAds, result.Count);
     }

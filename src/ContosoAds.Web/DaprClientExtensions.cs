@@ -6,7 +6,7 @@ namespace ContosoAds.Web;
 public static class DaprClientExtensions
 {
     public static async Task<string?> WriteAzureBlobAsync(this DaprClient daprClient, string bindingName,
-        string blobName, byte[] data, string? contentType = default)
+        string blobName, byte[] data, string? contentType = null)
     {
         var request = new BindingRequest(bindingName, "create")
         {
@@ -23,7 +23,7 @@ public static class DaprClientExtensions
     }
     
     public static async Task<string?> WriteAzureBlobBase64Async(this DaprClient daprClient, string bindingName,
-        string blobName, byte[] data, string? contentType = default)
+        string blobName, byte[] data, string? contentType = null)
     {
         var metadata = new Dictionary<string, string>
         {
