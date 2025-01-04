@@ -17,3 +17,4 @@ components-local/
 **/.dapr/logs/
 .azure
 **/TestResults/
+**/coveragereport/
