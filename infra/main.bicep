@@ -42,6 +42,7 @@ param entraIdAdminPrincipalType string = 'User'
   '14'
   '15'
   '16'
+  '17'
 ])
 param postgresVersion string
 
