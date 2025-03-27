@@ -22,7 +22,7 @@ services:
     networks:
       - contosoads-network
   imageprocessor-dapr:
-    image: "daprio/daprd:1.12.3"
+    image: "daprio/daprd:1.13.6"
     command: [
       "./daprd",
       "-app-id", "contosoads-imageprocessor",
@@ -60,7 +60,7 @@ services:
     depends_on:
       - db
   webapp-dapr:
-    image: "daprio/daprd:1.12.3"
+    image: "daprio/daprd:1.13.6"
     command: [
       "./daprd",
       "-app-id", "contosoads-web",
@@ -88,7 +88,7 @@ services:
       - contosoads-network
   
   placement:
-    image: "daprio/dapr:1.12.3"
+    image: "daprio/dapr:1.13.6"
     command: ["./placement", "-port", "50006"]
     networks:
       - contosoads-network
