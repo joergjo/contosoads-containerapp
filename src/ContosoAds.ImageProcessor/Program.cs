@@ -1,11 +1,19 @@
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 using ContosoAds.ImageProcessor;
 using Dapr;
 using Dapr.Client;
-using Microsoft.ApplicationInsights.Extensibility;
+using OpenTelemetry.Instrumentation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddApplicationInsightsTelemetry();
-builder.Services.AddSingleton<ITelemetryInitializer, CloudRoleNameInitializer>();
+
+var appInsightsConnectionString = builder.Configuration.GetValue<string?>(
+    "APPLICATIONINSIGHTS_CONNECTION_STRING");
+if (appInsightsConnectionString is { Length: > 0 })
+{
+    builder.Services.AddOpenTelemetry().UseAzureMonitor(configure => configure.EnableLiveMetrics = true);
+    builder.Services.Configure<AspNetCoreTraceInstrumentationOptions>(options => options.RecordException = true);
+}
+
 builder.Services.AddDaprClient();
 builder.Services.AddScoped<ImageProcessor>();
 builder.Services.AddHealthChecks();

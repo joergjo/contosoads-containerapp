@@ -64,7 +64,7 @@ var envVars = [
     secretRef: 'db-connection-string'
   }
   {
-    name: 'ApplicationInsights__ConnectionString'
+    name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
     secretRef: 'ai-connection-string'
   }
   {

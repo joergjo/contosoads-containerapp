@@ -33,7 +33,7 @@ var secrets = [
 
 var envVars = [
   {
-    name: 'ApplicationInsights__ConnectionString'
+    name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
     secretRef: 'ai-connection-string'
   }
   {
