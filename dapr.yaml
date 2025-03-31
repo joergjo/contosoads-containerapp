@@ -3,7 +3,7 @@ common:
   resourcesPath: ./components
   env:
     # Set this to an actual connection string to enable tracing to Application Insights
-    ApplicationInsights__ConnectionString: ""
+    APPLICATIONINSIGHTS_CONNECTION_STRING: ""
     # Always override the host name to localhost for the image source to seamlessly switch
     # between "dapr run -f ." and "docker compose up -d" using the same database 
     ImageSource__Host: "127.0.0.1"

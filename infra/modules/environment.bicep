@@ -34,6 +34,9 @@ param webAppIdentityName string
 @description('Specifies the name of the User-Assigned Managed Identity for the image processor.')
 param imageProcessorIdentityName string
 
+@description('Specifies the Application Insights connection string.')
+param aiConnectionString string
+
 @description('Specifies the tags for all resources.')
 param tags object = {}
 
@@ -64,6 +67,7 @@ resource environment 'Microsoft.App/managedEnvironments@2024-03-01' = {
         sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey
       }
     }
+    daprAIConnectionString: aiConnectionString
     vnetConfiguration: {
       infrastructureSubnetId: infrastructureSubnetId
     }

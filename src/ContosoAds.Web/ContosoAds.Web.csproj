@@ -10,8 +10,8 @@
 
     <ItemGroup>
         <PackageReference Include="Azure.Identity" Version="1.13.2" />
+        <PackageReference Include="Azure.Monitor.OpenTelemetry.AspNetCore" Version="1.2.0" />
         <PackageReference Include="Dapr.AspNetCore" Version="1.13.1" />
-        <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.23.0" />
         <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="9.0.4" />
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
@@ -27,6 +27,12 @@
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
         <PackageReference Include="Npgsql.DependencyInjection" Version="9.0.3" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+        <PackageReference Include="Npgsql.OpenTelemetry" Version="9.0.3" />
+        <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.11.2" />
+        <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.11.1" />
+        <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.11.1" />
+        <PackageReference Include="OpenTelemetry.PersistentStorage.Abstractions" Version="1.0.1" />
+        <PackageReference Include="OpenTelemetry.PersistentStorage.FileSystem" Version="1.0.1" />
         <PackageReference Include="Scrutor" Version="6.0.1" />
     </ItemGroup>
 

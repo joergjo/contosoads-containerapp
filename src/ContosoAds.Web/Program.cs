@@ -1,18 +1,28 @@
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 using ContosoAds.Web;
 using ContosoAds.Web.Commands;
 using ContosoAds.Web.DataAccess;
 using ContosoAds.Web.TagHelpers;
-using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
+using OpenTelemetry.Instrumentation.AspNetCore;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add monitoring services.
-builder.Services.AddApplicationInsightsTelemetry();
-builder.Services.AddSingleton<ITelemetryInitializer, TelemetryInitializer>();
+var appInsightsConnectionString = builder.Configuration.GetValue<string?>(
+    "APPLICATIONINSIGHTS_CONNECTION_STRING");
+if (appInsightsConnectionString is { Length: > 0 })
+{
+    builder.Services.AddOpenTelemetry().UseAzureMonitor(options => options.EnableLiveMetrics = true);
+    builder.Services.Configure<AspNetCoreTraceInstrumentationOptions>(options => options.RecordException = true);
+    builder.Services.ConfigureOpenTelemetryTracerProvider((_, configure) => configure.AddNpgsql());
+    builder.Services.ConfigureOpenTelemetryMeterProvider((_, configure) => configure.AddNpgsqlInstrumentation());
+}
 
 #pragma warning disable CA1861
 builder.Services.AddHealthChecks().AddDbContextCheck<AdsContext>("AdsContext", tags: ["db_ready"]);
