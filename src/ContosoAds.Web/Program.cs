@@ -18,7 +18,6 @@ var appInsightsConnectionString = builder.Configuration.GetValue<string?>(
     "APPLICATIONINSIGHTS_CONNECTION_STRING");
 if (appInsightsConnectionString is { Length: > 0 })
 {
-    Console.WriteLine("Configuring OTel");
     builder.Services.AddOpenTelemetry().UseAzureMonitor(options => options.EnableLiveMetrics = true);
     builder.Services.Configure<AspNetCoreTraceInstrumentationOptions>(options => options.RecordException = true);
     builder.Services.ConfigureOpenTelemetryTracerProvider((_, configure) => configure.AddEntityFrameworkCoreInstrumentation());
