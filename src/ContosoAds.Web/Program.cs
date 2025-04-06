@@ -20,7 +20,11 @@ if (appInsightsConnectionString is { Length: > 0 })
 {
     builder.Services.AddOpenTelemetry().UseAzureMonitor(options => options.EnableLiveMetrics = true);
     builder.Services.Configure<AspNetCoreTraceInstrumentationOptions>(options => options.RecordException = true);
-    builder.Services.ConfigureOpenTelemetryTracerProvider((_, configure) => configure.AddNpgsql());
+    builder.Services.ConfigureOpenTelemetryTracerProvider((_, configure) =>
+    {
+        configure.AddNpgsql();
+        configure.AddEntityFrameworkCoreInstrumentation();
+    });
     // builder.Services.ConfigureOpenTelemetryTracerProvider((_, configure) => configure.AddEntityFrameworkCoreInstrumentation());
     builder.Services.ConfigureOpenTelemetryMeterProvider((_, configure) => configure.AddNpgsqlInstrumentation());
 }
