@@ -19,6 +19,8 @@ public class TestWebApplicationFactory : WebApplicationFactory<Program>
 {
     private readonly InMemoryDatabaseRoot _root = new();
 
+    public DaprClient DaprClient { get; } = A.Fake<DaprClient>();
+    
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureTestServices(services =>
@@ -27,7 +29,7 @@ public class TestWebApplicationFactory : WebApplicationFactory<Program>
             services.AddDbContext<AdsContext>(options => 
                 options.UseInMemoryDatabase("ContosoAds", _root));
             services.RemoveAll<DaprClient>();
-            services.AddSingleton(A.Fake<DaprClient>());
+            services.AddSingleton(DaprClient);
         });
     }
 
