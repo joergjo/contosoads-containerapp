@@ -187,6 +187,7 @@ module environment 'modules/environment.bicep' = {
     imageProcessorAppId: imageProcessorName
     webAppIdentityName: webAppIdentity.outputs.name
     imageProcessorIdentityName: imageProcessorIdentity.outputs.name
+    aiConnectionString: monitoring.outputs.aiConnectionString
   }
 }
 
