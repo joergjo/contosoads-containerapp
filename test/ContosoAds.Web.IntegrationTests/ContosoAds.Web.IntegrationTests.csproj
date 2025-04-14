@@ -34,10 +34,4 @@
     <ItemGroup>
       <ProjectReference Include="..\..\src\ContosoAds.Web\ContosoAds.Web.csproj" />
     </ItemGroup>
-    
-    <ItemGroup>
-        <None Include=".\components\*.yaml" CopyToOutputDirectory="Always" />
-        <None Remove="components\thumbnail-result.yaml" />
-        <None Remove="components\thumbnail-request.yaml" />
-    </ItemGroup>
 </Project>
