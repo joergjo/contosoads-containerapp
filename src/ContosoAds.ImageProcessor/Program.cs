@@ -11,7 +11,12 @@ var appInsightsConnectionString = builder.Configuration.GetValue<string?>(
 if (appInsightsConnectionString is { Length: > 0 })
 {
     builder.Services.AddOpenTelemetry().UseAzureMonitor(configure => configure.EnableLiveMetrics = true);
-    builder.Services.Configure<AspNetCoreTraceInstrumentationOptions>(options => options.RecordException = true);
+    builder.Services.Configure<AspNetCoreTraceInstrumentationOptions>(options =>
+    {
+        options.RecordException = true;
+        options.Filter = context => !context.Request.Path.StartsWithSegments("/healthz");
+    });
+
 }
 
 builder.Services.AddDaprClient();

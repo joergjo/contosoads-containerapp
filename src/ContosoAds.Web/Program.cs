@@ -19,8 +19,11 @@ var appInsightsConnectionString = builder.Configuration.GetValue<string?>(
 if (appInsightsConnectionString is { Length: > 0 })
 {
     builder.Services.AddOpenTelemetry().UseAzureMonitor(options => options.EnableLiveMetrics = true);
-    // TODO: Filter health check requests from telemetry.
-    builder.Services.Configure<AspNetCoreTraceInstrumentationOptions>(options => options.RecordException = true);
+    builder.Services.Configure<AspNetCoreTraceInstrumentationOptions>(options =>
+    {
+        options.RecordException = true;
+        options.Filter = context => !context.Request.Path.StartsWithSegments("/healthz");
+    });
     builder.Services.ConfigureOpenTelemetryTracerProvider((_, configure) => configure.AddNpgsql());
     builder.Services.ConfigureOpenTelemetryMeterProvider((_, configure) => configure.AddNpgsqlInstrumentation());
 }
