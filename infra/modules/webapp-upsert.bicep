@@ -40,7 +40,7 @@ param exists bool
 param tags object = {}
 
 
-resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2024-11-30' existing = {
   name: identityName
 }
 
@@ -81,7 +81,7 @@ var envVars = [
   }
 ]
 
-resource existingContainerApp 'Microsoft.App/containerApps@2024-03-01' existing = if (exists) {
+resource existingContainerApp 'Microsoft.App/containerApps@2025-01-01' existing = if (exists) {
   name: name
 }
 

@@ -146,7 +146,7 @@ module postgres 'modules/database.bicep' = {
     administratorLogin: postgresLogin
     administratorLoginPassword: postgresLoginPassword
     entraIdAdmin: entraIdAdmin
-    entraIdAdminObjectId:entraIdAdminObjectId
+    entraIdAdminObjectId: entraIdAdminObjectId
     entraIdAdminPrincipalType: entraIdAdminPrincipalType
     migrationIdentityName: webAppIdentity.outputs.name
     migrationIdentityObjectId: webAppIdentity.outputs.clientId
@@ -209,6 +209,7 @@ module webapp 'modules/webapp-upsert.bicep' = {
     exists: webAppExists
   }
   dependsOn: [
+    #disable-next-line no-unnecessary-dependson
     postgres
   ]
 }

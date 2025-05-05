@@ -46,7 +46,7 @@ resource acrPullAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' 
   }
 }
 
-resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
+resource containerApp 'Microsoft.App/containerApps@2025-01-01' = {
   name: name
   location: location
   tags: union(tags, { 'azd-service-name': 'imageprocessor' })
