@@ -12,7 +12,7 @@ param tags object = {}
 
 var acrName = '${length(namePrefix) <= 11 ? namePrefix : substring(namePrefix, 0, 11)}${uniqueString(resourceGroup().id)}'
 
-resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-07-01' = {
+resource containerRegistry 'Microsoft.ContainerRegistry/registries@2025-04-01' = {
   name: acrName
   location: location
   tags: tags

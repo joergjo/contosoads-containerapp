@@ -40,19 +40,19 @@ param tags object = {}
 var uid = uniqueString(resourceGroup().id)
 var environmentName = '${namePrefix}${uid}-env'
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2025-02-01' existing = {
   name: workspaceName
 }
 
-resource webAppIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
+resource webAppIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2024-11-30' existing = {
   name: webAppIdentityName
 }
 
-resource imageProcessorIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
+resource imageProcessorIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2024-11-30' existing = {
   name: imageProcessorIdentityName
 }
 
-resource environment 'Microsoft.App/managedEnvironments@2024-03-01' = {
+resource environment 'Microsoft.App/managedEnvironments@2025-01-01' = {
   name: environmentName
   location: location
   tags: tags
@@ -61,6 +61,7 @@ resource environment 'Microsoft.App/managedEnvironments@2024-03-01' = {
       destination: 'log-analytics'
       logAnalyticsConfiguration: {
         customerId: logAnalyticsWorkspace.properties.customerId
+        #disable-next-line use-secure-value-for-secure-inputs
         sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey
       }
     }
@@ -78,7 +79,7 @@ resource environment 'Microsoft.App/managedEnvironments@2024-03-01' = {
   }
 }
 
-resource webImageStorageComponent 'Microsoft.App/managedEnvironments/daprComponents@2024-03-01' = {
+resource webImageStorageComponent 'Microsoft.App/managedEnvironments/daprComponents@2025-01-01' = {
   name: 'web-storage'
   parent: environment
   properties: {
@@ -108,7 +109,7 @@ resource webImageStorageComponent 'Microsoft.App/managedEnvironments/daprCompone
   }
 }
 
-resource imageProcessorStorageComponent 'Microsoft.App/managedEnvironments/daprComponents@2024-03-01' = {
+resource imageProcessorStorageComponent 'Microsoft.App/managedEnvironments/daprComponents@2025-01-01' = {
   name: 'imageprocessor-storage'
   parent: environment
   properties: {
@@ -138,7 +139,7 @@ resource imageProcessorStorageComponent 'Microsoft.App/managedEnvironments/daprC
   }
 }
 
-resource requestQueueSendComponent 'Microsoft.App/managedEnvironments/daprComponents@2024-03-01' = {
+resource requestQueueSendComponent 'Microsoft.App/managedEnvironments/daprComponents@2025-01-01' = {
   name: 'thumbnail-request-sender'
   parent: environment
   properties: {
@@ -164,7 +165,7 @@ resource requestQueueSendComponent 'Microsoft.App/managedEnvironments/daprCompon
   }
 }
 
-resource requestQueueReceiveComponent 'Microsoft.App/managedEnvironments/daprComponents@2024-03-01' = {
+resource requestQueueReceiveComponent 'Microsoft.App/managedEnvironments/daprComponents@2025-01-01' = {
   name: 'thumbnail-request-receiver'
   parent: environment
   properties: {
@@ -194,7 +195,7 @@ resource requestQueueReceiveComponent 'Microsoft.App/managedEnvironments/daprCom
   }
 }
 
-resource resultQueueSendComponent 'Microsoft.App/managedEnvironments/daprComponents@2024-03-01' = {
+resource resultQueueSendComponent 'Microsoft.App/managedEnvironments/daprComponents@2025-01-01' = {
   name: 'thumbnail-result-sender'
   parent: environment
   properties: {
@@ -220,7 +221,7 @@ resource resultQueueSendComponent 'Microsoft.App/managedEnvironments/daprCompone
   }
 }
 
-resource resultQueueReceiveComponent 'Microsoft.App/managedEnvironments/daprComponents@2024-03-01' = {
+resource resultQueueReceiveComponent 'Microsoft.App/managedEnvironments/daprComponents@2025-01-01' = {
   name: 'thumbnail-result-receiver'
   parent: environment
   properties: {

@@ -65,7 +65,7 @@ param tags object = {}
 var uid = uniqueString(resourceGroup().id)
 var serverName = '${namePrefix}${uid}'
 
-resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2024-11-30' existing = {
   name: migrationIdentityName
 }
 
@@ -133,10 +133,9 @@ resource postgresMigrationIdentity 'Microsoft.DBforPostgreSQL/flexibleServers/ad
   }
 }
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' existing = {
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2025-02-01' existing = {
   name: workspaceName
 }
-
 
 resource containerInstance 'Microsoft.ContainerInstance/containerGroups@2023-05-01' = {
   name: '${serverName}-migration'
@@ -154,7 +153,7 @@ resource containerInstance 'Microsoft.ContainerInstance/containerGroups@2023-05-
         name: 'psql'
         properties: {
           image: 'mcr.microsoft.com/azurelinux/base/postgres:16'
-          command: [ 'sh', '/mnt/repo/deploy/migrate-bash.sh' ]
+          command: ['sh', '/mnt/repo/deploy/migrate-bash.sh']
           environmentVariables: [
             {
               name: 'CLIENT_ID'
@@ -208,6 +207,7 @@ resource containerInstance 'Microsoft.ContainerInstance/containerGroups@2023-05-
     diagnostics: {
       logAnalytics: {
         workspaceId: logAnalyticsWorkspace.properties.customerId
+        #disable-next-line use-secure-value-for-secure-inputs
         workspaceKey: logAnalyticsWorkspace.listKeys().primarySharedKey
       }
     }
