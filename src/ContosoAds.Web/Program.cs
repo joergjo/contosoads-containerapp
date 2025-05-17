@@ -62,7 +62,6 @@ builder.Services.AddDbContext<AdsContext>((sp, options) =>
     options.UseNpgsql(dataSource, pgOptions => pgOptions.EnableRetryOnFailure(3));
 });
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-builder.Services.AddDataProtection().PersistKeysToDbContext<AdsContext>();
 
 // We're using Scrutor to register all the command handlers.
 builder.Services.Scan(scan =>
