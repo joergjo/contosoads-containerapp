@@ -46,7 +46,7 @@ resource acrPullAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' 
   }
 }
 
-resource containerApp 'Microsoft.App/containerApps@2025-01-01' = {
+resource containerApp 'Microsoft.App/containerApps@2024-10-02-preview' = {
   name: name
   location: location
   tags: union(tags, { 'azd-service-name': 'webapp' })
@@ -79,6 +79,11 @@ resource containerApp 'Microsoft.App/containerApps@2025-01-01' = {
         }
       ]
       secrets: secrets
+      runtime:{
+        dotnet: {
+          autoConfigureDataProtection: true
+        }
+      }
     }
     template: {
       containers: [
@@ -112,7 +117,7 @@ resource containerApp 'Microsoft.App/containerApps@2025-01-01' = {
         }
       ]
       scale: {
-        minReplicas: 1
+        minReplicas: 2
         maxReplicas: 10
         rules: [
           {
