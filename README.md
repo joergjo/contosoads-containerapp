@@ -41,6 +41,7 @@ This sample app uses a variety of technologies:
 * [Entity Framework Core 9.0](https://learn.microsoft.com/en-us/ef/core/)
 * [Dapr](https://dapr.io)
 * [C# 13](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-13)
+* [Testcontainers for .NET](https://testcontainers.com/guides/getting-started-with-testcontainers-for-dotnet/)
 
 ## Prerequisites
 You'll need a very small set of tools and skills to get started:
