@@ -195,6 +195,12 @@ the .NET SDK and the Dapr CLI.
 
 See [this document](docs/docker.md) for instructions on how to run the sample app on your PC or Mac using Docker.
 
+### HTTPS Support for Safari 18+
+
+This project includes HTTPS support for Azurite to address Safari 18's Mixed Content Level 2 requirements. When your web application runs over HTTPS, Safari automatically upgrades HTTP requests to HTTPS, which can cause image loading failures if Azurite only serves HTTP endpoints.
+
+See [HTTPS Support documentation](docs/https-support.md) for detailed instructions on enabling HTTPS mode for local development.
+
 ### Deploying the sample app using GitHub Actions workflows
 
 See [this document](docs/github-actions-workflow.md) for instructions on how 
