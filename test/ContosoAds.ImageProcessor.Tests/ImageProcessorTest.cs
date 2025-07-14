@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using FakeItEasy;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Testing;
 using SixLabors.ImageSharp;
 
@@ -31,10 +25,12 @@ public class ImageProcessorTest
         Assert.Equal(expectedHeight, image.Height);
     }
 
-    public static IEnumerable<object[]> Images =>
-    [
-        [Jpeg100By200, 40, 80],
-        [Jpeg200By100, 80, 40],
-        [Jpeg160By160, 80, 80]
-    ];
+    public static TheoryData<string, int, int> Images =>
+        new()
+        {
+            { Jpeg100By200, 40, 80 },
+            { Jpeg200By100, 80, 40 },
+            { Jpeg160By160, 80, 80 }
+        };
+    
 }
