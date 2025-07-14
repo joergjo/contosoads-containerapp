@@ -45,12 +45,12 @@ public class ImageBlobTest
         Assert.Throws<JsonException>(() => JsonSerializer.Deserialize<ImageBlob>(json));
     }
     
-    public static IEnumerable<object[]> JsonStrings =>
+    public static TheoryData<string> JsonStrings =>
     [
-        ["""{"Uri":"https://fake.com/image.jpg"}"""],
-        ["""{"AdId":1}"""],
-        ["""{"Uri":"","AdId":null}"""],
-        ["""{"Uri":null,"AdId":"1"}"""],
-        ["""{"Uri":"https://fake.com/image.jpg","Extra":"value"}"""]
+        """{"Uri":"https://fake.com/image.jpg"}""", 
+        """{"AdId":1}""", 
+        """{"Uri":"","AdId":null}""", 
+        """{"Uri":null,"AdId":"1"}""", 
+        """{"Uri":"https://fake.com/image.jpg","Extra":"value"}"""
     ];
 }

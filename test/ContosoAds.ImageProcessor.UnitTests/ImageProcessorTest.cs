@@ -30,10 +30,11 @@ public class ImageProcessorTest
         Assert.Equal(expectedHeight, image.Height);
     }
 
-    public static IEnumerable<object[]> Images =>
-    [
-        [TestImages.Jpeg100By200, 40, 80],
-        [TestImages.Jpeg200By100, 80, 40],
-        [TestImages.Jpeg160By160, 80, 80]
-    ];
+    public static TheoryData<string, int, int> Images =>
+        new()
+        {
+            { TestImages.Jpeg100By200, 40, 80 },
+            { TestImages.Jpeg200By100, 80, 40 },
+            { TestImages.Jpeg160By160, 80, 80 }
+        };  
 }
