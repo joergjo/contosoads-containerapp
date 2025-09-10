@@ -15,8 +15,8 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.19" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.19" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.20" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.20" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
         <PackageReference Include="System.Net.Http.Json" Version="8.0.1" />
         <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4">
