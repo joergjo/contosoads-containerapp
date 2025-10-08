@@ -12,6 +12,6 @@ public class PostgreSqlContainerFixture(IMessageSink sink) : DbContainerFixture<
 
     protected override PostgreSqlBuilder Configure(PostgreSqlBuilder builder)
     {
-        return builder.WithImage("postgres:16-alpine");
+        return builder.WithImage("postgres:17-alpine");
     }
 }
