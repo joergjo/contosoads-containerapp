@@ -42,7 +42,7 @@ var envVars = [
   }
 ]
 
-resource existingContainerApp 'Microsoft.App/containerApps@2025-01-01' existing = if (exists) {
+resource existingContainerApp 'Microsoft.App/containerApps@2025-02-02-preview' existing = if (exists) {
   name: name
 }
 
@@ -53,7 +53,7 @@ module containerApp 'imageprocessor.bicep' = {
     location: location
     tags: tags
     environmentId: environmentId
-    image: exists ? existingContainerApp.properties.template.containers[0].image : defaultImage
+    image: exists ? existingContainerApp!.properties.template.containers[0].image : defaultImage
     secrets: secrets
     envVars: envVars
     containerRegistryName: containerRegistryName

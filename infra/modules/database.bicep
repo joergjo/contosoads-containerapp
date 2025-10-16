@@ -9,7 +9,6 @@ param location string
 
 @description('Specifies the PostgreSQL version.')
 @allowed([
-  '12'
   '13'
   '14'
   '15'
@@ -121,6 +120,9 @@ resource postgresEntraIdAdmin 'Microsoft.DBforPostgreSQL/flexibleServers/adminis
     principalType: entraIdAdminPrincipalType
     tenantId: subscription().tenantId
   }
+  dependsOn: [
+    postgresDatabase
+  ]
 }
 
 resource postgresMigrationIdentity 'Microsoft.DBforPostgreSQL/flexibleServers/administrators@2024-08-01' = {
@@ -137,7 +139,7 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2025-02
   name: workspaceName
 }
 
-resource containerInstance 'Microsoft.ContainerInstance/containerGroups@2023-05-01' = {
+resource containerInstance 'Microsoft.ContainerInstance/containerGroups@2025-09-01' = {
   name: '${serverName}-migration'
   location: location
   tags: tags

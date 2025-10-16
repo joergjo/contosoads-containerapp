@@ -56,7 +56,7 @@ resource imageProcessorIdentity 'Microsoft.ManagedIdentity/userAssignedIdentitie
   name: imageProcessorIdentityName
 }
 
-resource environment 'Microsoft.App/managedEnvironments@2025-01-01' = {
+resource environment 'Microsoft.App/managedEnvironments@2025-02-02-preview' = {
   name: environmentName
   location: location
   tags: tags
@@ -84,7 +84,7 @@ resource environment 'Microsoft.App/managedEnvironments@2025-01-01' = {
   }
 }
 
-resource webImageStorageComponent 'Microsoft.App/managedEnvironments/daprComponents@2025-01-01' = {
+resource webImageStorageComponent 'Microsoft.App/managedEnvironments/daprComponents@2025-02-02-preview' = {
   name: 'web-storage'
   parent: environment
   properties: {
@@ -114,7 +114,7 @@ resource webImageStorageComponent 'Microsoft.App/managedEnvironments/daprCompone
   }
 }
 
-resource imageProcessorStorageComponent 'Microsoft.App/managedEnvironments/daprComponents@2025-01-01' = {
+resource imageProcessorStorageComponent 'Microsoft.App/managedEnvironments/daprComponents@2025-02-02-preview' = {
   name: 'imageprocessor-storage'
   parent: environment
   properties: {
@@ -144,7 +144,7 @@ resource imageProcessorStorageComponent 'Microsoft.App/managedEnvironments/daprC
   }
 }
 
-resource requestQueueSendComponent 'Microsoft.App/managedEnvironments/daprComponents@2025-01-01' = {
+resource requestQueueSendComponent 'Microsoft.App/managedEnvironments/daprComponents@2025-02-02-preview' = {
   name: 'thumbnail-request-sender'
   parent: environment
   properties: {
@@ -170,7 +170,7 @@ resource requestQueueSendComponent 'Microsoft.App/managedEnvironments/daprCompon
   }
 }
 
-resource requestQueueReceiveComponent 'Microsoft.App/managedEnvironments/daprComponents@2025-01-01' = {
+resource requestQueueReceiveComponent 'Microsoft.App/managedEnvironments/daprComponents@2025-02-02-preview' = {
   name: 'thumbnail-request-receiver'
   parent: environment
   properties: {
@@ -200,7 +200,7 @@ resource requestQueueReceiveComponent 'Microsoft.App/managedEnvironments/daprCom
   }
 }
 
-resource resultQueueSendComponent 'Microsoft.App/managedEnvironments/daprComponents@2025-01-01' = {
+resource resultQueueSendComponent 'Microsoft.App/managedEnvironments/daprComponents@2025-02-02-preview' = {
   name: 'thumbnail-result-sender'
   parent: environment
   properties: {
@@ -226,7 +226,7 @@ resource resultQueueSendComponent 'Microsoft.App/managedEnvironments/daprCompone
   }
 }
 
-resource resultQueueReceiveComponent 'Microsoft.App/managedEnvironments/daprComponents@2025-01-01' = {
+resource resultQueueReceiveComponent 'Microsoft.App/managedEnvironments/daprComponents@2025-02-02-preview' = {
   name: 'thumbnail-result-receiver'
   parent: environment
   properties: {
