@@ -92,7 +92,7 @@ module containerApp 'webapp.bicep' = {
     location: location
     tags: tags
     environmentId: environmentId
-    image: exists ? existingContainerApp.properties.template.containers[0].image : defaultImage
+    image: exists ? existingContainerApp!.properties.template.containers[0].image : defaultImage
     secrets: secrets
     envVars: envVars
     containerRegistryName: containerRegistryName

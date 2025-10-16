@@ -16,7 +16,7 @@ var appNsgName = '${namePrefix}${uid}-app-nsg'
 var postgresNsgName = '${namePrefix}${uid}-postgres-nsg'
 var privateDnsZoneName = 'contosoads.postgres.database.azure.com'
 
-resource vnet 'Microsoft.Network/virtualNetworks@2024-05-01' = {
+resource vnet 'Microsoft.Network/virtualNetworks@2024-10-01' = {
   name: vnetName
   location: location
   tags: tags
@@ -79,7 +79,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2024-05-01' = {
   }
 }
 
-resource appNsg 'Microsoft.Network/networkSecurityGroups@2024-05-01' = {
+resource appNsg 'Microsoft.Network/networkSecurityGroups@2024-10-01' = {
   name: appNsgName
   location: location
   tags: tags
@@ -115,7 +115,7 @@ resource appNsg 'Microsoft.Network/networkSecurityGroups@2024-05-01' = {
   }
 }
 
-resource postgresNsg 'Microsoft.Network/networkSecurityGroups@2024-05-01' = {
+resource postgresNsg 'Microsoft.Network/networkSecurityGroups@2024-10-01' = {
   name: postgresNsgName
   location: location
   tags: tags
@@ -134,7 +134,6 @@ resource postgresNsg 'Microsoft.Network/networkSecurityGroups@2024-05-01' = {
           destinationPortRange: '*'
         }
       }
-
     ]
   }
 }
@@ -151,7 +150,7 @@ resource privateDnsZoneLink 'Microsoft.Network/privateDnsZones/virtualNetworkLin
   location: 'global'
   tags: tags
   properties: {
-    registrationEnabled: true
+    registrationEnabled: false
     virtualNetwork: {
       id: vnet.id
     }

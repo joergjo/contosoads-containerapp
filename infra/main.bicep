@@ -37,7 +37,6 @@ param entraIdAdminPrincipalType string = 'User'
 
 @description('Specifies the PostgreSQL version.')
 @allowed([
-  '12'
   '13'
   '14'
   '15'
@@ -146,7 +145,7 @@ module postgres 'modules/database.bicep' = {
     administratorLogin: postgresLogin
     administratorLoginPassword: postgresLoginPassword
     entraIdAdmin: entraIdAdmin
-    entraIdAdminObjectId:entraIdAdminObjectId
+    entraIdAdminObjectId: entraIdAdminObjectId
     entraIdAdminPrincipalType: entraIdAdminPrincipalType
     migrationIdentityName: webAppIdentity.outputs.name
     migrationIdentityObjectId: webAppIdentity.outputs.clientId
@@ -207,9 +206,6 @@ module webapp 'modules/webapp-upsert.bicep' = {
     postgresLoginPassword: postgresLoginPassword
     exists: webAppExists
   }
-  dependsOn: [
-    postgres
-  ]
 }
 
 module imageprocessor 'modules/imageprocessor-upsert.bicep' = {
@@ -225,9 +221,6 @@ module imageprocessor 'modules/imageprocessor-upsert.bicep' = {
     identityName: imageProcessorIdentity.outputs.name
     exists: imageProcessorExists
   }
-  dependsOn: [
-    postgres
-  ]
 }
 
 output AZURE_RESOURCE_GROUP string = rg.name
