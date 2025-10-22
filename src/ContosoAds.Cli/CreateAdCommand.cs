@@ -28,17 +28,16 @@ public class CreateAdCommand : OaktonAsyncCommand<CreateAdInput>
             using var getResponse = await client.GetAsync(adsUri, cts.Token);
             using var document = await getResponse.ToDocumentAsync();
             var csrfToken = document.QuerySelector("input[name=__RequestVerificationToken]")?.GetAttribute("value");
-            var multipartContent = new MultipartFormDataContent
-            {
-                { new StringContent("Cars"), "Ad.Category" },
-                { new StringContent($"Test Description {i}"), "Ad.Description" },
-                { new StringContent("425-555-1212"), "Ad.Phone" },
-                { new StringContent("10000"), "Ad.Price" },
-                { new StringContent($"Test Ad {i}"), "Ad.Title" },
-                { new StringContent(csrfToken!), "__RequestVerificationToken" }
-            };
 
-            await using var fileStream = File.OpenRead(input.ImageFile);
+            using var multipartContent = new MultipartFormDataContent();
+            multipartContent.Add(new StringContent("Cars"), "Ad.Category");
+            multipartContent.Add(new StringContent($"Test Description {i}"), "Ad.Description");
+            multipartContent.Add(new StringContent("425-555-1212"), "Ad.Phone");
+            multipartContent.Add(new StringContent("10000"), "Ad.Price");
+            multipartContent.Add(new StringContent($"Test Ad {i}"), "Ad.Title");
+            multipartContent.Add(new StringContent(csrfToken!), "__RequestVerificationToken");
+
+            var fileStream = File.OpenRead(input.ImageFile);
             var fileContent = new StreamContent(fileStream);
             fileContent.Headers.ContentType = new MediaTypeHeaderValue(input.MimeType);
             multipartContent.Add(fileContent, "ImageFile", input.ImageFile);
@@ -56,7 +55,7 @@ public class CreateAdCommand : OaktonAsyncCommand<CreateAdInput>
             else
             {
                 Console.WriteLine("Post failed: {0}", postResponse.StatusCode);
-                Console.WriteLine("Details: {0}", await postResponse.Content.ReadAsStringAsync());
+                Console.WriteLine("Details: {0}", await postResponse.Content.ReadAsStringAsync(cts.Token));
                 var content = await postResponse.Content.ReadAsStringAsync(cts.Token);
                 Console.WriteLine(content);
             }
