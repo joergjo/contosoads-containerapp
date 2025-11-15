@@ -4,14 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ContosoAds.Web.Commands;
 
-public class ReadAd
+public class ReadAd(AdsContext dbContext)
 {
-    private readonly AdsContext _dbContext;
-    
-    public ReadAd(AdsContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-    
-    public async Task<Ad?> ExecuteAsync(int id) => await _dbContext.Ads.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+    public async Task<Ad?> ExecuteAsync(int id) => await dbContext.Ads.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 }

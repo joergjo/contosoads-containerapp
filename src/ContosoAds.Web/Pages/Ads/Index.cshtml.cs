@@ -5,26 +5,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ContosoAds.Web.Pages.Ads;
 
-public class IndexModel : PageModel
+public class IndexModel(ILogger<IndexModel> logger) : PageModel
 {
-    private readonly ILogger _logger;
-
-    public IndexModel(ILogger<IndexModel> logger)
-    {
-        _logger = logger;
-    }
-
     public IList<Ad> Ads { get; set; } = Array.Empty<Ad>();
 
     public async Task OnGetAsync(Category? category, [FromServices] ListAds command)
     {
-        _logger.LogDebug("Ads will be displayed for category {Category}", category.HasValue ? category.ToString() : "All");
+        logger.LogDebug("Ads will be displayed for category {Category}", category.HasValue ? category.ToString() : "All");
         Ads = await command.ExecuteAsync(category);
     }
 
     public async Task<IActionResult> OnGetImageAsync(int id, [FromServices] ReadAd command)
     {
-        _logger.LogDebug("Rendering thumbnail for Ad {AdId}", id);
+        logger.LogDebug("Rendering thumbnail for Ad {AdId}", id);
         var ad = await command.ExecuteAsync(id);
         return Partial("_Thumbnail", ad);
     }

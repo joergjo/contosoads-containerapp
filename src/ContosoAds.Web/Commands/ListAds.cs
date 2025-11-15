@@ -4,20 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ContosoAds.Web.Commands;
 
-public class ListAds
+public class ListAds(AdsContext dbContext, ILogger<ListAds> logger)
 {
-    private readonly AdsContext _dbContext;
-    private readonly ILogger<ListAds> _logger;
-
-    public ListAds(AdsContext dbContext, ILogger<ListAds> logger)
-    {
-        _dbContext = dbContext;
-        _logger = logger;
-    }
-
     public async Task<IList<Ad>> ExecuteAsync(Category? category)
     {
-        IQueryable<Ad> query = from ad in _dbContext.Ads
+        IQueryable<Ad> query = from ad in dbContext.Ads
             orderby ad.PostedDate
             select ad;
         if (category.HasValue)
@@ -26,7 +17,7 @@ public class ListAds
         }
 
         var ads = await query.AsNoTracking().ToListAsync();
-        _logger.LogDebug("Ads found: {Count}", ads.Count);
+        logger.LogDebug("Ads found: {Count}", ads.Count);
         return ads;
     }
 }

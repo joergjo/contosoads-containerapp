@@ -6,32 +6,33 @@ namespace ContosoAds.Web;
 public static class ServiceCollectionExtensions
 {
     // ReSharper disable once UnusedMethodReturnValue.Global
-    public static IServiceCollection AddNpgsqlDataSource(
-        this IServiceCollection services,
-        string connectionString,
-        bool useEntraId,
-        string? managedIdentityClientId = null)
+    extension(IServiceCollection services)
     {
-        services.AddNpgsqlDataSource(connectionString,
-            dataSourceBuilder =>
-            {
-                dataSourceBuilder.Name = nameof(ContosoAds);
-                if (!useEntraId) return;
+        public IServiceCollection AddNpgsqlDataSource(string connectionString,
+            bool useEntraId,
+            string? managedIdentityClientId = null)
+        {
+            services.AddNpgsqlDataSource(connectionString,
+                dataSourceBuilder =>
+                {
+                    dataSourceBuilder.Name = nameof(ContosoAds);
+                    if (!useEntraId) return;
                 
-                var credential = GetCredential(managedIdentityClientId);
-                dataSourceBuilder.UsePeriodicPasswordProvider(
-                    async (_, cancellationToken) =>
-                    {
-                        var accessToken = await credential.GetTokenAsync(
-                            new TokenRequestContext(["https://ossrdbms-aad.database.windows.net/.default"]),
-                            cancellationToken);
-                        return accessToken.Token;
-                    },
-                    TimeSpan.FromMinutes(55), // Interval for refreshing the token
-                    TimeSpan.FromSeconds(5)); // Interval for retrying after a refresh failure
-            });
+                    var credential = GetCredential(managedIdentityClientId);
+                    dataSourceBuilder.UsePeriodicPasswordProvider(
+                        async (_, cancellationToken) =>
+                        {
+                            var accessToken = await credential.GetTokenAsync(
+                                new TokenRequestContext(["https://ossrdbms-aad.database.windows.net/.default"]),
+                                cancellationToken);
+                            return accessToken.Token;
+                        },
+                        TimeSpan.FromMinutes(55), // Interval for refreshing the token
+                        TimeSpan.FromSeconds(5)); // Interval for retrying after a refresh failure
+                });
 
-        return services;
+            return services;
+        }
     }
 
     private static DefaultAzureCredential GetCredential(string? managedIdentityClientId)

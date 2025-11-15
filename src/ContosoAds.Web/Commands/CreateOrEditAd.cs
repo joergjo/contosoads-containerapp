@@ -5,20 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ContosoAds.Web.Commands;
 
-public class CreateOrEditAd
+public class CreateOrEditAd(AdsContext dbContext, DaprClient daprClient, ILogger<CreateOrEditAd> logger)
 {
-    private readonly AdsContext _dbContext;
-    private readonly DaprClient _daprClient;
-    private readonly ILogger<CreateOrEditAd> _logger;
-
     private record struct CreateOrEditResult(bool HasUpdatedDb, bool HasNewImage = false);
-
-    public CreateOrEditAd(AdsContext dbContext, DaprClient daprClient, ILogger<CreateOrEditAd> logger)
-    {
-        _dbContext = dbContext;
-        _daprClient = daprClient;
-        _logger = logger;
-    }
 
     public async Task<bool> ExecuteAsync(Ad ad, IFormFile? file)
     {
@@ -30,11 +19,11 @@ public class CreateOrEditAd
 
         try
         {
-            await _dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException ex)
         {
-            _logger.LogError(ex, "An error occurred while saving ad '{AdID}'", ad.Id);
+            logger.LogError(ex, "An error occurred while saving ad '{AdID}'", ad.Id);
             throw;
         }
 
@@ -53,20 +42,20 @@ public class CreateOrEditAd
         {
             ad.ImageUri = await WriteImageBlob(file);
             hasNewImage = true;
-            _logger.LogDebug("Created image blob with URI '{ImageUri}' for new ad", ad.ImageUri);
+            logger.LogDebug("Created image blob with URI '{ImageUri}' for new ad", ad.ImageUri);
         }
         else
         {
-            _logger.LogDebug("No image file provided for new ad");
+            logger.LogDebug("No image file provided for new ad");
         }
 
-        _dbContext.Ads.Add(ad);
+        dbContext.Ads.Add(ad);
         return new CreateOrEditResult(true, hasNewImage);
     }
 
     private async Task<CreateOrEditResult> Edit(Ad ad, IFormFile? file)
     {
-        var existingAd = await _dbContext.Ads.AsNoTracking().FirstOrDefaultAsync(x => x.Id == ad.Id);
+        var existingAd = await dbContext.Ads.AsNoTracking().FirstOrDefaultAsync(x => x.Id == ad.Id);
         if (existingAd is null)
         {
             return new CreateOrEditResult(false);
@@ -79,17 +68,17 @@ public class CreateOrEditAd
             ad.ImageUri = await WriteImageBlob(file);
             ad.ThumbnailUri = null;
             hasNewImage = true;
-            _logger.LogDebug("Created image blob with URI '{ImageUri}' for ad {AdId}", ad.ImageUri, ad.Id);
+            logger.LogDebug("Created image blob with URI '{ImageUri}' for ad {AdId}", ad.ImageUri, ad.Id);
         }
         else
         {
             ad.ImageUri = existingAd.ImageUri;
             ad.ThumbnailUri = existingAd.ThumbnailUri;
-            _logger.LogDebug("No image file provided for ad {AdId}", ad.Id);
+            logger.LogDebug("No image file provided for ad {AdId}", ad.Id);
         }
 
         ad.PostedDate = existingAd.PostedDate;
-        _dbContext.Ads.Update(ad);
+        dbContext.Ads.Update(ad);
         return new CreateOrEditResult(true, hasNewImage);
     }
 
@@ -97,12 +86,12 @@ public class CreateOrEditAd
     {
         await using var buffer = new MemoryStream(0x10000);
         await file.CopyToAsync(buffer);
-        var newUri = await _daprClient.WriteAzureBlobBase64Async("web-storage", GetBlobName(file.FileName, currentUri),
+        var newUri = await daprClient.WriteAzureBlobBase64Async("web-storage", GetBlobName(file.FileName, currentUri),
             buffer.ToArray(), file.ContentType);
 
         if (newUri is null)
         {
-            _logger.LogWarning("Failed to upload '{FileName}' to image store", file.FileName);
+            logger.LogWarning("Failed to upload '{FileName}' to image store", file.FileName);
         }
 
         return newUri;
@@ -115,8 +104,8 @@ public class CreateOrEditAd
             Uri = new Uri(ad.ImageUri!),
             AdId = ad.Id
         };
-        await _daprClient.InvokeBindingAsync("thumbnail-request-sender", "create", imageBlob);
-        _logger.LogDebug("Requested thumbnail rendering for ad {AdId}", ad.Id);
+        await daprClient.InvokeBindingAsync("thumbnail-request-sender", "create", imageBlob);
+        logger.LogDebug("Requested thumbnail rendering for ad {AdId}", ad.Id);
     }
 
     private static string GetBlobName(string fileName, string? blobUri)

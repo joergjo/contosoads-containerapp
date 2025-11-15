@@ -6,17 +6,8 @@ namespace ContosoAds.Web.Controllers;
 
 [ApiController]
 [Route("/thumbnail-result")]
-public class ThumbnailController : Controller
+public class ThumbnailController(AdsContext dbContext, ILogger<ThumbnailController> logger) : Controller
 {
-    private readonly AdsContext _dbContext;
-    private readonly ILogger<ThumbnailController> _logger;
-
-    public ThumbnailController(AdsContext dbContext, ILogger<ThumbnailController> logger)
-    {
-        _dbContext = dbContext;
-        _logger = logger;
-    }
-
     [HttpOptions]
     public IActionResult Options() => Ok();
 
@@ -30,16 +21,16 @@ public class ThumbnailController : Controller
         // This should not happen unless someone POSTs junk requests directly to our endpoint.
         if (!uri.IsAbsoluteUri)
         {
-            _logger.LogError(
+            logger.LogError(
                 "Failed to set thumbnail URL '{ThumbnailUri}' for ad '{AdId}' because it is not an absolute URI",
                 uri, adId);
             return BadRequest();
         }
 
-        var ad = await _dbContext.Ads.FindAsync([adId], cancellationToken);
+        var ad = await dbContext.Ads.FindAsync([adId], cancellationToken);
         if (ad is null)
         {
-            _logger.LogWarning(
+            logger.LogWarning(
                 "Failed to set thumbnail URL '{ThumbnailUri}' for ad '{AdId}' because it was not found in database",
                 uri, adId);
             // This is a valid scenario - a user might have deleted the ad already before the thumbnail was created.
@@ -47,8 +38,8 @@ public class ThumbnailController : Controller
         }
 
         ad.ThumbnailUri = uri.ToString();
-        await _dbContext.SaveChangesAsync(cancellationToken);
-        _logger.LogInformation("Set thumbnail URL '{ThumbnailUri}' for ad '{AdId}'", uri, adId);
+        await dbContext.SaveChangesAsync(cancellationToken);
+        logger.LogInformation("Set thumbnail URL '{ThumbnailUri}' for ad '{AdId}'", uri, adId);
         return Ok();
     }
 }

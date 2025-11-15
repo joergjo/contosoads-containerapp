@@ -3,31 +3,18 @@ using SixLabors.ImageSharp.Processing;
 
 namespace ContosoAds.ImageProcessor;
 
-public class ImageProcessor
+public class ImageProcessor(ILogger<ImageProcessor> logger)
 {
-    private readonly ILogger<ImageProcessor> _logger;
-
-    public ImageProcessor(ILogger<ImageProcessor> logger)
-    {
-        _logger = logger;
-    }
-
     public async Task RenderAsync(Stream input, Stream output)
     {
-        if (input is null)
-        {
-            throw new ArgumentNullException(nameof(input));
-        }
+        ArgumentNullException.ThrowIfNull(input);
 
         if (!input.CanRead)
         {
             throw new ArgumentException("Stream must be readable", nameof(input));
         }
 
-        if (output is null)
-        {
-            throw new ArgumentNullException(nameof(output));
-        }
+        ArgumentNullException.ThrowIfNull(output);
 
         if (!output.CanWrite)
         {
@@ -43,7 +30,7 @@ public class ImageProcessor
         var image = await Image.LoadAsync(input);
         var (width, height) = GetEffectiveSize(image.Width, image.Height, size);
 
-        _logger.LogDebug(
+        logger.LogDebug(
             "Resized image from {OriginalWidth}x{OriginalHeight} to {NewWidth}x{NewHeight}",
             image.Width,
             image.Height,

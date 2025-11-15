@@ -95,13 +95,8 @@ app.UseRouting();
 app.UseAuthorization();
 
 var port = builder.Configuration.GetValue("HealthCheck:Port", 0);
-app.UseHealthChecks(port, "db_ready");
+app.UseHealthChecks(port, ["db_ready"]);
 app.MapRazorPages();
 app.MapControllers();
 
 app.Run();
-
-// ReSharper disable once ClassNeverInstantiated.Global
-public partial class Program
-{
-}

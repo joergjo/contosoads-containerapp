@@ -3,11 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ContosoAds.Web.DataAccess;
 
-public class AdsContext : DbContext
+public class AdsContext(DbContextOptions<AdsContext> options) : DbContext(options)
 {
-    public AdsContext(DbContextOptions<AdsContext> options) : base(options)
-    {
-    }
-
     public DbSet<Ad> Ads => Set<Ad>();
 }

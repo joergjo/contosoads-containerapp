@@ -5,15 +5,8 @@ using ContosoAds.Web.Model;
 
 namespace ContosoAds.Web.Pages.Ads;
 
-public class EditModel : PageModel
+public class EditModel(ILogger<EditModel> logger) : PageModel
 {
-    private readonly ILogger<EditModel> _logger;
-
-    public EditModel(ILogger<EditModel> logger)
-    {
-        _logger = logger;
-    }
-
     public Ad Ad { get; set; } = new();
 
     // ReSharper disable once PropertyCanBeMadeInitOnly.Global
@@ -21,12 +14,12 @@ public class EditModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(int id, [FromServices] ReadAd handler)
     {
-        _logger.LogDebug("Ad {AdID} will be displayed for editing", id);
+        logger.LogDebug("Ad {AdID} will be displayed for editing", id);
         var ad = await handler.ExecuteAsync(id);
 
         if (ad is null)
         {
-            _logger.LogDebug("Ad '{AdId}' not found", id);
+            logger.LogDebug("Ad '{AdId}' not found", id);
             return NotFound();
         }
 
@@ -38,7 +31,7 @@ public class EditModel : PageModel
     // For more details, see https://aka.ms/RazorPagesCRUD.
     public async Task<IActionResult> OnPostAsync(int id, [FromServices] CreateOrEditAd command)
     {
-        _logger.LogDebug("Ad {AdID} will be updated", id);
+        logger.LogDebug("Ad {AdID} will be updated", id);
         if (!await TryUpdateModelAsync(
                 Ad,
                 "ad",
@@ -49,17 +42,17 @@ public class EditModel : PageModel
                 x => x.Price,
                 x => x.Title))
         {
-            _logger.LogDebug("Ad {AdID} failed input validation", id);
+            logger.LogDebug("Ad {AdID} failed input validation", id);
             return Page();
         }
 
         if (!await command.ExecuteAsync(Ad, ImageFile))
         {
-            _logger.LogDebug("Ad '{AdId}' failed to be updated", id);
+            logger.LogDebug("Ad '{AdId}' failed to be updated", id);
             return NotFound();
         }
 
-        _logger.LogDebug("Ad '{AdId}' updated", id);
+        logger.LogDebug("Ad '{AdId}' updated", id);
         return RedirectToPage("./Index");
     }
 }
