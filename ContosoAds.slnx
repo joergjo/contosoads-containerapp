@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="src/ContosoAds.ImageProcessor/ContosoAds.ImageProcessor.csproj" />
+  <Project Path="src/ContosoAds.Web/ContosoAds.Web.csproj" />
+  <Project Path="test/ContosoAds.ImageProcessor.Tests/ContosoAds.ImageProcessor.Tests.csproj" />
+  <Project Path="test/ContosoAds.Web.Tests/ContosoAds.Web.Tests.csproj" />
+</Solution>

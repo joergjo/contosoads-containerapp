@@ -92,7 +92,7 @@ docker compose -f compose.deps.yaml --profile all down -v
 
 ### Editing and building the solution (optional)
 
-Open [ContosoAds.sln](../ContosoAds.sln) in your favorite IDE or code editor to
+Open [ContosoAds.sln](../ContosoAds.sln) or [ContosoAds.slnx](../ContosoAds.slnx) in your favorite IDE or code editor to
 change the source code, build it, and runs tests.
 
 To build the application and run in the included tests, execute 
@@ -100,6 +100,6 @@ the following commands.
 
 ```bash
 cd contosoads-containerapp
-dotnet build
-dotnet test
+dotnet build ContosoAds.sln # or .slnx
+dotnet test ContosoAds.sln # or .slnx
 ```
