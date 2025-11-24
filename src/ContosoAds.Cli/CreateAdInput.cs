@@ -11,7 +11,7 @@ public class CreateAdInput
     public int Count { get; set; } = 1;
     
     [Description("Timeout per ad creation in seconds")]
-    public int Timeout { get; set; } = 2;
+    public int Timeout { get; set; } = 5;
     
     [Description("Path to the image file")]
     public string ImageFile { get; set; } = "car.jpg";
