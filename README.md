@@ -36,8 +36,8 @@ This sample app uses a variety of technologies:
 * [Azure Container Instances](https://docs.microsoft.com/en-us/azure/container-instances/) 
 * [Azure Application Insights](https://docs.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview)
 * [Azure Bicep](https://docs.microsoft.com/azure/azure-resource-manager/bicep/overview?tabs=**bicep**)
-* [ASP.NET Core Razor Pages](https://learn.microsoft.com/en-us/aspnet/core/razor-pages/?view=aspnetcore-8.0&tabs=visual-studio-code)
-* [ASP.NET Core Minimal API](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-8.0)
+* [ASP.NET Core Razor Pages](https://learn.microsoft.com/en-us/aspnet/core/razor-pages/?view=aspnetcore-9.0&tabs=visual-studio-code)
+* [ASP.NET Core Minimal API](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-9.0)
 * [Entity Framework Core 9.0](https://learn.microsoft.com/en-us/ef/core/)
 * [Dapr](https://dapr.io)
 * [C# 13](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-13)
@@ -164,7 +164,7 @@ page will refresh itself display and the thumbnail.
 If you want to change the sample app's source code and run these changes in Azure, you will need 
 to install additional tools:
 
-* [.NET 8.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+* [.NET 9.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
 * [Dapr](https://docs.dapr.io/getting-started/install-dapr-cli/)
 * (Optional, but recommended) An IDE or code editor (e.g., [Visual Studio](https://visualstudio.microsoft.com/vs/), [Visual Studio Code](https://code.visualstudio.com), [Rider](https://www.jetbrains.com/rider/))
 
