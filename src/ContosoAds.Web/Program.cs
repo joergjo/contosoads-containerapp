@@ -1,12 +1,35 @@
+using Azure.Core;
+using Azure.Identity;
 using ContosoAds.Web;
 using ContosoAds.Web.Commands;
 using ContosoAds.Web.DataAccess;
 using ContosoAds.Web.TagHelpers;
 using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
+
+static TokenCredential CreateTokenCredential(string? managedIdentityClientId)
+{
+    var options = new DefaultAzureCredentialOptions
+    {
+#if !DEBUG
+                    ExcludeInteractiveBrowserCredential = true,
+                    ExcludeVisualStudioCredential = true,
+                    ExcludeVisualStudioCodeCredential = true,
+                    ExcludeAzureCliCredential = true,
+                    ExcludeAzurePowerShellCredential = true,
+                    ExcludeAzureDeveloperCliCredential = true,
+                    ExcludeSharedTokenCacheCredential = true
+#endif
+    };
+    if (managedIdentityClientId is { Length: > 0 })
+    {
+        options.ManagedIdentityClientId = managedIdentityClientId;
+    }
+
+    return new DefaultAzureCredential(options);
+}
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,10 +61,11 @@ var managedIdentityClientId = builder.Configuration.GetValue(
     "DataSource:ManagedIdentityClientId",
     default(string));
 
+var credential = useEntraId ? CreateTokenCredential(managedIdentityClientId) : null;
+
 builder.Services.AddNpgsqlDataSource(
     builder.Configuration.GetConnectionString("DefaultConnection")!,
-    useEntraId,
-    managedIdentityClientId);
+    credential: credential);
 builder.Services.AddDbContext<AdsContext>((sp, options) =>
 {
     var dataSource = sp.GetRequiredService<NpgsqlDataSource>();
