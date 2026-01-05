@@ -22,8 +22,7 @@ static TokenCredential CreateTokenCredential(string? managedIdentityClientId)
                     ExcludeVisualStudioCodeCredential = true,
                     ExcludeAzureCliCredential = true,
                     ExcludeAzurePowerShellCredential = true,
-                    ExcludeAzureDeveloperCliCredential = true,
-                    ExcludeSharedTokenCacheCredential = true
+                    ExcludeAzureDeveloperCliCredential = true
 #endif
     };
     if (managedIdentityClientId is { Length: > 0 })
