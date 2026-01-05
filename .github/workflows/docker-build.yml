@@ -5,10 +5,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - 'main'
-      - 'dotnet8'
-      - 'dotnet7'
-      - 'dotnet6'
+      - 'dotnet9'
     paths:
       - 'src/**'
 
@@ -26,8 +23,7 @@ jobs:
           images: |
             ${{ secrets.DOCKER_HUB_USERNAME }}/contosoads-web
           tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
-            type=ref,event=branch,enable=${{ startsWith(github.ref_name, 'dotnet') }}
+            type=ref,event=branch
             type=sha
             
       - name: Define Docker meta data for ContosoAds.ImageProcessor 
@@ -37,8 +33,7 @@ jobs:
           images: |
             ${{ secrets.DOCKER_HUB_USERNAME }}/contosoads-imageprocessor
           tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
-            type=ref,event=branch,enable=${{ startsWith(github.ref_name, 'dotnet') }}
+            type=ref,event=branch
             type=sha
         
       - name: Login to Docker Hub
