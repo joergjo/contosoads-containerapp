@@ -1,5 +1,4 @@
 using Azure.Core;
-using Azure.Identity;
 
 namespace ContosoAds.Web;
 
@@ -9,16 +8,16 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddNpgsqlDataSource(
         this IServiceCollection services,
         string connectionString,
-        bool useEntraId,
-        string? managedIdentityClientId = null)
+        TokenCredential? credential,
+        int refreshIntervalMinutes = 55,
+        int retryIntervalSeconds = 5)
     {
         services.AddNpgsqlDataSource(connectionString,
             dataSourceBuilder =>
             {
                 dataSourceBuilder.Name = nameof(ContosoAds);
-                if (!useEntraId) return;
-                
-                var credential = GetCredential(managedIdentityClientId);
+                if (credential is null) return;
+
                 dataSourceBuilder.UsePeriodicPasswordProvider(
                     async (_, cancellationToken) =>
                     {
@@ -27,32 +26,10 @@ public static class ServiceCollectionExtensions
                             cancellationToken);
                         return accessToken.Token;
                     },
-                    TimeSpan.FromMinutes(55), // Interval for refreshing the token
-                    TimeSpan.FromSeconds(5)); // Interval for retrying after a refresh failure
+                    TimeSpan.FromMinutes(refreshIntervalMinutes), // Interval for refreshing the token
+                    TimeSpan.FromSeconds(retryIntervalSeconds)); // Interval for retrying after a refresh failure
             });
 
         return services;
-    }
-
-    private static DefaultAzureCredential GetCredential(string? managedIdentityClientId)
-    {
-        var options = new DefaultAzureCredentialOptions
-        {
-#if !DEBUG
-                    ExcludeInteractiveBrowserCredential = true,
-                    ExcludeVisualStudioCredential = true,
-                    ExcludeVisualStudioCodeCredential = true,
-                    ExcludeAzureCliCredential = true,
-                    ExcludeAzurePowerShellCredential = true,
-                    ExcludeAzureDeveloperCliCredential = true,
-                    ExcludeSharedTokenCacheCredential = true
-#endif
-        };
-        if (managedIdentityClientId is { Length: > 0 })
-        {
-            options.ManagedIdentityClientId = managedIdentityClientId;
-        }
-
-        return new DefaultAzureCredential(options);
     }
 }
