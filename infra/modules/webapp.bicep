@@ -28,7 +28,7 @@ param tags object = {}
 var containerPort = 8080
 var acrPullRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
 
-resource containerRegistry 'Microsoft.ContainerRegistry/registries@2025-04-01' existing = {
+resource containerRegistry 'Microsoft.ContainerRegistry/registries@2025-11-01' existing = {
   name: containerRegistryName
 }
 
@@ -46,7 +46,7 @@ resource acrPullAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' 
   }
 }
 
-resource containerApp 'Microsoft.App/containerApps@2024-10-02-preview' = {
+resource containerApp 'Microsoft.App/containerApps@2025-10-02-preview' = {
   name: name
   location: location
   tags: union(tags, { 'azd-service-name': 'webapp' })

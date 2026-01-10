@@ -74,7 +74,7 @@ var requestQueueName = 'thumbnail-request'
 var resultQueueName = 'thumbnail-result'
 var databaseName = 'contosoads'
 
-resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
+resource rg 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   name: environmentName
   location: location
   tags: tags
