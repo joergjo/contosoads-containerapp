@@ -30,6 +30,7 @@
         <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.15.0" />
         <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.15.0" />
         <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.15.0" />
+        <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.15.0" />
         <PackageReference Include="OpenTelemetry.PersistentStorage.Abstractions" Version="1.0.2" />
         <PackageReference Include="OpenTelemetry.PersistentStorage.FileSystem" Version="1.0.2" />
         <PackageReference Include="Scrutor" Version="7.0.0" />

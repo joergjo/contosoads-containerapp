@@ -47,6 +47,7 @@ if (appInsightsConnectionString is { Length: > 0 })
         options.Filter = context => !context.Request.Path.StartsWithSegments("/healthz");
     });
     builder.Services.ConfigureOpenTelemetryTracerProvider((_, configure) => configure.AddNpgsql());
+    builder.Services.ConfigureOpenTelemetryMeterProvider((_, configure) => configure.AddRuntimeInstrumentation());
     builder.Services.ConfigureOpenTelemetryMeterProvider((_, configure) => configure.AddNpgsqlInstrumentation());
 }
 
