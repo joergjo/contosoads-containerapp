@@ -33,8 +33,9 @@ static TokenCredential CreateTokenCredential(string? managedIdentityClientId)
 var builder = WebApplication.CreateBuilder(args);
 
 // Add monitoring services.
+var disableTelemetry = builder.Configuration.GetValue("DisableTelemetry", false);
+builder.Services.Configure<TelemetryConfiguration>(tc => tc.DisableTelemetry = disableTelemetry);
 builder.Services.AddApplicationInsightsTelemetry();
-builder.Services.AddSingleton<ITelemetryInitializer, TelemetryInitializer>();
 
 #pragma warning disable CA1861
 builder.Services.AddHealthChecks().AddDbContextCheck<AdsContext>("AdsContext", tags: ["db_ready"]);

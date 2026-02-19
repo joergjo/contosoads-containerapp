@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using ContosoAds.Web.Model;
-using Xunit;
 
 namespace ContosoAds.Web.IntegrationTests.Controllers;
 

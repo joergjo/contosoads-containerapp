@@ -2,11 +2,14 @@ version: 1
 common:
   resourcesPath: ./components
   env:
-    # Set this to an actual connection string to enable tracing to Application Insights
-    ApplicationInsights__ConnectionString: ""
+    # Set ApplicationInsights__ConnectionString to your Application Insights endpoint to export telemetry
+    ApplicationInsights__ConnectionString: "InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=http://127.0.0.1"
+    # Set it DisableTelemetry ti true to enable Application Insights 
+    DisableTelemetry: true
     # Always override the host name to localhost for the image source to seamlessly switch
     # between "dapr run -f ." and "docker compose up -d" using the same database 
     ImageSource__Host: "127.0.0.1"
+
 apps:
   - appID: contosoads-web
     appDirPath: ./src/ContosoAds.Web

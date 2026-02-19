@@ -1,6 +1,5 @@
 using System.Net;
 using System.Threading.Tasks;
-using Xunit;
 
 namespace ContosoAds.Web.IntegrationTests.Controllers;
 
