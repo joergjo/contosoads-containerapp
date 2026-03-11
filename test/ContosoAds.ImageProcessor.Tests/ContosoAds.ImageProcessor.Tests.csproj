@@ -16,7 +16,7 @@
         </PackageReference>
         <PackageReference Include="Dapr.Client" Version="1.13.1" />
         <PackageReference Include="FakeItEasy" Version="9.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.13" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.14" />
         <PackageReference Include="Microsoft.Extensions.Diagnostics.Testing" Version="9.10.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
         <PackageReference Include="xunit.v3.mtp-v2" Version="3.2.2" />
