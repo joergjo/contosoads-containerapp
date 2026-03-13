@@ -44,7 +44,16 @@ if (appInsightsConnectionString is { Length: > 0 })
     builder.Services.Configure<AspNetCoreTraceInstrumentationOptions>(options =>
     {
         options.RecordException = true;
-        options.Filter = context => !context.Request.Path.StartsWithSegments("/healthz");
+        options.Filter = context =>
+        {
+            var path = context.Request.Path;
+            return !path.StartsWithSegments("/healthz") &&
+                   !path.StartsWithSegments("/css") &&
+                   !path.StartsWithSegments("/js") &&
+                   !path.StartsWithSegments("/lib") &&
+                   !path.StartsWithSegments("/favicon.ico");
+        };
+        
     });
     builder.Services.ConfigureOpenTelemetryTracerProvider((_, configure) => configure.AddNpgsql());
     builder.Services.ConfigureOpenTelemetryMeterProvider((_, configure) => configure.AddRuntimeInstrumentation());
