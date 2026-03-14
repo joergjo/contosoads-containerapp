@@ -25,9 +25,9 @@
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="9.0.14" />
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.12" />
-        <PackageReference Include="Npgsql.DependencyInjection" Version="9.0.4" />
+        <PackageReference Include="Npgsql.DependencyInjection" Version="9.0.5" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
-        <PackageReference Include="Npgsql.OpenTelemetry" Version="9.0.4" />
+        <PackageReference Include="Npgsql.OpenTelemetry" Version="9.0.5" />
         <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.15.0" />
         <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.15.1" />
         <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.15.0" />
