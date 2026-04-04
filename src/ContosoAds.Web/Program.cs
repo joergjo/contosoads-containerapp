@@ -8,6 +8,10 @@ using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
+using OpenTelemetry.Instrumentation.AspNetCore;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 
 static TokenCredential CreateTokenCredential(string? managedIdentityClientId)
 {
@@ -33,6 +37,43 @@ static TokenCredential CreateTokenCredential(string? managedIdentityClientId)
 var builder = WebApplication.CreateBuilder(args);
 
 // Add monitoring services.
+const string serviceName = "contosoads-web";
+const string serviceVersion = "1.0.0";
+
+builder.Services.ConfigureOpenTelemetryTracerProvider((sp, tracerBuilder) =>
+{
+    tracerBuilder.ConfigureResource(r => r
+            .AddService(
+                serviceName: serviceName, // Maps to Cloud.RoleName
+                serviceInstanceId: Environment.MachineName, // Maps to Cloud.RoleInstance
+                serviceVersion: serviceVersion) // Maps to Component.Version
+    );
+});
+
+builder.Services.Configure<AspNetCoreTraceInstrumentationOptions>(options =>
+{
+    options.RecordException = true;
+    options.Filter = context =>
+    {
+        var path = context.Request.Path;
+        return !path.StartsWithSegments("/healthz") &&
+               !path.StartsWithSegments("/css") &&
+               !path.StartsWithSegments("/js") &&
+               !path.StartsWithSegments("/lib") &&
+               !path.StartsWithSegments("/favicon.ico");
+    };
+});
+
+builder.Services.ConfigureOpenTelemetryLoggerProvider((sp, loggerBuilder) =>
+{
+    loggerBuilder.ConfigureResource(r => r
+            .AddService(
+                serviceName: serviceName, // Maps to Cloud.RoleName
+                serviceInstanceId: Environment.MachineName, // Maps to Cloud.RoleInstance
+                serviceVersion: serviceVersion) // Maps to Component.Version
+    );
+});
+
 var disableTelemetry = builder.Configuration.GetValue("DisableTelemetry", false);
 builder.Services.Configure<TelemetryConfiguration>(tc => tc.DisableTelemetry = disableTelemetry);
 builder.Services.AddApplicationInsightsTelemetry();

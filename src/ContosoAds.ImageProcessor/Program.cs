@@ -2,12 +2,46 @@ using ContosoAds.ImageProcessor;
 using Dapr;
 using Dapr.Client;
 using Microsoft.ApplicationInsights.Extensibility;
+using OpenTelemetry.Instrumentation.AspNetCore;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
+
+const string serviceName = "contosoads-imageprocessor";
+const string serviceVersion = "1.0.0";
+
+builder.Services.ConfigureOpenTelemetryTracerProvider((sp, tracerBuilder) =>
+{
+    tracerBuilder.ConfigureResource(r => r
+            .AddService(
+                serviceName: serviceName, // Maps to Cloud.RoleName
+                serviceInstanceId: Environment.MachineName, // Maps to Cloud.RoleInstance
+                serviceVersion: serviceVersion) // Maps to Component.Version
+    );
+});
+
+builder.Services.Configure<AspNetCoreTraceInstrumentationOptions>(options =>
+{
+    options.RecordException = true;
+    options.Filter = context => !context.Request.Path.StartsWithSegments("/healthz");
+});
+
+builder.Services.ConfigureOpenTelemetryLoggerProvider((sp, loggerBuilder) =>
+{
+    loggerBuilder.ConfigureResource(r => r
+            .AddService(
+                serviceName: serviceName, // Maps to Cloud.RoleName
+                serviceInstanceId: Environment.MachineName, // Maps to Cloud.RoleInstance
+                serviceVersion: serviceVersion) // Maps to Component.Version
+    );
+});
 
 var disableTelemetry = builder.Configuration.GetValue("DisableTelemetry", false);
 builder.Services.Configure<TelemetryConfiguration>(tc => tc.DisableTelemetry = disableTelemetry);
 builder.Services.AddApplicationInsightsTelemetry();
+
 builder.Services.AddDaprClient();
 builder.Services.AddScoped<ImageProcessor>();
 builder.Services.AddHealthChecks();
