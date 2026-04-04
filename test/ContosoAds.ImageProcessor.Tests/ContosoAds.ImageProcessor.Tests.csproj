@@ -14,7 +14,7 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive; compile</IncludeAssets>
           <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Dapr.Client" Version="1.13.1" />
+        <PackageReference Include="Dapr.Client" Version="1.16.1" />
         <PackageReference Include="FakeItEasy" Version="9.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.14" />
         <PackageReference Include="Microsoft.Extensions.Diagnostics.Testing" Version="9.10.0" />
