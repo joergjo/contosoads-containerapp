@@ -40,7 +40,7 @@ This sample app uses a variety of technologies:
 * [ASP.NET Core Minimal API](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-10.0)
 * [Entity Framework Core 10.0](https://learn.microsoft.com/en-us/ef/core/)
 * [Dapr](https://dapr.io)
-* [C# 13](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-14)
+* [C# 14](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-14)
 * [Testcontainers for .NET](https://testcontainers.com/guides/getting-started-with-testcontainers-for-dotnet/)
 
 ## Prerequisites
