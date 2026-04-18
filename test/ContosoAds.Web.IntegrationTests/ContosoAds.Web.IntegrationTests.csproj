@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
@@ -23,7 +23,15 @@
         <PackageReference Include="System.Net.Http.Json" Version="8.0.1" />
         <PackageReference Include="xunit.v3.mtp-v2" Version="3.2.2" />
     </ItemGroup>
+    
+    <ItemGroup>
+        <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
 
+    <ItemGroup>
+        <Using Include="Xunit" />
+    </ItemGroup>
+    
     <ItemGroup>
       <ProjectReference Include="..\..\src\ContosoAds.Web\ContosoAds.Web.csproj" />
     </ItemGroup>

@@ -21,6 +21,14 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="Xunit" />
+    </ItemGroup>
+    
+    <ItemGroup>
       <ProjectReference Include="..\..\src\ContosoAds.Web\ContosoAds.Web.csproj" />
     </ItemGroup>
 
