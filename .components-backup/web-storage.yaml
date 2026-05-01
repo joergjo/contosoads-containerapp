@@ -1,9 +1,9 @@
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: thumbnail-result-receiver
+  name: web-storage
 spec:
-  type: bindings.azure.storagequeues
+  type: bindings.azure.blobstorage
   version: v1
   metadata:
     - name: storageAccount
@@ -12,16 +12,16 @@ spec:
     - name: storageAccessKey
       secretKeyRef:
         name: storageAccountKey
-    - name: queue
-      value: "thumbnail-result"
-    - name: route
-      value: "/thumbnail-result"
+    - name: container
+      value: "images"
+    - name: decodeBase64
+      value: true
 #   When running the application with Docker Compose, comment the next two lines.
     - name: endpoint
-      value: "https://127.0.0.1:10001"
-#   When running the application with Docker Compose, uncomment the next two lines.
+      value: "http://127.0.0.1:10000"
+#   When running the application with Docker Compose, uncomment the next two lines 
 #    - name: endpoint
-#      value: "http://host.docker.internal:10001"
+#      value: "http://host.docker.internal:10000"
 auth:
   secretStore: dev-secrets
 scopes:
