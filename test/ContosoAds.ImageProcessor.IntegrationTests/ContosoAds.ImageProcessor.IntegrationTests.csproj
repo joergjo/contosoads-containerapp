@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="coverlet.MTP" Version="10.0.0" />
+        <PackageReference Include="coverlet.MTP" Version="10.0.1" />
         <PackageReference Include="FakeItEasy" Version="9.0.1" />
         <PackageReference Include="FakeItEasy.Analyzer.CSharp" Version="6.1.1">
           <PrivateAssets>all</PrivateAssets>
