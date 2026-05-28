@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Logging.Testing;
-using SixLabors.ImageSharp;
+using SkiaSharp;
 
 namespace ContosoAds.ImageProcessor.Tests;
 
@@ -20,9 +20,10 @@ public class ImageProcessorTest
 
         // Assert
         result.Position = 0;
-        using var image = await Image.LoadAsync(result, TestContext.Current.CancellationToken);
-        Assert.Equal(expectedWidth, image.Width);
-        Assert.Equal(expectedHeight, image.Height);
+        using var bitmap = SKBitmap.Decode(result);
+        Assert.NotNull(bitmap);
+        Assert.Equal(expectedWidth, bitmap.Width);
+        Assert.Equal(expectedHeight, bitmap.Height);
     }
 
     public static TheoryData<string, int, int> Images =>

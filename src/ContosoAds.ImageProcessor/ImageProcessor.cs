@@ -1,10 +1,12 @@
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Processing;
+using SkiaSharp;
 
 namespace ContosoAds.ImageProcessor;
 
 public class ImageProcessor(ILogger<ImageProcessor> logger)
 {
+    private const int ThumbnailSize = 80;
+    private const int JpegQuality = 80;
+
     public async Task RenderAsync(Stream input, Stream output)
     {
         ArgumentNullException.ThrowIfNull(input);
@@ -21,33 +23,33 @@ public class ImageProcessor(ILogger<ImageProcessor> logger)
             throw new ArgumentException("Stream must be writable", nameof(output));
         }
 
-        using var thumbnailImage = await ResizeImageAsync(input);
-        await thumbnailImage.SaveAsJpegAsync(output);
-    }
+        // SkiaSharp's decode/resize APIs are synchronous, so buffer the input
+        // and stream the encoded output asynchronously to keep the public
+        // signature unchanged.
+        using var buffer = new MemoryStream();
+        await input.CopyToAsync(buffer);
+        buffer.Position = 0;
 
-    private async Task<Image> ResizeImageAsync(Stream input, int size = 80)
-    {
-        var image = await Image.LoadAsync(input);
-        var (width, height) = GetEffectiveSize(image.Width, image.Height, size);
+        using var original = SKBitmap.Decode(buffer)
+                             ?? throw new InvalidOperationException("Failed to decode input image.");
+        var (width, height) = GetEffectiveSize(original.Width, original.Height, ThumbnailSize);
 
         logger.LogDebug(
             "Resized image from {OriginalWidth}x{OriginalHeight} to {NewWidth}x{NewHeight}",
-            image.Width,
-            image.Height,
+            original.Width,
+            original.Height,
             width,
             height);
 
-        image.Mutate(ctx =>
-        {
-            var options = new ResizeOptions
-            {
-                Mode = ResizeMode.Max,
-                Size = new Size(width, height)
-            };
-            ctx.Resize(options);
-        });
+        var info = new SKImageInfo(width, height);
+        var sampling = new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear);
+        using var resized = original.Resize(info, sampling)
+                            ?? throw new InvalidOperationException("Failed to resize image.");
 
-        return image;
+        using var image = SKImage.FromBitmap(resized);
+        using var data = image.Encode(SKEncodedImageFormat.Jpeg, JpegQuality);
+        using var encoded = data.AsStream();
+        await encoded.CopyToAsync(output);
     }
 
     private static (int, int) GetEffectiveSize(int originalWidth, int originalHeight, int newSize)

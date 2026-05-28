@@ -14,7 +14,9 @@ ENV \
     LANG=en_US.UTF-8
 RUN apk add --no-cache \
     icu-data-full \
-    icu-libs
+    icu-libs \
+    fontconfig \
+    ttf-dejavu
 USER $APP_UID
 WORKDIR /app
 COPY --from=build ["/app", "."]
