@@ -6,6 +6,7 @@ using ContosoAds.Web.Commands;
 using ContosoAds.Web.DataAccess;
 using ContosoAds.Web.TagHelpers;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.Azure.PostgreSQL.Auth;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using OpenTelemetry.Instrumentation.AspNetCore;
@@ -53,16 +54,13 @@ if (appInsightsConnectionString is { Length: > 0 })
                    !path.StartsWithSegments("/lib") &&
                    !path.StartsWithSegments("/favicon.ico");
         };
-        
     });
     builder.Services.ConfigureOpenTelemetryTracerProvider((_, configure) => configure.AddNpgsql());
     builder.Services.ConfigureOpenTelemetryMeterProvider((_, configure) => configure.AddRuntimeInstrumentation());
     builder.Services.ConfigureOpenTelemetryMeterProvider((_, configure) => configure.AddNpgsqlInstrumentation());
 }
 
-#pragma warning disable CA1861
 builder.Services.AddHealthChecks().AddDbContextCheck<AdsContext>("AdsContext", tags: ["db_ready"]);
-#pragma warning restore CA1861
 
 // Add MVC and Razor Pages with Dapr support.
 builder.Services.AddRazorPages().AddDapr();
@@ -84,11 +82,14 @@ var managedIdentityClientId = builder.Configuration.GetValue(
     "DataSource:ManagedIdentityClientId",
     default(string));
 
-var credential = useEntraId ? CreateTokenCredential(managedIdentityClientId) : null;
-
 builder.Services.AddNpgsqlDataSource(
     builder.Configuration.GetConnectionString("DefaultConnection")!,
-    credential: credential);
+    db =>
+    {
+        if (!useEntraId) return;
+        var credential = CreateTokenCredential(managedIdentityClientId);
+        db.UseEntraAuthenticationAsync(credential);
+    });
 builder.Services.AddDbContext<AdsContext>((sp, options) =>
 {
     var dataSource = sp.GetRequiredService<NpgsqlDataSource>();
