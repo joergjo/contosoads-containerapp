@@ -48,7 +48,7 @@ public class ImageProcessor(ILogger<ImageProcessor> logger)
 
         using var image = SKImage.FromBitmap(resized);
         using var data = image.Encode(SKEncodedImageFormat.Jpeg, JpegQuality);
-        using var encoded = data.AsStream();
+        await using var encoded = data.AsStream();
         await encoded.CopyToAsync(output);
     }
 
