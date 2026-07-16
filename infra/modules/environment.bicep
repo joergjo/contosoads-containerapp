@@ -44,7 +44,7 @@ param tags object = {}
 var uid = uniqueString(resourceGroup().id)
 var environmentName = '${namePrefix}${uid}-env'
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2025-02-01' existing = {
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2025-07-01' existing = {
   name: workspaceName
 }
 
