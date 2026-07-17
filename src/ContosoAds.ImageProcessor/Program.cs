@@ -3,6 +3,7 @@ using ContosoAds.ImageProcessor;
 using Dapr;
 using Dapr.Client;
 using OpenTelemetry.Instrumentation.AspNetCore;
+using OpenTelemetry.Metrics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ var appInsightsConnectionString = builder.Configuration.GetValue<string?>(
 if (appInsightsConnectionString is { Length: > 0 })
 {
     builder.Services.AddOpenTelemetry().UseAzureMonitor(configure => configure.EnableLiveMetrics = true);
+    builder.Services.ConfigureOpenTelemetryMeterProvider((_, configure) => configure.AddRuntimeInstrumentation());
     builder.Services.Configure<AspNetCoreTraceInstrumentationOptions>(options =>
     {
         options.RecordException = true;

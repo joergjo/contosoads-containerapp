@@ -55,6 +55,7 @@ if (appInsightsConnectionString is { Length: > 0 })
         };
     });
     builder.Services.ConfigureOpenTelemetryTracerProvider((_, configure) => configure.AddNpgsql());
+    builder.Services.ConfigureOpenTelemetryMeterProvider((_, configure) => configure.AddRuntimeInstrumentation());
     builder.Services.ConfigureOpenTelemetryMeterProvider((_, configure) => configure.AddNpgsqlInstrumentation());
 }
 
