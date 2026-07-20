@@ -73,6 +73,37 @@ dapr run -f .
 
 Open https://localhost:7125 in your favorite browser to use the Contoso Ads web application.
 
+### HTTPS Support for Safari 18+
+
+If you're using Safari 18 or newer, you may need to enable HTTPS support for Azurite to ensure images load correctly due to Mixed Content Level 2 policies. To enable HTTPS mode:
+
+```bash
+cd contosoads-containerapp
+
+# Enable HTTPS mode for Azurite
+./scripts/enable-https.sh
+
+# Restart Azurite with HTTPS support
+docker compose -f compose.deps.yaml --profile all restart azurite
+```
+
+When using HTTPS mode, also update the Azure Storage connection string to use HTTPS endpoints:
+
+```bash
+export AZURE_STORAGE_CONNECTION_STRING="DefaultEndpointsProtocol=https;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=https://127.0.0.1:10000/devstoreaccount1;QueueEndpoint=https://127.0.0.1:10001/devstoreaccount1;TableEndpoint=https://127.0.0.1:10002/devstoreaccount1;"
+az storage container create -n images --public-access blob
+az storage queue create -n thumbnail-request
+az storage queue create -n thumbnail-result
+```
+
+This will configure Azurite to use HTTPS endpoints and update the Dapr components accordingly. See [HTTPS Support documentation](https-support.md) for more details.
+
+To revert back to HTTP mode:
+
+```bash
+./scripts/disable-https.sh
+```
+
 ### Stopping and cleaning up
 
 To stop the application, enter `CTRL-C` in the terminal window where you have run

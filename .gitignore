@@ -18,3 +18,4 @@ components-local/
 .azure
 **/TestResults/
 **/coveragereport/
+.components-backup/
