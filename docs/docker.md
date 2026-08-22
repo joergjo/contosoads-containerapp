@@ -67,6 +67,37 @@ docker compose up -d
 
 Open http://localhost:8080 in your favorite browser to use the Contoso Ads web application.
 
+### HTTPS Support for Safari 18+
+
+If you're using Safari 18 or newer, or need HTTPS support for Azurite (e.g., when your main application runs over HTTPS), you can enable HTTPS mode:
+
+```bash
+cd contosoads-containerapp
+
+# Enable HTTPS mode for Azurite
+./scripts/enable-https.sh docker
+
+# Start with HTTPS support
+docker compose up -d
+```
+
+When using HTTPS mode for Docker Compose, create storage artifacts with HTTPS endpoints:
+
+```bash
+export AZURE_STORAGE_CONNECTION_STRING="DefaultEndpointsProtocol=https;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=https://host.docker.internal:10000/devstoreaccount1;QueueEndpoint=https://host.docker.internal:10001/devstoreaccount1;TableEndpoint=https://host.docker.internal:10002/devstoreaccount1;"
+az storage container create -n images --public-access blob
+az storage queue create -n thumbnail-request
+az storage queue create -n thumbnail-result
+```
+
+See [HTTPS Support documentation](https-support.md) for more details.
+
+To revert back to HTTP mode:
+
+```bash
+./scripts/disable-https.sh
+```
+
 ### Stopping and cleaning up
 
 To shut down the application run
