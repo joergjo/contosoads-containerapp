@@ -16,7 +16,7 @@ spec:
       value: "thumbnail-request"
 #   When running the application with Docker Compose, comment the next two lines.
     - name: endpoint
-      value: "http://127.0.0.1:10001"
+      value: "https://127.0.0.1:10001"
 #   When running the application with Docker Compose, uncomment the next two lines.
 #    - name: endpoint
 #      value: "http://host.docker.internal:10001"
