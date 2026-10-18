@@ -46,7 +46,7 @@ resource acrPullAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' 
   }
 }
 
-resource containerApp 'Microsoft.App/containerApps@2025-10-02-preview' = {
+resource containerApp 'Microsoft.App/containerApps@2026-03-02-preview' = {
   name: name
   location: location
   tags: union(tags, { 'azd-service-name': 'webapp' })
