@@ -1,0 +1,28 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: thumbnail-request-receiver
+spec:
+  type: bindings.azure.storagequeues
+  version: v1
+  metadata:
+    - name: storageAccount
+      secretKeyRef:
+        name: storageAccount
+    - name: storageAccessKey
+      secretKeyRef:
+        name: storageAccountKey
+    - name: queue
+      value: "thumbnail-request"
+    - name: route
+      value: "/thumbnail-request"
+#   When running the application with Docker Compose, comment the next two lines.
+    - name: endpoint
+      value: "http://127.0.0.1:10001"
+#   When running the application with Docker Compose, uncomment the next two lines.
+#    - name: endpoint
+#      value: "http://host.docker.internal:10001"
+auth:
+  secretStore: dev-secrets
+scopes:
+  - contosoads-imageprocessor

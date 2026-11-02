@@ -105,5 +105,14 @@ services:
       - "10001:10001"
     volumes:
       - contosoads-storage:/data
+      - ./certs:/certs
     networks:
       - contosoads-network
+    command: >
+      sh -c "if [ \"$$USE_HTTPS\" = 'true' ]; then 
+        azurite --cert /certs/azurite.crt --key /certs/azurite.key --blobHost 0.0.0.0 --queueHost 0.0.0.0; 
+      else 
+        azurite; 
+      fi"
+    environment:
+      - USE_HTTPS=${USE_HTTPS:-false}
