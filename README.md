@@ -1,5 +1,12 @@
 # Contoso Ads on Containers
 
+## ‼️ Note ‼️
+**This is the .NET 9 branch of this sample and no longer maintained.**
+
+.NET 9 has reached [end-of-life as of Nov 10th, 2026](https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core#lifecycle).
+Please use the version published in the [`main`](https://github.com/joergjo/contosoads-containerapp/tree/main)
+branch instead.
+
 ## Introduction
 This sample demonstrates how ASP.NET Core 9.0 can be used to build a cloud native application 
 that consists of a frontend web app and an API that communicate asynchronously via messaged 
