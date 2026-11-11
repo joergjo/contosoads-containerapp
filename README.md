@@ -1,7 +1,13 @@
 # Contoso Ads on Containers
 
-## Note
-You are browsing the .NET 8 branch of this sample. If you want to use the latest .NET version instead, please use the  [main](https://github.com/joergjo/contosoads-containerapp/tree/main) branch.
+## ‼️ Note ‼️
+**This is the .NET 8 branch of this sample and no longer maintained.**
+
+.NET 8 has reached [end-of-life as of Nov 10th, 2026](https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core#lifecycle).
+Please use the version published in the [`main`](https://github.com/joergjo/contosoads-containerapp/tree/main)
+branch instead.
+
+***
 
 ## Introduction
 This sample demonstrates how ASP.NET Core 8.0 can be used to build a cloud native application 
