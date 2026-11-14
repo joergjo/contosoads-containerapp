@@ -1,5 +1,8 @@
 # Contoso Ads on Containers
 
+## Note 
+This is the .NET 10.0 version of this sample. The .NET 11.0 version is available in the [main branch](https://github.com/joergjo/contosoads-containerapp/tree/main).
+
 ## Introduction
 This sample demonstrates how ASP.NET Core 10.0 can be used to build a cloud native application 
 that consists of a frontend web app and an API that communicate asynchronously via messaged 
