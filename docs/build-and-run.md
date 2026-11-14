@@ -3,7 +3,7 @@
 ## Prerequisites
 
 * macOS, Linux, or Windows 10/11 with the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) set up
-* [.NET 10.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
+* [.NET 11.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/11.0)
 * [Dapr](https://docs.dapr.io/getting-started/install-dapr-cli/)
 * [Docker Desktop](https://docs.docker.com/docker-desktop/install/)
 
@@ -92,7 +92,7 @@ docker compose -f compose.deps.yaml --profile all down -v
 
 ### Editing and building the solution (optional)
 
-Open [ContosoAds.sln](../ContosoAds.sln) or [ContosoAds.slnx](../ContosoAds.slnx) in your favorite IDE or code editor to
+Open [ContosoAds.slnx](../ContosoAds.slnx) in your favorite IDE or code editor to
 change the source code, build it, and runs tests.
 
 To build the application and run in the included tests, execute 
@@ -100,6 +100,6 @@ the following commands.
 
 ```bash
 cd contosoads-containerapp
-dotnet build ContosoAds.sln # or .slnx
-dotnet test ContosoAds.sln # or .slnx
+dotnet build ContosoAds.slnx
+dotnet test --solution ContosoAds.slnx
 ```

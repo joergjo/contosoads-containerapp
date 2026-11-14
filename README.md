@@ -1,10 +1,7 @@
 # Contoso Ads on Containers
 
-## Note 
-This is the .NET 10.0 version of this sample. The .NET 11.0 version is available in the [main branch](https://github.com/joergjo/contosoads-containerapp/tree/main).
-
 ## Introduction
-This sample demonstrates how ASP.NET Core 10.0 can be used to build a cloud native application 
+This sample demonstrates how ASP.NET Core 11.0 can be used to build a cloud native application
 that consists of a frontend web app and an API that communicate asynchronously via messaged 
 queues. Messaging between frontend and API is implemented using Dapr and both frontend and API 
 are hosted in Azure Container Apps.
@@ -39,11 +36,11 @@ This sample app uses a variety of technologies:
 * [Azure Container Instances](https://docs.microsoft.com/en-us/azure/container-instances/) 
 * [Azure Application Insights](https://docs.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview)
 * [Azure Bicep](https://docs.microsoft.com/azure/azure-resource-manager/bicep/overview?tabs=**bicep**)
-* [ASP.NET Core Razor Pages](https://learn.microsoft.com/en-us/aspnet/core/razor-pages/?view=aspnetcore-10.0&tabs=visual-studio-code)
-* [ASP.NET Core Minimal API](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-10.0)
-* [Entity Framework Core 10.0](https://learn.microsoft.com/en-us/ef/core/)
+* [ASP.NET Core Razor Pages](https://learn.microsoft.com/en-us/aspnet/core/razor-pages/?view=aspnetcore-11.0&tabs=visual-studio-code)
+* [ASP.NET Core Minimal API](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-11.0)
+* [Entity Framework Core 11.0](https://learn.microsoft.com/en-us/ef/core/)
 * [Dapr](https://dapr.io)
-* [C# 14](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-14)
+* [C# 15](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-15)
 * [Testcontainers for .NET](https://testcontainers.com/guides/getting-started-with-testcontainers-for-dotnet/)
 
 ## Prerequisites
@@ -167,7 +164,7 @@ page will refresh itself display and the thumbnail.
 If you want to change the sample app's source code and run these changes in Azure, you will need 
 to install additional tools:
 
-* [.NET 10.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
+* [.NET 11.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/11.0)
 * [Dapr](https://docs.dapr.io/getting-started/install-dapr-cli/)
 * (Optional, but recommended) An IDE or code editor (e.g., [Visual Studio](https://visualstudio.microsoft.com/vs/), [Visual Studio Code](https://code.visualstudio.com), [Rider](https://www.jetbrains.com/rider/))
 
