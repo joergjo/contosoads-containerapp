@@ -17,7 +17,7 @@
         </PackageReference>
         <PackageReference Include="FakeItEasy" Version="9.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="11.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Diagnostics.Testing" Version="11.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Diagnostics.Testing" Version="11.0.1" />
         <PackageReference Include="Npgsql" Version="11.0.0" />
         <PackageReference Include="Testcontainers.PostgreSql" Version="4.17.0" />
         <PackageReference Include="Testcontainers.XunitV3" Version="4.17.0" />
